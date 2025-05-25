@@ -1,0 +1,29 @@
+@use "sass:map";
+@use "../../styles/colors" as colors;
+@use "../../styles/fonts" as fonts;
+
+.buttonFilter {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    color: colors.$primary_800;
+    border-radius: 8px;
+    font-size: map.get(fonts.$p1-regular, size);
+    font-style: normal;
+    font-weight: 500;
+    padding: 6px 8px;
+    gap: 6px;
+    cursor: pointer;
+    border: none;
+
+    &:hover {
+        color: colors.$primary_700;
+    }
+    &:active {
+        color: colors.$primary_900;
+    }
+    &:focus {
+        color: colors.$primary_900;
+        background-color: colors.$primary_100;
+    }
+}
