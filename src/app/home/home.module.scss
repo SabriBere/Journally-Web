@@ -1,0 +1,10 @@
+// @use "../../styles/theme";
+@use "../../styles/colors" as colors;
+@use "../../styles/mixins";
+
+.containerHome {
+    // background-color: colors.$black;
+    h1 {
+        color: colors.$primary_800
+    }
+}
