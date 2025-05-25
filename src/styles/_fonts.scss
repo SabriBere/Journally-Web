@@ -1,0 +1,112 @@
+//fuente
+//Descargar
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600");
+$font-family: "Inter";
+
+//titulos de tipo regular
+$title_1_regular: (
+    font: $font-family,
+    weight: 400,
+    size: 32px,
+    line-height: 38.73px,
+);
+
+$title_2_regular: (
+    font: "Inter",
+    weight: 400,
+    size: 24px,
+    line-height: 29.05px,
+);
+
+$title_3_regular: (
+    font: "Inter",
+    weight: 400,
+    size: 20px,
+    line-height: 24.2px,
+);
+
+$title_4_regular: (
+    font: "Inter",
+    weight: 400,
+    size: 18px,
+    line-height: 21.78px,
+);
+
+//despues para usar una propiedad en puntual sería
+// h1 {
+//     font-family: map-get($title_1_regular, font);
+//     font-weight: map-get($title_1_regular, weight);
+//     font-size: map-get($title_1_regular, size);
+//     line-height: map-get($title_1_regular, line-height);
+//   }
+
+$title_1_medium: (
+    font: "Inter",
+    weight: 500,
+    size: 32px,
+    line-height: 38.73px,
+);
+
+$title_2_medium: (
+    font: "Inter",
+    weight: 500,
+    size: 24px,
+    line-height: 31px,
+);
+
+$title_3_regular: (
+    font: "Inter",
+    weight: 500,
+    size: 20px,
+    line-height: 24.2px,
+);
+
+$title_4_regular: (
+    font: "Inter",
+    weight: 500,
+    size: 18px,
+    line-height: 21.78px,
+);
+
+//Parrafos
+$p1_regular: (
+    font: "Inter",
+    weight: 400,
+    size: 16px,
+    line-height: 26px,
+);
+
+$p1_light: (
+    font: "Inter",
+    weight: 300,
+    size: 16px,
+    line-height: 26px,
+);
+
+$p2_regular: (
+    font: "Inter",
+    weight: 400,
+    size: 14px,
+    line-height: 24px,
+);
+
+$p3_regular: (
+    font: "Inter",
+    weight: 400,
+    size: 12px,
+    line-height: 18px,
+);
+
+$p1_medium: (
+    font: "Inter",
+    weight: 600,
+    size: 16px,
+    line-height: 24px,
+);
+
+$p2_medium: (
+    font: "Inter",
+    weight: 500,
+    size: 12px,
+    line-height: 18px,
+);
