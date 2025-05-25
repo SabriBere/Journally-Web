@@ -1,0 +1,42 @@
+//Brand
+$primary_800: #1686f7;
+$primary_700: #49a2fb;
+$primary_100: #f6faff;
+$primary_900: #0571df;
+
+//grises
+$black: #2f2f2f;
+$medium_grey: #565659;
+$light_grey: #8d8d8d;
+$ultra_light_grey: #e4e4e4;
+$soft_grey: #f4f4f4;
+
+//background
+$grey_background: #f9f9f9;
+$white: #ffffff;
+
+//colores de validación
+$error: #c72f00;
+$warning: #f66f0c;
+$success: #49c462;
+$notification: #a30000;
+
+//terciarios
+$soft_porple: #eaceff;
+$soft_green: #cdeedd;
+$soft_red: #ffd7ca;
+$soft_blue: #cce5ff;
+$soft_yelow: #ffecab;
+
+//sombras
+$base_1: (
+    color: rgba(215, 215, 221, 1),
+    shadow: 0px 2px 8px rgba(215, 215, 221, 0.5),
+    radius: 4px,
+);
+
+$base_2: (
+    color: rgba(215, 215, 221, 1),
+    shadow: 0px 3px 20px rgba(215, 215, 221, 0.8),
+    radius: 4px,
+);
