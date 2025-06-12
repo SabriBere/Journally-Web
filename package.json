@@ -2,6 +2,8 @@
     "name": "prueba-turbopack",
     "version": "0.1.0",
     "private": true,
+    "author": "Sabrina Demetrio",
+    "license": "MIT",
     "scripts": {
         "dev": "dotenvx run --env-file=.env.dev -- next dev --turbopack",
         "production": "dotenvx run --env-file=.env.prod -- next build",
