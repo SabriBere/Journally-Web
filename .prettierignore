@@ -1,4 +1,3 @@
-# Permite ignorar el formato de ciertos archivos o carpetas
 build
 coverage
 node_modules
