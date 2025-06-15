@@ -1,6 +1,6 @@
 //types for pass props to de icons
 
-type ColorProps = {
+export type ColorProps = {
     color?: string;
     width?: string;
     height?: string;
