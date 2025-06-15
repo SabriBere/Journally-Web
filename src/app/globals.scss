@@ -1,67 +1,95 @@
+/* 0. Font variables */
+:root {
+    --font-caveat: "Caveat", cursive;
+    --font-inter: "Inter", sans-serif;
+}
+
 /* 1. Box-sizing reset */
-*, *::before, *::after {
-  box-sizing: border-box;
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 /* 2. Remove default margins */
-body, h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd {
-  margin: 0;
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd {
+    margin: 0;
 }
 
 /* 3. Remove list styles on ul, ol elements with a list role */
-ul[role='list'], ol[role='list'] {
-  list-style: none;
+ul[role="list"],
+ol[role="list"] {
+    list-style: none;
 }
 
 /* 4. Set core body defaults */
 body {
-  min-height: 100vh;
-  text-rendering: optimizeSpeed;
-  line-height: 1.5;
-  font-family: system-ui, sans-serif; // font
-  background-color: #e1dba4; // background
-  color: #111;
+    min-height: 100vh;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+    font-family: var(--font-inter); // fuente por defecto
+    background-color: #f3e5ca; // background paperBeige
+    color: #111;
 }
+
+/* Títulos y zonas manuscritas */
 
 /* 5. A elements without a class get default styles */
 a:not([class]) {
-  text-decoration-skip-ink: auto;
-  color: inherit;
+    text-decoration-skip-ink: auto;
+    color: inherit;
 }
 
 /* 6. Make images easier to work with */
-img, picture {
-  max-width: 100%;
-  display: block;
+img,
+picture {
+    max-width: 100%;
+    display: block;
 }
 
 /* 7. Inherit fonts for inputs and buttons */
-input, button, textarea, select {
-  font: inherit;
+input,
+button,
+textarea,
+select {
+    font: inherit;
 }
 
 /* 8. Remove animations for people who’ve turned them off */
 @media (prefers-reduced-motion: reduce) {
-  html:focus-within {
-    scroll-behavior: auto;
-  }
+    html:focus-within {
+        scroll-behavior: auto;
+    }
 
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 /* 9. Optional: Cursor defaults */
 button {
-  cursor: pointer;
-  border: none;
-  background: none;
+    cursor: pointer;
+    border: none;
+    background: none;
 }
 
 /* 10. Optional: Remove tap highlight on mobile */
 * {
-  -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent;
 }
