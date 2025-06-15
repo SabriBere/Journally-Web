@@ -1,7 +1,7 @@
-"use client"
 import React from "react";
+import { ColorProps } from "./Icons.types";
 
-const CaretDown = (props: any) => (
+const CaretDown = ({ color, width, height }: ColorProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
