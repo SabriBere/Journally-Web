@@ -1,7 +1,7 @@
-"use client"
 import React from "react";
+import { ColorProps } from "@/styles/icons/Icons.types";
 
-const CreativeFlow = (props: any) => (
+const CreativeFlow = ({ color, width, height }: ColorProps) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="927.677"
