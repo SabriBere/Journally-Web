@@ -4,6 +4,7 @@ import { FlatCompat } from "@eslint/eslintrc";
 import eslintPluginImport from "eslint-plugin-import";
 import eslintPluginReactHooks from "eslint-plugin-react-hooks";
 import eslintPluginTestingLibrary from "eslint-plugin-testing-library";
+import eslintPluginQuery from "@tanstack/eslint-plugin-query";
 import eslintPluginJest from "eslint-plugin-jest";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -15,15 +16,16 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
     ...compat.extends("next/core-web-vitals", "next/typescript", "prettier"),
+
+    // Reglas generales del proyecto
     {
         files: ["src/**/*.{js,ts,jsx,tsx}"],
         plugins: {
             import: eslintPluginImport,
             "react-hooks": eslintPluginReactHooks,
             "testing-library": eslintPluginTestingLibrary,
+            "@tanstack/query": eslintPluginQuery,
         },
-
-        // Reglas generales del proyecto
         rules: {
             eqeqeq: "error",
             "no-var": "error",
@@ -35,6 +37,10 @@ const eslintConfig = [
             "no-duplicate-imports": "warn",
             "array-callback-return": "off",
             "react-hooks/exhaustive-deps": "off",
+            "@tanstack/query/exhaustive-deps": "warn", //parametros de querys bien definidos
+            "@tanstack/query/prefer-query-object-syntax": "warn", // permite usar { queryKey, queryFn }
+            //regla a probar
+            // "@tanstack/query/stable-query-client": "warn", //evitar usar queryClient en cada render
         },
     },
     // Reglas específicas para archivos de test
