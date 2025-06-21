@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import styles from "./entries.module.scss";
 
 const Entries = () => {
-  return (
-    <div><h1>Entries</h1></div>
-  )
-}
+    return (
+        <div className={styles.containerEntries}>
+            <h1>Entries</h1>
+        </div>
+    );
+};
 
-export default Entries
+export default Entries;
