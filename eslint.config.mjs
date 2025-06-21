@@ -48,12 +48,18 @@ const eslintConfig = [
             // Testing Library
             "testing-library/no-unnecessary-act": ["off", { isStrict: true }],
 
-            // Jest
-            "jest/expect-expect": "warn",
-            "jest/no-disabled-tests": "warn",
-            "jest/no-identical-title": "error",
-            "jest/prefer-to-have-length": "warn",
-            "jest/valid-expect": "error",
+            // Jest - Reglas para test robustos
+            "jest/expect-expect": "warn", //evita que no haya expect
+            "jest/no-disabled-tests": "warn", //avisa si hay un test comentado o skip
+            "jest/no-identical-title": "error", //impide tener dos test con el mismo nombre
+            "jest/prefer-to-have-length": "warn", //obliga a usar toHaveLength
+            "jest/valid-expect": "error", //evita fallas silenciosas por falta de matcher
+            //otras reglas a probar
+            // "jest/no-commented-out-tests": "warn",
+            // "jest/prefer-to-be": "warn", //en vez de to equal
+            // "jest/prefer-to-contain": "warn", //en vez de includes
+            // "jest/consistent-test-it": ["warn", { fn: "test" }], //obliga a usar it en vez de test
+            // "jest/require-top-level-describe": "warn" //que tenga un describe dela to nivel que envuelva al test
         },
     },
 ];
