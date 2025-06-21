@@ -38,7 +38,6 @@ const eslintConfig = [
             "array-callback-return": "off",
             "react-hooks/exhaustive-deps": "off",
             "@tanstack/query/exhaustive-deps": "warn", //parametros de querys bien definidos
-            "@tanstack/query/prefer-query-object-syntax": "warn", // permite usar { queryKey, queryFn }
             //regla a probar
             // "@tanstack/query/stable-query-client": "warn", //evitar usar queryClient en cada render
         },
