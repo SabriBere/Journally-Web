@@ -16,7 +16,7 @@ const customJestConfig = {
 
     testMatch: [
         "**/__tests__/**/*.test.[jt]s?(x)",
-        // "**/?(*.)+(spec|test).[jt]s?(x)" //si quisiera una covertura más amplia
+        "**/?(*.)+(spec|test).[jt]s?(x)" //si quisiera una covertura más amplia
     ]
 }
 
