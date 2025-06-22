@@ -3,13 +3,13 @@ import { Caveat, Inter } from "next/font/google";
 import Providers from "./providers";
 import "./globals.scss";
 
-export const caveat = Caveat({
+const caveat = Caveat({
     subsets: ["latin"],
     weight: ["400", "500", "600", "700"],
     variable: "--font-caveat",
 });
 
-export const inter = Inter({
+const inter = Inter({
     subsets: ["latin"],
     weight: ["300", "400", "500", "600", "700"],
     variable: "--font-inter",
