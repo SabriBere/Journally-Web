@@ -1,8 +1,9 @@
 {
-    "name": "prueba-turbopack",
+    "name": "journally-web",
     "version": "0.1.0",
     "private": true,
     "author": "Sabrina Demetrio",
+    "description": "",
     "license": "MIT",
     "scripts": {
         "dev": "dotenvx run --env-file=.env.dev -- next dev --turbopack",
