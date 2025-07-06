@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Caveat, Inter } from "next/font/google";
 import Providers from "./providers";
+import Navbar from "@/commons/Navbar/Navbar";
+import Footer from "@/commons/Footer/Footer";
+import styles from "./layout.module.scss";
 import "./globals.scss";
 
 const caveat = Caveat({
@@ -26,8 +29,17 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" className={`${caveat.variable} ${inter.variable}`}>
-            <body className="font-body">
-                <Providers>{children}</Providers>
+            <body className={styles.layout}>
+                <header>
+                    <Navbar />
+                </header>
+                {/* generar sidebar flotante */}
+                <main className={styles.mainContent}>
+                    <Providers>{children}</Providers>
+                </main>
+                <footer>
+                    <Footer />
+                </footer>
             </body>
         </html>
     );
