@@ -2,12 +2,7 @@ import React from "react";
 import { ColorProps } from "@/styles/icons/Icons.types";
 
 const WritingIdeas = ({ color, width, height }: ColorProps) => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="717.828"
-        height="594.459"
-        viewBox="0 0 717.828 594.459"
-    >
+    <svg width={width} height={height} viewBox="0 0 717.828 594.459">
         <path
             fill="#ffb9b9"
             d="m422.39 276.584 25.787 22.945-13.397 15.056-25.787-22.945c-5.115.378-10.777-1.496-15.37-5.584-8.039-7.152-9.757-18.343-3.837-24.995 5.919-6.652 17.233-6.247 25.271.905 4.594 4.088 7.113 9.493 7.333 14.618"
