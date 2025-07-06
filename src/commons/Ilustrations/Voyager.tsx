@@ -1,7 +1,7 @@
 import React from "react";
 import { ColorProps } from "@/styles/icons/Icons.types";
 
-const Voyager = ({ color, width, height }: ColorProps) => (
+const Voyager = ({ width, height }: ColorProps) => (
     <svg width={width} height={height} viewBox="0 0 885.598 875.62">
         <path
             fill="#090814"

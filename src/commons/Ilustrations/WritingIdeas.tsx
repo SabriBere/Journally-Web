@@ -1,7 +1,7 @@
 import React from "react";
 import { ColorProps } from "@/styles/icons/Icons.types";
 
-const WritingIdeas = ({ color, width, height }: ColorProps) => (
+const WritingIdeas = ({ width, height }: ColorProps) => (
     <svg width={width} height={height} viewBox="0 0 717.828 594.459">
         <path
             fill="#ffb9b9"

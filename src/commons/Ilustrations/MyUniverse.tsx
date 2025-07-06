@@ -1,7 +1,7 @@
 import React from "react";
 import { ColorProps } from "@/styles/icons/Icons.types";
 
-const MyUniverse = ({ color, width, height }: ColorProps) => (
+const MyUniverse = ({ width, height }: ColorProps) => (
     <svg width={width} height={height} viewBox="0 0 880 813.325">
         <g
             id="Group_83"
