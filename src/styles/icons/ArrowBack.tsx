@@ -3,12 +3,7 @@ import { ColorProps } from "./Icons.types";
 
 function ArrowBack({ color, width, height }: ColorProps) {
     return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={24}
-            height={24}
-            viewBox="0 0 256 256"
-        >
+        <svg fill={color} width={width} height={height} viewBox="0 0 256 256">
             <path d="M232 56a104.11 104.11 0 01-104 104H51.31l34.35 34.34a8 8 0 01-11.32 11.32l-48-48a8 8 0 010-11.32l48-48a8 8 0 0111.32 11.32L51.31 144H128a88.1 88.1 0 0088-88 8 8 0 0116 0z" />
         </svg>
     );
