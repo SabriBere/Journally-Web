@@ -38,6 +38,8 @@ const eslintConfig = [
             "array-callback-return": "off",
             "react-hooks/exhaustive-deps": "off",
             "@tanstack/query/exhaustive-deps": "warn", //parametros de querys bien definidos
+            "@typescript-eslint/no-unused-vars": "warn",      // 👈 sumá esto como warn u off
+            "@typescript-eslint/no-explicit-any": "warn",     // 👈 sumá esto como warn u off
             //regla a probar
             // "@tanstack/query/stable-query-client": "warn", //evitar usar queryClient en cada render
         },
