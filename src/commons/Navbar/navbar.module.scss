@@ -1,0 +1,28 @@
+@use "../../styles/colors" as colors;
+
+.containerNavbar {
+    display: flex;
+    align-items: center;
+    background-color: colors.$petroleumBlue;
+    height: 50px;
+    width: 100%;
+    padding: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    .containerBrand {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 6px;
+        span {
+            color: colors.$warmOrange;
+        }
+
+        h3 {
+            color: colors.$white;
+            font-family: var(--font-inter);
+            font-size: 18px;
+        }
+    }
+}

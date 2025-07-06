@@ -1,0 +1,17 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+
+    header {
+        flex-shrink: 0;
+    }
+
+    .mainContent {
+        flex-grow: 1;
+    }
+
+    footer {
+        flex-shrink: 0;
+    }
+}
