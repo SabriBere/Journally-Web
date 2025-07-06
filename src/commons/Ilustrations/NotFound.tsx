@@ -2,12 +2,7 @@ import React from "react";
 import { ColorProps } from "@/styles/icons/Icons.types";
 
 const NotFound = ({ color, width, height }: ColorProps) => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="672.532"
-        height="738.394"
-        viewBox="0 0 672.532 738.394"
-    >
+    <svg width={width} height={height} viewBox="0 0 672.532 738.394">
         <path
             fill="#c6a969"
             d="M467 149.804c-46.62-7.44-99.71-11.41-155-11.41-50.6 0-99.35 3.32-142.98 9.58.01-.67.02-1.34.05-2.01a149 149 0 0 1 297.91 1.82c.01.68.02 1.35.02 2.02"

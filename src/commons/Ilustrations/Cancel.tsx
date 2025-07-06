@@ -3,9 +3,8 @@ import { ColorProps } from "@/styles/icons/Icons.types";
 
 const Cancel = ({ color, width, height }: ColorProps) => (
     <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="672.532"
-        height="738.394"
+        width={width}
+        height={height}
         viewBox="0 0 672.532 738.394"
     >
         <path
