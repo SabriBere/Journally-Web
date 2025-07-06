@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Caveat, Inter } from "next/font/google";
 import Providers from "./providers";
-import "./globals.scss";
 import Navbar from "@/commons/Navbar/Navbar";
+import Footer from "@/commons/Footer/Footer";
+import styles from "./layout.module.scss";
+import "./globals.scss";
 
 const caveat = Caveat({
     subsets: ["latin"],
@@ -27,12 +29,16 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" className={`${caveat.variable} ${inter.variable}`}>
-            <body className="font-body">
+            <body className={styles.layout}>
                 <header>
                     <Navbar />
                 </header>
-                <Providers>{children}</Providers>
-                <footer></footer>
+                <main className={styles.mainContent}>
+                    <Providers>{children}</Providers>
+                </main>
+                <footer>
+                    <Footer />
+                </footer>
             </body>
         </html>
     );
