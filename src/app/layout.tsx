@@ -33,6 +33,7 @@ export default function RootLayout({
                 <header>
                     <Navbar />
                 </header>
+                {/* generar sidebar flotante */}
                 <main className={styles.mainContent}>
                     <Providers>{children}</Providers>
                 </main>
