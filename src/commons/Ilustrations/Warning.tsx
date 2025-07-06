@@ -1,13 +1,8 @@
 import React from "react";
 import { ColorProps } from "@/styles/icons/Icons.types";
 
-const Warning = ({ color, width, height }: ColorProps) => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="774.305"
-        height="799.978"
-        viewBox="0 0 774.305 799.978"
-    >
+const Warning = ({ width, height }: ColorProps) => (
+    <svg width={width} height={height} viewBox="0 0 774.305 799.978">
         <g transform="translate(-480.785 -126.107)">
             <path
                 fill="#f2f2f2"

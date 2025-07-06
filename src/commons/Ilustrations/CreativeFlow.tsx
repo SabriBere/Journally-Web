@@ -1,13 +1,8 @@
 import React from "react";
 import { ColorProps } from "@/styles/icons/Icons.types";
 
-const CreativeFlow = ({ color, width, height }: ColorProps) => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="927.677"
-        height="702.459"
-        viewBox="0 0 927.677 702.459"
-    >
+const CreativeFlow = ({ width, height }: ColorProps) => (
+    <svg width={width} height={height} viewBox="0 0 927.677 702.459">
         <path
             fill="#10434c"
             d="M351.522 625.148a7.7 7.7 0 0 1-2.643-.468l-57.392-20.86c-3.361-1.22-5.355-4.313-5.078-7.88.278-3.566 2.725-6.315 6.236-7.002l158.51-31.033a7.76 7.76 0 0 1 3.852.224l44.291 14.194c3.368 1.08 5.48 4.061 5.381 7.597s-2.376 6.394-5.8 7.281L353.468 624.9a7.7 7.7 0 0 1-1.947.248"
