@@ -1,0 +1,16 @@
+@use "../../styles/colors" as colors;
+
+.containerFooter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    width: 100%;
+
+    p {
+        text-align: center;
+        letter-spacing: 0.5px;
+        font-size: 14px;
+    }
+}
