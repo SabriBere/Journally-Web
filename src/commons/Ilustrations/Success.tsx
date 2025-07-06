@@ -2,12 +2,7 @@ import React from "react";
 import { ColorProps } from "@/styles/icons/Icons.types";
 
 const Success = ({ color, width, height }: ColorProps) => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="799.465"
-        height="552.326"
-        viewBox="0 0 799.465 552.326"
-    >
+    <svg width={width} height={height} viewBox="0 0 799.465 552.326">
         <path
             fill="#090814"
             d="M785.853-.001H13.612A13.747 13.747 0 0 0-.001 13.847v524.66a13.74 13.74 0 0 0 13.613 13.819h772.241a13.74 13.74 0 0 0 13.613-13.819V13.847A13.747 13.747 0 0 0 785.855-.001Z"
