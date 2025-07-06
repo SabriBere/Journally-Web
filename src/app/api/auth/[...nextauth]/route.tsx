@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { getMajorVersion } from "@/utils/getVersion";
+// import { getMajorVersion } from "@/utils/getVersion";
 
 //toda la configuración de credentials
 // const handler = NextAuth({
