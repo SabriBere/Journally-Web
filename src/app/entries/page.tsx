@@ -5,7 +5,7 @@ import { getAllEntries } from "@/services/entries.service";
 import styles from "./entries.module.scss";
 
 const Entries = () => {
-    const { data, isLoading, isError } = useQuery({
+    const { data } = useQuery({
         queryKey: ["handShake"],
         queryFn: () => getAllEntries(),
     });
