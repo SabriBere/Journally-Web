@@ -1,7 +1,7 @@
 import React from "react";
 import { ColorProps } from "@/styles/icons/Icons.types";
 
-const SpaceExploration = ({ color, width, height }: ColorProps) => (
+const SpaceExploration = ({ width, height }: ColorProps) => (
     <svg width={width} height={height} viewBox="0 0 926 584.958">
         <g
             id="Group_236"

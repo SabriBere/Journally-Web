@@ -1,7 +1,7 @@
 import React from "react";
 import { ColorProps } from "@/styles/icons/Icons.types";
 
-const CreativeFlow = ({ color, width, height }: ColorProps) => (
+const CreativeFlow = ({ width, height }: ColorProps) => (
     <svg width={width} height={height} viewBox="0 0 927.677 702.459">
         <path
             fill="#10434c"

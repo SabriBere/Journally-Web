@@ -1,7 +1,7 @@
 import React from "react";
 import { ColorProps } from "@/styles/icons/Icons.types";
 
-const ServerDown = ({ color, width, height }: ColorProps) => (
+const ServerDown = ({ width, height }: ColorProps) => (
     <svg width={width} height={height} viewBox="0 0 1119.609 699">
         <circle cx="292.609" cy="213" r="213" fill="#f2f2f2"></circle>
         <path
