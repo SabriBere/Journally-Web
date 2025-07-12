@@ -4,6 +4,7 @@ import styles from "./inputEmail.module.scss";
 
 //En principio esto es para el login
 const InputEmail = () => {
+    //Mover al hook de email
     const [inputEmail, setInputEmail] = useState<string>("");
     // const [isValid, setIsValid] = useState<boolean>(false);
     // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
