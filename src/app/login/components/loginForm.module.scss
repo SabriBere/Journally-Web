@@ -4,7 +4,6 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    // min-height: 70%;
     height: 90%;
     width: 100%;
     align-items: center;
@@ -33,6 +32,5 @@
         left: 50%;
         transform: translate(-75%, -50%);
         z-index: -1;
-        // opacity: 1;
     }
 }
