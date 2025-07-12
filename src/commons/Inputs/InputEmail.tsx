@@ -17,6 +17,7 @@ const InputEmail = () => {
 
     return (
         <div>
+            {/* <label>Email</label> */}
             <input
                 type="email"
                 placeholder="Email"
