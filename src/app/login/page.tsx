@@ -1,9 +1,12 @@
-import React from 'react'
+import InputEmail from "@/commons/Inputs/InputEmail";
+import React from "react";
 
 const Login = () => {
-  return (
-    <div><h1>Sign in</h1></div>
-  )
-}
+    return (
+        <div>
+            <InputEmail />
+        </div>
+    );
+};
 
-export default Login
+export default Login;
