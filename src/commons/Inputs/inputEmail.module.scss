@@ -1,7 +1,33 @@
 @use "../../styles/colors" as colors;
 
 .containerInputEmail {
-}
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 
-.input {
+    label {
+        color: colors.$mangoYellow;
+        font-family: var(--font-caveat);
+        font-weight: bolder;
+        font-size: 24px;
+        letter-spacing: 2;
+    }
+
+    .input {
+        padding: 12px;
+        border-radius: 8px;
+        border: 2px solid colors.$clayBrown;
+        color: colors.$clayBrown;
+
+        &::placeholder {
+            color: colors.$clayBrown;
+        }
+
+        &:focus {
+            outline: none;
+            border-color: lighten(colors.$clayBrown, 15%);
+            background-color: colors.$paperBeige;
+            box-shadow: 0 0 0 4px rgba(205, 133, 63, 0.2);
+        }
+    }
 }

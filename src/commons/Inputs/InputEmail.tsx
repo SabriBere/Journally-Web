@@ -16,11 +16,12 @@ const InputEmail = () => {
     };
 
     return (
-        <div>
-            {/* <label>Email</label> */}
+        <div className={styles.containerInputEmail}>
+            <label>Email</label>
             <input
+                className={styles.input}
                 type="email"
-                placeholder="Email"
+                placeholder="usuario@email.com"
                 onChange={handlerChangeEmail}
                 value={inputEmail}
             />
