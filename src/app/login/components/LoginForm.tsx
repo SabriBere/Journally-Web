@@ -10,11 +10,11 @@ const LoginForm = () => {
         <div className={styles.containerLoginForm}>
             <h1>Iniciar sesión</h1>
             <div className={styles.loginCard}>
-                {/* <div className={styles.voyagerBg}>
+                <div className={styles.voyagerBg}>
                     <Voyager width="150%" height="150%" />
-                </div> */}
+                </div>
                 <InputEmail />
-                {/* <InputPassword /> */}
+                <InputPassword />
                 {/* <button type="submit">Iniciar sesión</button> */}
             </div>
         </div>

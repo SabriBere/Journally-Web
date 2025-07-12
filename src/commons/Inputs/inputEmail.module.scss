@@ -25,7 +25,7 @@
 
         &:focus {
             outline: none;
-            border-color: lighten(colors.$clayBrown, 15%);
+            border-color: lighten(colors.$clayBrown, 15%); //cambiar en sass
             background-color: colors.$paperBeige;
             box-shadow: 0 0 0 4px rgba(205, 133, 63, 0.2);
         }
