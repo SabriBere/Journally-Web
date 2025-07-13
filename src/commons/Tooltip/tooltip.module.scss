@@ -1,0 +1,14 @@
+@use "../../styles/colors" as colors;
+
+.tooltipContent {
+    background-color: rgba(0, 0, 0, 0.85);
+    color: colors.$white;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+.tooltipArrow {
+    fill: rgba(0, 0, 0, 0.85);
+}
