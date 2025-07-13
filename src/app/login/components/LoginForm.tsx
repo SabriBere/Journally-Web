@@ -1,11 +1,16 @@
 "use client";
-import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 import InputEmail from "@/commons/Inputs/InputEmail";
 import InputPassword from "@/commons/Inputs/InputPassword";
 import Voyager from "@/commons/Ilustrations/Voyager";
 import styles from "./loginForm.module.scss";
 
 const LoginForm = () => {
+    const inputEmail = useSelector((state: RootState) => state.user.email);
+    const inputPass = useSelector((state: RootState) => state.user.password);
+    const isDisabled = !inputEmail || !inputPass;
+
     return (
         <div className={styles.containerLoginForm}>
             <h1>Iniciar sesión</h1>
@@ -15,7 +20,13 @@ const LoginForm = () => {
                 </div>
                 <InputEmail />
                 <InputPassword />
-                <button className={styles.buttonSubmit} type="submit">Iniciar sesión</button>
+                <button
+                    disabled={isDisabled}
+                    className={styles.buttonSubmit}
+                    type="submit"
+                >
+                    Iniciar sesión
+                </button>
             </div>
         </div>
     );

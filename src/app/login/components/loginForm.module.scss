@@ -53,6 +53,11 @@
             outline: none;
             background-color: colors.$jungleGreen;
         }
+
+        &:disabled {
+            outline: none;
+            background-color: colors.$grey;
+        }
     }
 }
 
