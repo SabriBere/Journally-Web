@@ -11,6 +11,8 @@ const LoginForm = () => {
     const inputPass = useSelector((state: RootState) => state.user.password);
     const isDisabled = !inputEmail || !inputPass;
 
+    const handlerSubmit = async () => {};
+
     return (
         <div className={styles.containerLoginForm}>
             <h1>Iniciar sesión</h1>
