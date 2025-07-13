@@ -23,12 +23,18 @@ export const authOptions: NextAuthOptions = {
                         {
                             email: credentials.user,
                             password: credentials.password,
-                        }
+                        },
                     );
-
-                    if (response.status === 201) {
-                        return response.data;
+                    console.log(response, "qué llega?");
+                    if (response.status === 201 && response.data?.data) {
+                        const userData = response?.data?.data;
+                        return {
+                            id: userData?.userId,
+                            name: userData?.userName,
+                            email: userData?.user,
+                        };
                     }
+                    return null;
                 } catch (error: any) {
                     const status = error?.response.status;
                     const code = error?.code;
@@ -37,28 +43,31 @@ export const authOptions: NextAuthOptions = {
                     if (status === 401) {
                         throw new Error("Credenciales invalidas");
                     }
+                    throw new Error("Error al iniciar sesión");
                 }
             },
         }),
     ],
     callbacks: {
         async jwt({ token, user }: any) {
-            // if (user) {
-            //     return {
-            //         ...token,
-            //         userId: user?.data?.user_id,
-            //         userName: user?.data.user_name,
-            //         userEmail: user?.data?.email,
-            //     };
-            // }
+            if (user) {
+                return {
+                    ...token,
+                    userId: user?.id,
+                    userName: user?.name,
+                    userEmail: user?.email,
+                };
+            }
 
             return token;
         },
         async session({ session, token }: any) {
             return {
-                ...token,
+                ...session,
                 user: {
-                    ...session?.user,
+                    id: token?.userId,
+                    name: token?.userName,
+                    email: token?.userEmail,
                 },
             };
         },
