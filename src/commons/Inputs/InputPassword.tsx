@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Eye from "@/styles/icons/Eye";
 import EyeClose from "@/styles/icons/EyeClose";
 import styles from "./inputPassword.module.scss";
+import TooltipWrapper from "../Tooltip/Tooltip";
 
 const InputPassword = () => {
     //Mover al hook de password
@@ -30,13 +31,15 @@ const InputPassword = () => {
                     value={inputPassword}
                 />
                 {/* Agregar tooltip de mostrar/ocultar */}
-                <button onClick={toggleShowPassword}>
-                    {showPassword ? (
-                        <Eye width="24" height="24" color="#4a4a4a" />
-                    ) : (
-                        <EyeClose width="24" height="24" color="#4a4a4a" />
-                    )}
-                </button>
+                <TooltipWrapper content={showPassword ? "Ocultar" : "Mostrar"}>
+                    <button onClick={toggleShowPassword}>
+                        {showPassword ? (
+                            <Eye width="24" height="24" color="#4a4a4a" />
+                        ) : (
+                            <EyeClose width="24" height="24" color="#4a4a4a" />
+                        )}
+                    </button>
+                </TooltipWrapper>
             </span>
         </div>
     );

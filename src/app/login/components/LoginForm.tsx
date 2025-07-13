@@ -15,7 +15,7 @@ const LoginForm = () => {
                 </div>
                 <InputEmail />
                 <InputPassword />
-                {/* <button type="submit">Iniciar sesión</button> */}
+                <button type="submit">Iniciar sesión</button>
             </div>
         </div>
     );
