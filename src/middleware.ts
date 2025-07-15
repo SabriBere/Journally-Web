@@ -1,6 +1,6 @@
 // Configuración de next-auth
 import { NextResponse } from "next/server";
-import withAuth, { NextRequestWithAuth } from "next-auth/middleware";
+import { withAuth, NextRequestWithAuth } from "next-auth/middleware";
 import { getToken } from "next-auth/jwt";
 
 export default withAuth(async function middleware(req: NextRequestWithAuth) {

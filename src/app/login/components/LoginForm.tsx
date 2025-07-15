@@ -24,6 +24,7 @@ const LoginForm = () => {
                 password: inputPass,
             });
 
+            //agregar un spinner o pantalla de carga
             if (!res?.ok) {
                 console.log("Error en login");
                 //toast de error
