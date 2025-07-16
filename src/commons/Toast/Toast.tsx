@@ -16,7 +16,7 @@ const Toast = () => {
                     letterSpacing: "0.6px",
                 },
             }}
-            position="bottom-center"
+            position="top-center"
         />
     );
 };
