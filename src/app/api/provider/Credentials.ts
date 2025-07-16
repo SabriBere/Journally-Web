@@ -1,0 +1,78 @@
+import axios from "axios";
+import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+
+export const authOptions: NextAuthOptions = {
+    secret: process.env.NEXTAUTH_SECRET,
+    session: {
+        strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60, // 30 días
+    },
+    providers: [
+        CredentialsProvider({
+            id: "credentials",
+            name: "Credentials",
+            credentials: {
+                user: { label: "Email", type: "email" },
+                password: { label: "Password", type: "password" },
+            },
+            async authorize(credentials: any) {
+                try {
+                    const response = await axios.post(
+                        `${process.env.NEXT_PUBLIC_API_URL}/users/login`,
+                        {
+                            email: credentials.user,
+                            password: credentials.password,
+                        },
+                    );
+                    console.log(response, "qué llega?");
+                    if (response.status === 201 && response.data?.data) {
+                        const userData = response?.data?.data;
+                        return {
+                            id: userData?.userId,
+                            name: userData?.userName,
+                            email: userData?.user,
+                        };
+                    }
+                    return null;
+                } catch (error: any) {
+                    const status = error?.response.status;
+                    const code = error?.code;
+                    const message = error?.message;
+
+                    if (status === 401) {
+                        throw new Error("Credenciales invalidas");
+                    }
+                    throw new Error("Error al iniciar sesión");
+                }
+            },
+        }),
+    ],
+    callbacks: {
+        async jwt({ token, user }: any) {
+            if (user) {
+                return {
+                    ...token,
+                    userId: user?.id,
+                    userName: user?.name,
+                    userEmail: user?.email,
+                };
+            }
+
+            return token;
+        },
+        async session({ session, token }: any) {
+            return {
+                ...session,
+                user: {
+                    id: token?.userId,
+                    name: token?.userName,
+                    email: token?.userEmail,
+                },
+            };
+        },
+    },
+    pages: {
+        signIn: "/login",
+    },
+};
