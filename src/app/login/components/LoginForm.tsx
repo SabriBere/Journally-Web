@@ -28,15 +28,15 @@ const LoginForm = () => {
             //agregar un spinner o pantalla de carga
             if (!res?.ok) {
                 console.log("Error en login");
-                //toast de error
-                return toast.error("Correo o contraseña incorrectos");
+
+                return toast.error("Credenciales invalidas");
             }
 
             return router.push(`/home`);
         } catch (error) {
             console.error("Error no capturado", error);
-            //toast de error
-            return toast.error("Correo o contraseña incorrectos");
+            //toast de error (otros)
+            // return toast.error("Correo o contraseña incorrectos");
         }
     };
 
