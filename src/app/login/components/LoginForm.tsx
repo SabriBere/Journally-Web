@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
@@ -8,15 +9,18 @@ import InputEmail from "@/commons/Inputs/InputEmail";
 import InputPassword from "@/commons/Inputs/InputPassword";
 import Voyager from "@/commons/Ilustrations/Voyager";
 import styles from "./loginForm.module.scss";
+import Spinner from "@/commons/Spinner/Spinner";
+
 const LoginForm = () => {
     const router = useRouter();
     const inputEmail = useSelector((state: RootState) => state.user.email);
     const inputPass = useSelector((state: RootState) => state.user.password);
-    //armar un estado de loading
+    const [loading, setLoading] = useState<boolean>(false);
     const isDisabled = !inputEmail || !inputPass;
 
     const handlerLogin = async (e: React.SyntheticEvent) => {
         e.preventDefault();
+        setLoading(true);
 
         try {
             const res = await signIn("credentials", {
@@ -37,6 +41,8 @@ const LoginForm = () => {
             console.error("Error no capturado", error);
             //toast de error (otros)
             // return toast.error("Correo o contraseña incorrectos");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -50,12 +56,12 @@ const LoginForm = () => {
                 <InputEmail />
                 <InputPassword />
                 <button
-                    disabled={isDisabled}
+                    disabled={isDisabled || loading}
                     className={styles.buttonSubmit}
                     type="submit"
                     onClick={handlerLogin}
                 >
-                    Iniciar sesión
+                    {loading ? <Spinner /> : "Iniciar sesión"}
                 </button>
             </div>
         </div>
