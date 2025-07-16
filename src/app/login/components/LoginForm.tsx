@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { toast } from "sonner";
 import InputEmail from "@/commons/Inputs/InputEmail";
 import InputPassword from "@/commons/Inputs/InputPassword";
 import Voyager from "@/commons/Ilustrations/Voyager";
@@ -28,13 +29,14 @@ const LoginForm = () => {
             if (!res?.ok) {
                 console.log("Error en login");
                 //toast de error
-                return;
+                return toast.error("Correo o contraseña incorrectos");
             }
 
             return router.push(`/home`);
         } catch (error) {
             console.error("Error no capturado", error);
             //toast de error
+            return toast.error("Correo o contraseña incorrectos");
         }
     };
 
