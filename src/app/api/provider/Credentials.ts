@@ -25,7 +25,7 @@ export const authOptions: NextAuthOptions = {
                             password: credentials.password,
                         },
                     );
-                    console.log(response, "qué llega?");
+                    // console.log(response, "qué llega?");
                     if (response.status === 201 && response.data?.data) {
                         const userData = response?.data?.data;
                         return {
