@@ -1,13 +1,13 @@
 "use client"; //hasta que modularice en componentes más pequeños
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getAllEntries } from "@/services/post.service";
+import { getAllPost } from "@/services/post.service";
 import styles from "./entries.module.scss";
 
 const Entries = () => {
     const { data } = useQuery({
         queryKey: ["handShake"],
-        queryFn: () => getAllEntries(),
+        queryFn: () => getAllPost(),
     });
     return (
         <div className={styles.containerEntries}>
