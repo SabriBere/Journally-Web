@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "@/config/axiosInterceptor";
 
 //Crear una colección
 export async function createCollection(body: {
@@ -7,8 +7,8 @@ export async function createCollection(body: {
     userId: number;
 }) {
     try {
-        const res = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/collections/createCollection`,
+        const res = await axiosInstance.post(
+            `/collections/createCollection`,
             body
         );
         return res.data.data;
@@ -27,8 +27,8 @@ export async function allCollection(
     orderDirection: string | undefined
 ) {
     try {
-        const res = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/allCollections?id=${id}&page=${page}&searchText=${searchTeaxt}&orderField=${orderField}&orderDirection=${orderDirection}`
+        const res = await axiosInstance.get(
+            `/allCollections?id=${id}&page=${page}&searchText=${searchTeaxt}&orderField=${orderField}&orderDirection=${orderDirection}`
         );
 
         return res.data.data;
@@ -41,9 +41,7 @@ export async function allCollection(
 //Obtener una colección por id
 export async function collectionById(id: string) {
     try {
-        const res = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/collectionId?id=${id}`
-        );
+        const res = await axiosInstance.get(`/collectionId?id=${id}`);
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
@@ -57,10 +55,7 @@ export async function updateCollection(body: {
     collectionId: string;
 }) {
     try {
-        const res = await axios.put(
-            `${process.env.NEXT_PUBLIC_API_URL}/updateCollection`,
-            body
-        );
+        const res = await axiosInstance.put(`/updateCollection`, body);
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
@@ -71,9 +66,7 @@ export async function updateCollection(body: {
 //Eliminar una colección
 export async function deleteCollection(id: number | string | undefined) {
     try {
-        const res = await axios.delete(
-            `${process.env.NEXT_PUBLIC_API_URL}/deteleCollection?id=${id}`
-        );
+        const res = await axiosInstance.delete(`/deteleCollection?id=${id}`);
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
