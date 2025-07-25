@@ -1,7 +1,7 @@
 "use client"; //hasta que modularice en componentes más pequeños
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { getAllEntries } from "@/services/entries.service";
+import { getAllEntries } from "@/services/post.service";
 import styles from "./entries.module.scss";
 
 const Entries = () => {
