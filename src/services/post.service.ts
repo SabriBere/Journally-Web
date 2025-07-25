@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "@/config/axiosInterceptor";
 
 //Crear un post sin colección
 export async function createPost(
@@ -8,8 +8,8 @@ export async function createPost(
 ) {
     try {
         //pasar body y parametros x query
-        const res = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/create?userId=${userId}&collectionId=${collectionId}`,
+        const res = await axiosInstance.post(
+            `/create?userId=${userId}&collectionId=${collectionId}`,
             body
         );
         return res.data.data;
@@ -22,7 +22,7 @@ export async function createPost(
 export async function getAllPost() {
     try {
         //utilizar axios interceptor en las llamadas
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/post/`);
+        const res = await axiosInstance.get(`/post/`);
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
@@ -33,9 +33,7 @@ export async function getAllPost() {
 //Traer una entrada por id
 export async function getPostById(postId: number | string) {
     try {
-        const res = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/findOne?postId=${postId}`
-        );
+        const res = await axiosInstance.get(`/findOne?postId=${postId}`);
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
@@ -52,8 +50,8 @@ export async function updatePost(
     postId: string | number
 ) {
     try {
-        const res = await axios.put(
-            `${process.env.NEXT_PUBLIC_API_URL}/updatePost?postId=${postId}`,
+        const res = await axiosInstance.put(
+            `/updatePost?postId=${postId}`,
             body
         );
         return res.data.data;
@@ -66,9 +64,7 @@ export async function updatePost(
 //Eliminar un post
 export async function deletePost(postId: string | number) {
     try {
-        const res = await axios.delete(
-            `${process.env.NEXT_PUBLIC_API_URL}/updatePost?postId=${postId}`
-        );
+        const res = await axiosInstance.delete(`/updatePost?postId=${postId}`);
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);

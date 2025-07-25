@@ -1,5 +1,5 @@
 //consultar un end point utilizando server actions
-import axios from "axios";
+import axiosInstance from "@/config/axiosInterceptor";
 
 //Registrar usuario
 export async function createUser(body: {
@@ -8,8 +8,8 @@ export async function createUser(body: {
     user_name: string;
 }) {
     try {
-        const res = await axios.post(
-            `${process.env.NEXT_PUBLIC_API_URL}/register`,
+        const res = await axiosInstance.post(
+            `/register`,
             body
         );
         return res.data.data;
