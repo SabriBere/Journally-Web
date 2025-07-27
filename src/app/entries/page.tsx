@@ -4,12 +4,13 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllPost } from "@/services/post.service";
 import styles from "./entries.module.scss";
 
-const Entries = () => {
+const Entries = async () => {
     //cambiar por use infinite query
     const { data } = useQuery({
         queryKey: ["handShake"],
         queryFn: () => getAllPost(),
     });
+
     return (
         <div className={styles.containerEntries}>
             <h1>{`${data?.userPost}`}</h1>

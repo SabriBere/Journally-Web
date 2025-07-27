@@ -1,4 +1,4 @@
-import axiosInstance from "@/config/axiosInterceptor";
+import axiosInstance from "@/config/axiosInterceptor.server";
 
 //Crear una colección
 export async function createCollection(body: {
