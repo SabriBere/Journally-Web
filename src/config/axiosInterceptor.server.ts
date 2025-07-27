@@ -1,5 +1,5 @@
 //configuración de axios
-import { getServerSession } from "next-auth";
+import { getSession } from "next-auth/react";
 import { authOptions } from "@/app/api/provider/Credentials";
 import axios, { AxiosInstance } from "axios";
 
@@ -10,8 +10,7 @@ const axiosInstance: AxiosInstance = axios.create({
 // Interceptor que agrega el token automáticamente
 axiosInstance.interceptors.request.use(
     async (config: any) => {
-        const session:any = await getServerSession(authOptions);
-        console.log(session?.user?.accessToken)
+        const session:any = await getSession();
 
         if (session?.user?.accessToken) {
             config.headers.Authorization = `Bearer ${session?.user?.accessToken}`;
