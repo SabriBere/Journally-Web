@@ -23,15 +23,16 @@ export const authOptions: NextAuthOptions = {
                         {
                             email: credentials.user,
                             password: credentials.password,
-                        },
+                        }
                     );
-                    // console.log(response, "qué llega?");
+
                     if (response.status === 201 && response.data?.data) {
                         const userData = response?.data?.data;
                         return {
                             id: userData?.userId,
                             name: userData?.userName,
                             email: userData?.user,
+                            accessToken: userData?.token,
                         };
                     }
                     return null;
@@ -56,6 +57,7 @@ export const authOptions: NextAuthOptions = {
                     userId: user?.id,
                     userName: user?.name,
                     userEmail: user?.email,
+                    accessToken: user?.accessToken,
                 };
             }
 
@@ -68,6 +70,7 @@ export const authOptions: NextAuthOptions = {
                     id: token?.userId,
                     name: token?.userName,
                     email: token?.userEmail,
+                    accessToken: token?.accessToken,
                 },
             };
         },
