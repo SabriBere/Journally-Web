@@ -5,7 +5,6 @@ import { getAllPost } from "@/services/post.service";
 import styles from "./entries.module.scss";
 
 const Entries = () => {
-    //cambiar por use infinite query
     const {
         data,
         isLoading,
@@ -15,7 +14,7 @@ const Entries = () => {
         // isFetchingNextPage,
         // hasNextPage,
     } = useInfiniteQuery({
-        queryKey: ["dossiersInModal"],
+        queryKey: ["getAllPost"],
         queryFn: ({ pageParam = 1 }) => getAllPost({ page: pageParam }),
         getNextPageParam: (lastPage: any, pages: any) => {
             //revisar si recibe toda la data necesaria de la API
@@ -27,7 +26,7 @@ const Entries = () => {
         initialPageParam: 1,
     });
 
-    console.log(data?.pages[0]?.userPost);
+    // console.log(data?.pages[0]?.userPost);
 
     return (
         <div className={styles.containerEntries}>
