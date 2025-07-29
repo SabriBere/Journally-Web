@@ -19,10 +19,9 @@ export async function createPost(
 }
 
 //Trae todas las entradas
-export async function getAllPost() {
+export async function getAllPost({ page }: { page: number }) {
     try {
         //de momento harcodeado para pruebas de axiosIntance
-        const page = 1;
 
         const res = await axiosInstance.get(`/post/?page=${page}`);
         return res.data.data;

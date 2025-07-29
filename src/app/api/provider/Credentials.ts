@@ -28,11 +28,13 @@ export const authOptions: NextAuthOptions = {
 
                     if (response.status === 201 && response.data?.data) {
                         const userData = response?.data?.data;
+                        // console.log(userData?.refresh, "llega el refresh en respuesta?");
                         return {
                             id: userData?.userId,
                             name: userData?.userName,
                             email: userData?.user,
                             accessToken: userData?.token,
+                            refreshToken: userData?.refresh,
                         };
                     }
                     return null;
@@ -51,7 +53,7 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         async jwt({ token, user }: any) {
-            // console.log(token, user, 'jwt')
+            // console.log(token, user?.refresh, 'jwt')
             if (user) {
                 return {
                     ...token,
@@ -59,6 +61,7 @@ export const authOptions: NextAuthOptions = {
                     userName: user?.name,
                     userEmail: user?.email,
                     accessToken: user?.accessToken,
+                    refreshToken: user?.refreshToken,
                 };
             }
 
@@ -73,6 +76,7 @@ export const authOptions: NextAuthOptions = {
                     name: token?.userName,
                     email: token?.userEmail,
                     accessToken: token?.accessToken,
+                    refreshToken: token?.refreshToken,
                 },
             };
         },
