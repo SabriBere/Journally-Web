@@ -28,13 +28,16 @@ export const authOptions: NextAuthOptions = {
 
                     if (response.status === 201 && response.data?.data) {
                         const userData = response?.data?.data;
+                        const accessToken = response.headers["x-access-token"];
+                        const refreshToken = response.headers["x-refresh-token"];
+
                         // console.log(userData?.refresh, "llega el refresh en respuesta?");
                         return {
                             id: userData?.userId,
                             name: userData?.userName,
                             email: userData?.user,
-                            accessToken: userData?.token,
-                            refreshToken: userData?.refresh,
+                            accessToken,
+                            refreshToken,
                         };
                     }
                     return null;
