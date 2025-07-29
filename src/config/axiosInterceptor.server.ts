@@ -10,14 +10,14 @@ const axiosInstance: AxiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     async (config: any) => {
         const session: any = await getSession();
-        console.log(session);
+        // console.log(session);
 
         if (session?.user?.accessToken) {
-            config.headers.Authorization = `Bearer ${session?.user?.accessToken}`;
+            config.headers["x-access-token"] = session?.user?.accessToken;
         }
 
         if (session?.user?.refreshToken) {
-            console.log("tengo el refresh");
+            config.headers["x-refresh-token"] = session?.user?.refreshToken;
         }
 
         return config;
