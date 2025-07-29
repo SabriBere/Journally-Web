@@ -9,10 +9,15 @@ const axiosInstance: AxiosInstance = axios.create({
 // Interceptor que agrega el token automáticamente
 axiosInstance.interceptors.request.use(
     async (config: any) => {
-        const session:any = await getSession();
+        const session: any = await getSession();
+        console.log(session);
 
         if (session?.user?.accessToken) {
             config.headers.Authorization = `Bearer ${session?.user?.accessToken}`;
+        }
+
+        if (session?.user?.refreshToken) {
+            console.log("tengo el refresh");
         }
 
         return config;
