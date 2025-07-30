@@ -1,5 +1,5 @@
 import { NextAuthOptions } from "next-auth";
-import { userLoging } from "../actions";
+import { refreshAccessToken, userLoging } from "../actions";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
@@ -18,7 +18,6 @@ export const authOptions: NextAuthOptions = {
             },
             async authorize(credentials: any) {
                 try {
-
                     const user = await userLoging({
                         email: credentials.email,
                         password: credentials.password,
@@ -44,8 +43,11 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         async jwt({ token, user }: any) {
-            // console.log(token, user?.refresh, 'jwt')
+            // console.log(data, 'que vuelve de la función')
+
             if (user) {
+                console.log(user?.refreshToken, "hola");
+                const data = refreshAccessToken(user);
                 return {
                     ...token,
                     userId: user?.id,
