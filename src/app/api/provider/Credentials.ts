@@ -1,5 +1,5 @@
-import axios from "axios";
 import { NextAuthOptions } from "next-auth";
+import { userLoging } from "../actions";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
@@ -18,28 +18,16 @@ export const authOptions: NextAuthOptions = {
             },
             async authorize(credentials: any) {
                 try {
-                    const response = await axios.post(
-                        `${process.env.NEXT_PUBLIC_API_URL}/users/login`,
-                        {
-                            email: credentials.user,
-                            password: credentials.password,
-                        }
-                    );
 
-                    if (response.status === 201 && response.data?.data) {
-                        const userData = response?.data?.data;
-                        const accessToken = response.headers["x-access-token"];
-                        const refreshToken = response.headers["x-refresh-token"];
+                    const user = await userLoging({
+                        email: credentials.email,
+                        password: credentials.password,
+                    });
 
-                        // console.log(userData?.refresh, "llega el refresh en respuesta?");
-                        return {
-                            id: userData?.userId,
-                            name: userData?.userName,
-                            email: userData?.user,
-                            accessToken,
-                            refreshToken,
-                        };
+                    if (user) {
+                        return user;
                     }
+
                     return null;
                 } catch (error: any) {
                     const status = error?.response.status;
