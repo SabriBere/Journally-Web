@@ -10,15 +10,16 @@ const axiosInstance: AxiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     async (config: any) => {
         const session: any = await getSession();
-        // console.log(session);
+        console.log(session);
 
         if (session?.user?.accessToken) {
             config.headers["x-access-token"] = session?.user?.accessToken;
         }
 
-        if (session?.user?.refreshToken) {
-            config.headers["x-refresh-token"] = session?.user?.refreshToken;
-        }
+        //tengo que hacer que se envien solo cuando se vence el token
+        // if (session?.user?.refreshToken) {
+        //     config.headers["x-refresh-token"] = session?.user?.refreshToken;
+        // }
 
         return config;
     },
