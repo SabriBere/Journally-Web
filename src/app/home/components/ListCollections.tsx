@@ -4,6 +4,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { allCollection } from "@/services/collection.service";
 import Card from "@/commons/Cards/Card";
 import styles from "./listCollection.module.scss";
+import Link from "next/link";
+import InfiniteScroll from "@/commons/InfinteScroll/InfiniteScroll";
 
 const ListCollections = () => {
     const {
@@ -12,15 +14,14 @@ const ListCollections = () => {
         isError,
         isSuccess,
         fetchNextPage,
-        // isFetchingNextPage,
-        // hasNextPage,
+        isFetchingNextPage,
+        hasNextPage,
     } = useInfiniteQuery({
         queryKey: ["getAllCollections"],
         queryFn: ({ pageParam = 1 }) =>
             allCollection({ page: pageParam, id: 6 }),
         getNextPageParam: (lastPage: any, pages: any) => {
-            //revisar si recibe toda la data necesaria de la API
-            if (pages?.length - 1 < lastPage?.limit) {
+            if (pages?.length - 1 < lastPage?.totalPages) {
                 return pages.length;
             }
             return undefined;
@@ -28,24 +29,28 @@ const ListCollections = () => {
         initialPageParam: 1,
     });
 
-    // console.log(data?.pages[0]?.collectionList);
-
     return (
         <div>
             {/* Hacer empty state */}
             {/* Hacer skeleton */}
             {isSuccess && (
                 <div className={styles.containerList}>
-                    {data?.pages?.map((page: any, pageIndex: number) => (
-                        <Fragment key={pageIndex}>
-                            {page?.collectionList?.map((oneCollection: any) => (
-                                <Card
-                                    data={oneCollection}
-                                    key={oneCollection?.collection_id}
-                                />
-                            ))}
-                        </Fragment>
-                    ))}
+                    <InfiniteScroll fetchNextPage={fetchNextPage}>
+                        {data?.pages?.map((page: any, pageIndex: number) => (
+                            <Fragment key={pageIndex}>
+                                {page?.collectionList?.map(
+                                    (oneCollection: any) => (
+                                        <Link
+                                            href={`/home/${oneCollection?.collection_id}`}
+                                            key={oneCollection?.collection_id}
+                                        >
+                                            <Card data={oneCollection} />
+                                        </Link>
+                                    )
+                                )}
+                            </Fragment>
+                        ))}
+                    </InfiniteScroll>
                 </div>
             )}
         </div>
