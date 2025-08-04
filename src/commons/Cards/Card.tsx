@@ -1,4 +1,5 @@
 import React from "react";
+import TooltipWrapper from "@/commons/Tooltip/Tooltip";
 import Trash from "@/styles/icons/Trash";
 import Edit from "@/styles/icons/Edit";
 import styles from "./card.module.scss";
@@ -13,13 +14,17 @@ const Card = ({ data }: CardData) => {
         <div className={styles.containerCard} key={data?.collection_id}>
             <div className={styles.topCard}>
                 <h3>{data?.title}</h3>
-                <i>
-                    <Edit width="20" height="20" color="white" />
-                </i>
+                <TooltipWrapper content={"Editar"}>
+                    <i>
+                        <Edit width="20" height="20" color="white" />
+                    </i>
+                </TooltipWrapper>
             </div>
-            <i className={styles.bottomCard}>
-                <Trash width="20" height="20" color="white" />
-            </i>
+            <TooltipWrapper content={"Eliminar"}>
+                <i className={styles.bottomCard}>
+                    <Trash width="20" height="20" color="white" />
+                </i>
+            </TooltipWrapper>
         </div>
     );
 };
