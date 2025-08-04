@@ -2,6 +2,7 @@
 import { Fragment } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { allCollection } from "@/services/collection.service";
+import Card from "@/commons/Cards/Card";
 
 const ListCollections = () => {
     const {
@@ -31,18 +32,15 @@ const ListCollections = () => {
     return (
         <div>
             {isSuccess && (
-                <ul>
-                    {/* Modularizar a cards */}
-                    {/* {data?.pages?.map((page: any, pageIndex: number) => (
+                <div>
+                    {data?.pages?.map((page: any, pageIndex: number) => (
                         <Fragment key={pageIndex}>
-                            {page?.collectionList.map((oneCollection: any) => (
-                                <li key={oneCollection?.collection_id}>
-                                    {oneCollection?.title}
-                                </li>
+                            {page?.collectionList?.map((oneCollection: any) => (
+                                <Card data={oneCollection} />
                             ))}
                         </Fragment>
-                    ))} */}
-                </ul>
+                    ))}
+                </div>
             )}
         </div>
     );

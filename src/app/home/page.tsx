@@ -7,6 +7,7 @@ const Home = () => {
     return (
         <div className={styles.containerHome}>
             <TitleSection title={"Inicio"} />
+            {/* Agregar componente de pestañas */}
             <ListCollections />
         </div>
     );
