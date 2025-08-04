@@ -19,16 +19,44 @@ export async function createCollection(body: {
 }
 
 //Listado de colecciones paginadas y filtro
-export async function allCollection(
-    id: number | string,
-    page: number | string,
-    searchTeaxt: string | undefined,
-    orderField: string | undefined,
-    orderDirection: string | undefined
-) {
+export async function allCollection({
+    id,
+    page,
+    searchText,
+    orderField,
+    orderDirection,
+}: {
+    id: number | string;
+    page: string | number;
+    searchText?: string | undefined;
+    orderField?: string | undefined;
+    orderDirection?: string | undefined;
+}) {
     try {
+        const params = new URLSearchParams();
+
+        if (id !== undefined) {
+            params.append("id", id.toString());
+        }
+
+        if (page !== undefined) {
+            params.append("page", page.toString());
+        }
+
+        if (searchText !== undefined) {
+            params.append("searchText", searchText);
+        }
+
+        if (orderField !== undefined) {
+            params.append("orderField", orderField);
+        }
+
+        if (orderDirection !== undefined) {
+            params.append("orderDirection", orderDirection);
+        }
+
         const res = await axiosInstance.get(
-            `/allCollections?id=${id}&page=${page}&searchText=${searchTeaxt}&orderField=${orderField}&orderDirection=${orderDirection}`
+            `/collections/allCollections?${params.toString()}`
         );
 
         return res.data.data;
@@ -41,7 +69,7 @@ export async function allCollection(
 //Obtener una colección por id
 export async function collectionById(id: string) {
     try {
-        const res = await axiosInstance.get(`/collectionId?id=${id}`);
+        const res = await axiosInstance.get(`/collections/collectionId?id=${id}`);
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
@@ -55,7 +83,7 @@ export async function updateCollection(body: {
     collectionId: string;
 }) {
     try {
-        const res = await axiosInstance.put(`/updateCollection`, body);
+        const res = await axiosInstance.put(`/collections/updateCollection`, body);
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
@@ -66,7 +94,7 @@ export async function updateCollection(body: {
 //Eliminar una colección
 export async function deleteCollection(id: number | string | undefined) {
     try {
-        const res = await axiosInstance.delete(`/deteleCollection?id=${id}`);
+        const res = await axiosInstance.delete(`/collections/deteleCollection?id=${id}`);
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
