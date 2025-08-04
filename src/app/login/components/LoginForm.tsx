@@ -16,7 +16,7 @@ const LoginForm = () => {
     const inputEmail = useSelector((state: RootState) => state.user.email);
     const inputPass = useSelector((state: RootState) => state.user.password);
     const [loading, setLoading] = useState<boolean>(false);
-    const isDisabled = !inputEmail || !inputPass;
+    const isDisabled = !inputEmail && !inputPass;
 
     const handlerLogin = async (e: React.SyntheticEvent) => {
         e.preventDefault();
@@ -32,7 +32,6 @@ const LoginForm = () => {
             //agregar un spinner o pantalla de carga
             if (!res?.ok) {
                 console.log("Error en login");
-
                 return toast.error("Credenciales invalidas");
             }
 
@@ -49,7 +48,7 @@ const LoginForm = () => {
     return (
         <div className={styles.containerLoginForm}>
             <h1>Iniciar sesión</h1>
-            <div className={styles.loginCard}>
+            <form className={styles.loginCard} onSubmit={handlerLogin}>
                 <div className={styles.voyagerBg}>
                     <Voyager width="200%" height="200%" />
                 </div>
@@ -59,11 +58,11 @@ const LoginForm = () => {
                     disabled={isDisabled || loading}
                     className={styles.buttonSubmit}
                     type="submit"
-                    onClick={handlerLogin}
+                    // onClick={handlerLogin}
                 >
                     {loading ? <Spinner /> : "Iniciar sesión"}
                 </button>
-            </div>
+            </form>
         </div>
     );
 };
