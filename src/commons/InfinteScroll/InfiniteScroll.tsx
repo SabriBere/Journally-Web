@@ -16,6 +16,7 @@ const InfiniteScroll = ({ children, fetchNextPage }: InfiniteProps) => {
         };
 
         const handlerIntersection = (entries: any) => {
+            //  console.log(entries,'interseptor')
             const [entry] = entries;
             if (entry.isIntersecting) {
                 fetchNextPage();
@@ -25,6 +26,7 @@ const InfiniteScroll = ({ children, fetchNextPage }: InfiniteProps) => {
         const observer = new IntersectionObserver(handlerIntersection, options);
 
         if (targetRef.current) {
+            // console.log('oberser')
             observer.observe(targetRef.current);
         }
 
