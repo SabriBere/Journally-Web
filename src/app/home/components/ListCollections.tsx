@@ -31,6 +31,8 @@ const ListCollections = () => {
 
     return (
         <div>
+            {/* Hacer empty state */}
+            {/* Hacer skeleton */}
             {isSuccess && (
                 <div>
                     {data?.pages?.map((page: any, pageIndex: number) => (
