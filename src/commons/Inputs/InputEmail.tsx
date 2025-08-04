@@ -28,6 +28,7 @@ const InputEmail = () => {
                 placeholder="usuario@email.com"
                 onChange={handlerChangeEmail}
                 value={inputEmail}
+                autoFocus
             />
         </div>
     );
