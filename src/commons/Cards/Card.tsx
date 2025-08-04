@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import TooltipWrapper from "@/commons/Tooltip/Tooltip";
 import Trash from "@/styles/icons/Trash";
@@ -11,7 +12,7 @@ interface CardData {
 
 const Card = ({ data }: CardData) => {
     return (
-        <div className={styles.containerCard} key={data?.collection_id}>
+        <div className={styles.containerCard}>
             <div className={styles.topCard}>
                 <h3>{data?.title}</h3>
                 <TooltipWrapper content={"Editar"}>
