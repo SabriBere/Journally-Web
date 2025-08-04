@@ -35,7 +35,7 @@ export default function RootLayout({
                 </header>
                 {/* generar sidebar flotante */}
                 <main className={styles.mainContent}>
-                    <Providers>{children}</Providers>
+                        <Providers>{children}</Providers>
                 </main>
                 <footer>
                     <Footer />

@@ -1,4 +1,4 @@
-import axiosInstance from "@/config/axiosInterceptor";
+import axiosInstance from "@/config/axiosInterceptor.server";
 
 //Crear un post sin colección
 export async function createPost(
@@ -19,13 +19,9 @@ export async function createPost(
 }
 
 //Trae todas las entradas
-export async function getAllPost() {
+export async function getAllPost({ page }: { page: number }) {
     try {
-        //de momento harcodeado para pruebas de axiosIntance
-        const id = 6
-        const page = 1
-
-        const res = await axiosInstance.get(`/post/?id=${id}&page=${page}`);
+        const res = await axiosInstance.get(`/post/?page=${page}`);
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
