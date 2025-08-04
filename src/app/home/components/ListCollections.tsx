@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { allCollection } from "@/services/collection.service";
 import Card from "@/commons/Cards/Card";
+import styles from "./listCollection.module.scss";
 
 const ListCollections = () => {
     const {
@@ -34,11 +35,14 @@ const ListCollections = () => {
             {/* Hacer empty state */}
             {/* Hacer skeleton */}
             {isSuccess && (
-                <div>
+                <div className={styles.containerList}>
                     {data?.pages?.map((page: any, pageIndex: number) => (
                         <Fragment key={pageIndex}>
                             {page?.collectionList?.map((oneCollection: any) => (
-                                <Card data={oneCollection} />
+                                <Card
+                                    data={oneCollection}
+                                    key={oneCollection?.collection_id}
+                                />
                             ))}
                         </Fragment>
                     ))}
