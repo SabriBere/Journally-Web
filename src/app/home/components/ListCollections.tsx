@@ -39,14 +39,25 @@ const ListCollections = () => {
                         {data?.pages?.map((page: any, pageIndex: number) => (
                             <Fragment key={pageIndex}>
                                 {page?.collectionList?.map(
-                                    (oneCollection: any) => (
-                                        <Link
-                                            href={`/home/${oneCollection?.collection_id}`}
-                                            key={oneCollection?.collection_id}
-                                        >
-                                            <Card data={oneCollection} />
-                                        </Link>
-                                    )
+                                    (oneCollection: any, idx: number) => {
+                                        const globalIndex =
+                                            pageIndex *
+                                                page.collectionList.length +
+                                            idx;
+                                        return (
+                                            <Link
+                                                href={`/home/${oneCollection?.collection_id}`}
+                                                key={
+                                                    oneCollection?.collection_id
+                                                }
+                                            >
+                                                <Card
+                                                    data={oneCollection}
+                                                    index={globalIndex}
+                                                />
+                                            </Link>
+                                        );
+                                    }
                                 )}
                             </Fragment>
                         ))}
