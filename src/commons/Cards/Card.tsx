@@ -1,3 +1,4 @@
+// Card.tsx
 "use client";
 import React from "react";
 import TooltipWrapper from "@/commons/Tooltip/Tooltip";
@@ -5,14 +6,19 @@ import Trash from "@/styles/icons/Trash";
 import Edit from "@/styles/icons/Edit";
 import styles from "./card.module.scss";
 
-//Hacer componente generico, reutilizable
 interface CardData {
     data: any;
+    index?: number;
 }
 
-const Card = ({ data }: CardData) => {
+const colors = ["#e74828", "#d4844e", "#f4a124", "#6f4324"];
+
+const Card = ({ data, index = 0 }: CardData) => {
     return (
-        <div className={styles.containerCard}>
+        <div
+            className={styles.containerCard}
+            style={{ backgroundColor: colors[index % colors.length] }}
+        >
             <div className={styles.topCard}>
                 <h3>{data?.title}</h3>
                 <TooltipWrapper content={"Editar"}>
