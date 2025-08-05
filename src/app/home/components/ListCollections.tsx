@@ -1,37 +1,38 @@
 "use client";
 import { Fragment } from "react";
+import Link from "next/link";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { allCollection } from "@/services/collection.service";
 import Card from "@/commons/Cards/Card";
-import styles from "./listCollection.module.scss";
-import Link from "next/link";
 import InfiniteScroll from "@/commons/InfinteScroll/InfiniteScroll";
+import NotEntries from "@/commons/EmptyStates/NotEntries";
+import styles from "./listCollection.module.scss";
+import SpaceExploration from "@/commons/Ilustrations/SpaceExploration";
 
 const ListCollections = () => {
-    const {
-        data,
-        isLoading,
-        isError,
-        isSuccess,
-        fetchNextPage,
-        isFetchingNextPage,
-        hasNextPage,
-    } = useInfiniteQuery({
-        queryKey: ["getAllCollections"],
-        queryFn: ({ pageParam = 1 }) =>
-            allCollection({ page: pageParam, id: 6 }),
-        getNextPageParam: (lastPage: any, pages: any) => {
-            if (pages?.length - 1 < lastPage?.totalPages) {
-                return pages.length;
-            }
-            return undefined;
-        },
-        initialPageParam: 1,
-    });
+    const { data, isLoading, isError, isSuccess, fetchNextPage } =
+        useInfiniteQuery({
+            queryKey: ["getAllCollections"],
+            queryFn: ({ pageParam = 1 }) =>
+                allCollection({ page: pageParam, id: 6 }),
+            getNextPageParam: (lastPage: any, pages: any) => {
+                if (pages?.length - 1 < lastPage?.totalPages) {
+                    return pages.length;
+                }
+                return undefined;
+            },
+            initialPageParam: 1,
+        });
 
     return (
         <div>
-            {/* Hacer empty state */}
+            {/* Empty state */}
+            {data?.pages[0].length === 0 && (
+                <div className={styles.containerEmpty}>
+                    {/* <NotEntries /> */}
+                </div>
+            )}
+            {/* <SpaceExploration /> */}
             {/* Hacer skeleton */}
             {isSuccess && (
                 <div className={styles.containerList}>
