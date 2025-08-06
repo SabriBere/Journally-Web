@@ -25,15 +25,20 @@ const ListCollections = () => {
         });
 
     return (
-        <div>
+        <div className={styles.containerMain}>
+            {/* Imagen de fondo */}
+            <div className={styles.containerImage}>
+                <SpaceExploration width="800" height="800" />
+            </div>
+
             {/* Empty state */}
             {data?.pages[0].length === 0 && (
                 <div className={styles.containerEmpty}>
-                    {/* <NotEntries /> */}
+                    <NotEntries />
                 </div>
             )}
-            {/* <SpaceExploration /> */}
-            {/* Hacer skeleton */}
+
+            {/* Listado de cards */}
             {isSuccess && (
                 <div className={styles.containerList}>
                     <InfiniteScroll fetchNextPage={fetchNextPage}>
