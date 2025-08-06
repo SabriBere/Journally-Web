@@ -1,16 +1,34 @@
+.containerMain {
+    position: relative;
+    // width: 100%;
+    height: 100%; // fijo a la altura de la pantalla
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    overflow: hidden; // importante para que la imagen no sobresalga
+}
+
+.containerImage {
+    position: absolute;
+    bottom:-180; // anclada abajo
+    right: 20;
+    z-index: -1;
+    width: 700px;
+    height: auto;
+    pointer-events: none;
+}
+
 .containerList {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
     padding: 20px;
     justify-items: center;
-    align-content: center;
-}
+    align-content: start;
 
-.containerEmpty {
-    display: flex;
-    height: 60vh;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    /* Scroll interno */
+    // overflow-y: auto;
+    max-height: 70vh; // Ajusta según tu diseño
 }
