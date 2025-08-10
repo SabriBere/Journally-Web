@@ -27,21 +27,19 @@ const ListCollections = () => {
     return (
         <div className={styles.containerMain}>
             {/* Imagen de fondo */}
-            {isSuccess && (
-                <div className={styles.containerImage}>
-                    <SpaceExploration width="800" height="800" />
-                </div>
-            )}
+            <div className={styles.containerImage}>
+                <SpaceExploration width="800" height="800" />
+            </div>
 
             {/* Empty state */}
-            {/* {isSuccess && data?.pages[0].length === 0 && (
+            {isSuccess && data?.pages[0].length === 0 && (
                 <div className={styles.containerEmpty}>
                     <NotEntries />
                 </div>
-            )} */}
+            )}
 
             {/* Listado de cards */}
-            {isSuccess && (
+            {/* {isSuccess && (
                 <div className={styles.containerList}>
                     <InfiniteScroll fetchNextPage={fetchNextPage}>
                         {data?.pages?.map((page: any, pageIndex: number) => (
@@ -71,7 +69,7 @@ const ListCollections = () => {
                         ))}
                     </InfiniteScroll>
                 </div>
-            )}
+            )} */}
         </div>
     );
 };
