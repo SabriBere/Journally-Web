@@ -8,35 +8,50 @@ import InfiniteScroll from "@/commons/InfinteScroll/InfiniteScroll";
 import NotEntries from "@/commons/EmptyStates/NotEntries";
 import styles from "./listCollection.module.scss";
 import SpaceExploration from "@/commons/Ilustrations/SpaceExploration";
+import MyUniverse from "@/commons/Ilustrations/MyUniverse";
 
 const ListCollections = () => {
-    const { data, isLoading, isError, isSuccess, fetchNextPage } =
-        useInfiniteQuery({
-            queryKey: ["getAllCollections"],
-            queryFn: ({ pageParam = 1 }) =>
-                allCollection({ page: pageParam, id: 6 }),
-            getNextPageParam: (lastPage: any, pages: any) => {
-                if (pages?.length - 1 < lastPage?.totalPages) {
-                    return pages.length;
-                }
-                return undefined;
-            },
-            initialPageParam: 1,
-        });
+    // const { data, isLoading, isError, isSuccess, fetchNextPage } =
+    //     useInfiniteQuery({
+    //         queryKey: ["getAllCollections"],
+    //         queryFn: ({ pageParam = 1 }) =>
+    //             allCollection({ page: pageParam, id: 6 }),
+    //         getNextPageParam: (lastPage: any, pages: any) => {
+    //             if (pages?.length - 1 < lastPage?.totalPages) {
+    //                 return pages.length;
+    //             }
+    //             return undefined;
+    //         },
+    //         initialPageParam: 1,
+    //     });
+
+    // const firstPage = data?.pages?.[0];
+    // const isEmpty = isSuccess && (firstPage?.collectionList?.length ?? 0) === 0;
+    const isEmpty = true;
 
     return (
         <div className={styles.containerMain}>
-            {/* Imagen de fondo */}
-            <div className={styles.containerImage}>
-                <SpaceExploration width="800" height="800" />
+            {/* Imagenes de fondo */}
+            <div className={styles.containerImage} aria-hidden>
+                {isEmpty ? (
+                    <MyUniverse width="750" height="750" />
+                ) : (
+                    <SpaceExploration width="800" height="800" />
+                )}
             </div>
 
             {/* Empty state */}
-            {isSuccess && data?.pages[0].length === 0 && (
+            {/* {isSuccess && data?.pages[0].length === 0 && (
                 <div className={styles.containerEmpty}>
                     <NotEntries />
                 </div>
-            )}
+            )} */}
+
+            <div className={styles.containerEmpty}>
+                <NotEntries />
+            </div>
+
+            {/* Skeletons */}
 
             {/* Listado de cards */}
             {/* {isSuccess && (
