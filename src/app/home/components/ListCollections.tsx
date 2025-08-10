@@ -11,50 +11,45 @@ import SpaceExploration from "@/commons/Ilustrations/SpaceExploration";
 import MyUniverse from "@/commons/Ilustrations/MyUniverse";
 
 const ListCollections = () => {
-    // const { data, isLoading, isError, isSuccess, fetchNextPage } =
-    //     useInfiniteQuery({
-    //         queryKey: ["getAllCollections"],
-    //         queryFn: ({ pageParam = 1 }) =>
-    //             allCollection({ page: pageParam, id: 6 }),
-    //         getNextPageParam: (lastPage: any, pages: any) => {
-    //             if (pages?.length - 1 < lastPage?.totalPages) {
-    //                 return pages.length;
-    //             }
-    //             return undefined;
-    //         },
-    //         initialPageParam: 1,
-    //     });
-
-    // const firstPage = data?.pages?.[0];
-    // const isEmpty = isSuccess && (firstPage?.collectionList?.length ?? 0) === 0;
-    const isEmpty = true;
+    const { data, isLoading, isError, isSuccess, fetchNextPage } =
+        useInfiniteQuery({
+            queryKey: ["getAllCollections"],
+            queryFn: ({ pageParam = 1 }) =>
+                allCollection({ page: pageParam, id: 6 }),
+            getNextPageParam: (lastPage: any, pages: any) => {
+                if (pages?.length - 1 < lastPage?.totalPages) {
+                    return pages.length;
+                }
+                return undefined;
+            },
+            initialPageParam: 1,
+        });
 
     return (
         <div className={styles.containerMain}>
-            {/* Imagenes de fondo */}
+            {/* Imagenes de fondo --> Se puede mover a un common de fondos*/}
             <div className={styles.containerImage} aria-hidden>
-                {isEmpty ? (
+                {isSuccess && data?.pages[0]?.length === 0 ? (
                     <MyUniverse width="750" height="750" />
                 ) : (
                     <SpaceExploration width="800" height="800" />
                 )}
+                {/* isError */}
             </div>
 
-            {/* Empty state */}
-            {/* {isSuccess && data?.pages[0].length === 0 && (
+            {/* Empty state si no hay entradas creadas */}
+            {isSuccess && data?.pages[0].length === 0 && (
                 <div className={styles.containerEmpty}>
-                    <NotEntries />
+                    <NotEntries title={"Crear una nueva entrada"} />
                 </div>
-            )} */}
+            )}
 
-            <div className={styles.containerEmpty}>
-                <NotEntries />
-            </div>
+            {/* Empty State de error */}
 
             {/* Skeletons */}
 
             {/* Listado de cards */}
-            {/* {isSuccess && (
+            {isSuccess && (
                 <div className={styles.containerList}>
                     <InfiniteScroll fetchNextPage={fetchNextPage}>
                         {data?.pages?.map((page: any, pageIndex: number) => (
@@ -84,7 +79,7 @@ const ListCollections = () => {
                         ))}
                     </InfiniteScroll>
                 </div>
-            )} */}
+            )}
         </div>
     );
 };
