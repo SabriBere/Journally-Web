@@ -27,16 +27,18 @@ const ListCollections = () => {
     return (
         <div className={styles.containerMain}>
             {/* Imagen de fondo */}
-            <div className={styles.containerImage}>
-                <SpaceExploration width="800" height="800" />
-            </div>
+            {isSuccess && (
+                <div className={styles.containerImage}>
+                    <SpaceExploration width="800" height="800" />
+                </div>
+            )}
 
             {/* Empty state */}
-            {data?.pages[0].length === 0 && (
+            {/* {isSuccess && data?.pages[0].length === 0 && (
                 <div className={styles.containerEmpty}>
                     <NotEntries />
                 </div>
-            )}
+            )} */}
 
             {/* Listado de cards */}
             {isSuccess && (
