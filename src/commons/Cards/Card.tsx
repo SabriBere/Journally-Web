@@ -7,7 +7,7 @@ import Edit from "@/styles/icons/Edit";
 import styles from "./card.module.scss";
 
 interface CardData {
-    data: any;
+    data?: any;
     index?: number;
 }
 
