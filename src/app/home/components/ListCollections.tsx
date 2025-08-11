@@ -34,28 +34,24 @@ const ListCollections = () => {
             {/* Imagenes de fondo --> Se puede mover a un common de fondos*/}
             <div className={styles.containerImage}>
                 {isError ? (
-                    <ServerDown width="750" height="750" />
+                    <ServerDown />
                 ) : isSuccess &&
                   data?.pages[0]?.collectionList?.length === 0 ? (
-                    <MyUniverse width="750" height="750" />
+                    <MyUniverse />
                 ) : (
-                    <SpaceExploration width="800" height="800" />
+                    <SpaceExploration />
                 )}
             </div>
 
-            {/* Empty state si no hay entradas creadas */}
-            {isSuccess && data?.pages[0].collectionList?.length === 0 && (
-                <div className={styles.containerEmpty}>
-                    <NotEntries title={"Crear una nueva entrada"} />
-                </div>
-            )}
-
-            {/* Empty State de error */}
-            {isError && (
+            {isError ? (
                 <div className={styles.containerEmpty}>
                     <Error />
                 </div>
-            )}
+            ) : isSuccess && data?.pages[0]?.collectionList?.length === 0 ? (
+                <div className={styles.containerEmpty}>
+                    <NotEntries title="Crear una nueva entrada" />
+                </div>
+            ) : null}
 
             {/* Skeletons */}
 
