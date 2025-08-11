@@ -9,8 +9,8 @@ export const CardSkeleton = () => (
         height={120}
         viewBox="0 0 160 120"
         speed={1.8}
-        backgroundColor="#d2852e"
-        foregroundColor="#f4a534"
+        backgroundColor="#d9c19b"
+        foregroundColor="#f5e9d1"
         style={{ borderRadius: 24, transform: "rotate(-2deg)" }}
         uniqueKey={`card-skel-${useId()}`}
     >
