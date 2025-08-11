@@ -46,8 +46,8 @@ export const authOptions: NextAuthOptions = {
             // console.log(data, 'que vuelve de la función')
 
             if (user) {
-                console.log(user?.refreshToken, "hola");
-                const data = refreshAccessToken(user);
+                // console.log(user?.refreshToken, "hola");
+                // const data = refreshAccessToken(user);
                 return {
                     ...token,
                     userId: user?.id,
