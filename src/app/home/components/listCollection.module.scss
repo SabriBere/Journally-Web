@@ -10,7 +10,7 @@
 
 .containerImage {
     position: absolute;
-    bottom: -180; 
+    bottom: -180;
     right: 20;
     z-index: -1;
     height: auto;
@@ -28,7 +28,7 @@
     overflow-y: auto;
 }
 
-.containerEmpty{
+.containerEmpty {
     flex: 1;
     display: flex;
     flex-direction: column;
