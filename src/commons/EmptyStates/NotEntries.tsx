@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import Plus from "@/styles/icons/Plus";
 import styles from "./notEntries.module.scss";

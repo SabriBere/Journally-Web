@@ -11,6 +11,7 @@ import SpaceExploration from "@/commons/Ilustrations/SpaceExploration";
 import MyUniverse from "@/commons/Ilustrations/MyUniverse";
 import styles from "./listCollection.module.scss";
 import ServerDown from "@/commons/Ilustrations/ServerDown";
+import { CardsSkeletonGrid } from "@/commons/Skeletons/SkeletonList";
 
 const ListCollections = () => {
     const { data, isLoading, isError, isSuccess, fetchNextPage } =
@@ -27,7 +28,7 @@ const ListCollections = () => {
             initialPageParam: 1,
         });
 
-    console.log(data?.pages[0].collectionList);
+    // console.log(data?.pages[0].collectionList);
 
     return (
         <div className={styles.containerMain}>
@@ -54,6 +55,7 @@ const ListCollections = () => {
             ) : null}
 
             {/* Skeletons */}
+            {isLoading && <CardsSkeletonGrid count={9} />}
 
             {/* Listado de cards */}
             {isSuccess && (
