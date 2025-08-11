@@ -1,14 +1,16 @@
 "use client";
 import { Fragment } from "react";
-import Link from "next/link";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { allCollection } from "@/services/collection.service";
+import Link from "next/link";
 import Card from "@/commons/Cards/Card";
 import InfiniteScroll from "@/commons/InfinteScroll/InfiniteScroll";
 import NotEntries from "@/commons/EmptyStates/NotEntries";
-import styles from "./listCollection.module.scss";
+import Error from "@/commons/EmptyStates/Error";
 import SpaceExploration from "@/commons/Ilustrations/SpaceExploration";
 import MyUniverse from "@/commons/Ilustrations/MyUniverse";
+import styles from "./listCollection.module.scss";
+import ServerDown from "@/commons/Ilustrations/ServerDown";
 
 const ListCollections = () => {
     const { data, isLoading, isError, isSuccess, fetchNextPage } =
@@ -25,26 +27,35 @@ const ListCollections = () => {
             initialPageParam: 1,
         });
 
+    console.log(data?.pages[0].collectionList);
+
     return (
         <div className={styles.containerMain}>
             {/* Imagenes de fondo --> Se puede mover a un common de fondos*/}
-            <div className={styles.containerImage} aria-hidden>
-                {isSuccess && data?.pages[0]?.length === 0 ? (
+            <div className={styles.containerImage}>
+                {isError ? (
+                    <ServerDown width="750" height="750" />
+                ) : isSuccess &&
+                  data?.pages[0]?.collectionList?.length === 0 ? (
                     <MyUniverse width="750" height="750" />
                 ) : (
                     <SpaceExploration width="800" height="800" />
                 )}
-                {/* isError */}
             </div>
 
             {/* Empty state si no hay entradas creadas */}
-            {isSuccess && data?.pages[0].length === 0 && (
+            {isSuccess && data?.pages[0].collectionList?.length === 0 && (
                 <div className={styles.containerEmpty}>
                     <NotEntries title={"Crear una nueva entrada"} />
                 </div>
             )}
 
             {/* Empty State de error */}
+            {isError && (
+                <div className={styles.containerEmpty}>
+                    <Error />
+                </div>
+            )}
 
             {/* Skeletons */}
 
