@@ -28,8 +28,6 @@ const ListCollections = () => {
             initialPageParam: 1,
         });
 
-    // console.log(data?.pages[0].collectionList);
-
     return (
         <div className={styles.containerMain}>
             {/* Imagenes de fondo --> Se puede mover a un common de fondos*/}
