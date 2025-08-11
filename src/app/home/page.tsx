@@ -1,10 +1,14 @@
 import React from "react";
+import TitleSection from "@/commons/Title/TitleSection";
+import ListCollections from "./components/ListCollections";
 import styles from "./home.module.scss";
 
 const Home = () => {
     return (
         <div className={styles.containerHome}>
-            <h1>Home</h1>
+            <TitleSection title={"Inicio"} />
+            {/* Agregar componente de pestañas */}
+            <ListCollections />
         </div>
     );
 };
