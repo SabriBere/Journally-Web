@@ -1,6 +1,7 @@
 "use client";
 import { Fragment } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { CardsSkeletonGrid } from "@/commons/Skeletons/SkeletonList";
 import { allCollection } from "@/services/collection.service";
 import Link from "next/link";
 import Card from "@/commons/Cards/Card";
@@ -11,7 +12,6 @@ import SpaceExploration from "@/commons/Ilustrations/SpaceExploration";
 import MyUniverse from "@/commons/Ilustrations/MyUniverse";
 import styles from "./listCollection.module.scss";
 import ServerDown from "@/commons/Ilustrations/ServerDown";
-import { CardsSkeletonGrid } from "@/commons/Skeletons/SkeletonList";
 
 const ListCollections = () => {
     const { data, isLoading, isError, isSuccess, fetchNextPage } =

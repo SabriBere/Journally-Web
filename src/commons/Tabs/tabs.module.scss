@@ -1,0 +1,21 @@
+@use "../../styles/colors" as colors;
+
+.containerTabs {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    .tab{
+        
+    }
+
+    .selectedTab {
+        background-color: colors.$grey;
+    }
+
+    .inactiveTab {
+        background-color: none;
+    }
+}
