@@ -22,7 +22,7 @@ const ListCollections = () => {
         useInfiniteQuery({
             queryKey: ["getAllCollections"],
             queryFn: ({ pageParam = 1 }) =>
-                allCollection({ page: pageParam, id: 6 }),
+                allCollection({ page: pageParam }),
             getNextPageParam: (lastPage: any, pages: any) => {
                 if (pages?.length - 1 < lastPage?.totalPages) {
                     return pages.length;

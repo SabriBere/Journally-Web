@@ -20,13 +20,11 @@ export async function createCollection(body: {
 
 //Listado de colecciones paginadas y filtro
 export async function allCollection({
-    id,
     page,
     searchText,
     orderField,
     orderDirection,
 }: {
-    id: number | string;
     page: string | number;
     searchText?: string | undefined;
     orderField?: string | undefined;
@@ -34,10 +32,6 @@ export async function allCollection({
 }) {
     try {
         const params = new URLSearchParams();
-
-        if (id !== undefined) {
-            params.append("id", id.toString());
-        }
 
         if (page !== undefined) {
             params.append("page", page.toString());
