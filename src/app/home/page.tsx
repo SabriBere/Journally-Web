@@ -8,10 +8,12 @@ const Home = () => {
     return (
         <div className={styles.containerHome}>
             <TitleSection title={"Inicio"} />
-            {/* Agregar componente de pestañas */}
-            <Tabs />
-            {/* Agregar componente de input search con funcionalidad */}
-            {/* <ListCollections /> */}
+            <div>
+                {/* Agregar componente de pestañas */}
+                <Tabs />
+                {/* Agregar componente de input search con funcionalidad */}
+                <ListCollections />
+            </div>
         </div>
     );
 };
