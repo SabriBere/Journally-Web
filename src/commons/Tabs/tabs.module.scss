@@ -1,0 +1,42 @@
+@use "../../styles/colors" as colors;
+
+.containerTabs {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    .tab {
+        appearance: none;
+        border: none;
+        background: transparent;
+        font-size: 20px;
+        font-weight: 700;
+        padding: 6px 8px;
+        font-family: var(--font-caveat);
+        letter-spacing: 1.5;
+    }
+
+    .selectedTab {
+        color: colors.$darkTurquoise;
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -6px;
+            height: 3px;
+            background: currentColor;
+            border-radius: 3px;
+        }
+    }
+
+    .inactiveTab {
+        color: colors.$darkNavyBlue;
+        padding: 8px 16px;
+        position: relative;
+    }
+}
