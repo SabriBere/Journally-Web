@@ -1,6 +1,9 @@
 "use client";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 import { Fragment } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { CardsSkeletonGrid } from "@/commons/Skeletons/SkeletonList";
 import { allCollection } from "@/services/collection.service";
 import Link from "next/link";
 import Card from "@/commons/Cards/Card";
@@ -11,9 +14,9 @@ import SpaceExploration from "@/commons/Ilustrations/SpaceExploration";
 import MyUniverse from "@/commons/Ilustrations/MyUniverse";
 import styles from "./listCollection.module.scss";
 import ServerDown from "@/commons/Ilustrations/ServerDown";
-import { CardsSkeletonGrid } from "@/commons/Skeletons/SkeletonList";
 
 const ListCollections = () => {
+    const tabs = useSelector((state: RootState) => state.tabs.tabs);
     const { data, isLoading, isError, isSuccess, fetchNextPage } =
         useInfiniteQuery({
             queryKey: ["getAllCollections"],
@@ -29,65 +32,80 @@ const ListCollections = () => {
         });
 
     return (
-        <div className={styles.containerMain}>
-            {/* Imagenes de fondo --> Se puede mover a un common de fondos*/}
-            <div className={styles.containerImage}>
-                {isError ? (
-                    <ServerDown />
-                ) : isSuccess &&
-                  data?.pages[0]?.collectionList?.length === 0 ? (
-                    <MyUniverse />
-                ) : (
-                    <SpaceExploration />
-                )}
-            </div>
+        <>
+            {tabs === "collections" && (
+                <div className={styles.containerMain}>
+                    {/* Imagenes de fondo --> Se puede mover a un common de fondos*/}
+                    <div className={styles.containerImage}>
+                        {isError ? (
+                            <ServerDown />
+                        ) : isSuccess &&
+                          data?.pages[0]?.collectionList?.length === 0 ? (
+                            <MyUniverse />
+                        ) : (
+                            <SpaceExploration />
+                        )}
+                    </div>
 
-            {isError ? (
-                <div className={styles.containerEmpty}>
-                    <Error />
-                </div>
-            ) : isSuccess && data?.pages[0]?.collectionList?.length === 0 ? (
-                <div className={styles.containerEmpty}>
-                    <NotEntries title="Crear una nueva entrada" />
-                </div>
-            ) : null}
+                    {isError ? (
+                        <div className={styles.containerEmpty}>
+                            <Error />
+                        </div>
+                    ) : isSuccess &&
+                      data?.pages[0]?.collectionList?.length === 0 ? (
+                        <div className={styles.containerEmpty}>
+                            <NotEntries title="Crear una nueva entrada" />
+                        </div>
+                    ) : null}
 
-            {/* Skeletons */}
-            {isLoading && <CardsSkeletonGrid count={9} />}
+                    {/* Skeletons */}
+                    {isLoading && <CardsSkeletonGrid count={9} />}
 
-            {/* Listado de cards */}
-            {isSuccess && (
-                <div className={styles.containerList}>
-                    <InfiniteScroll fetchNextPage={fetchNextPage}>
-                        {data?.pages?.map((page: any, pageIndex: number) => (
-                            <Fragment key={pageIndex}>
-                                {page?.collectionList?.map(
-                                    (oneCollection: any, idx: number) => {
-                                        const globalIndex =
-                                            pageIndex *
-                                                page.collectionList.length +
-                                            idx;
-                                        return (
-                                            <Link
-                                                href={`/home/${oneCollection?.collection_id}`}
-                                                key={
-                                                    oneCollection?.collection_id
+                    {/* Listado de cards */}
+                    {isSuccess && (
+                        <div className={styles.containerList}>
+                            <InfiniteScroll fetchNextPage={fetchNextPage}>
+                                {data?.pages?.map(
+                                    (page: any, pageIndex: number) => (
+                                        <Fragment key={pageIndex}>
+                                            {page?.collectionList?.map(
+                                                (
+                                                    oneCollection: any,
+                                                    idx: number
+                                                ) => {
+                                                    const globalIndex =
+                                                        pageIndex *
+                                                            page.collectionList
+                                                                .length +
+                                                        idx;
+                                                    return (
+                                                        <Link
+                                                            href={`/home/${oneCollection?.collection_id}`}
+                                                            key={
+                                                                oneCollection?.collection_id
+                                                            }
+                                                        >
+                                                            <Card
+                                                                data={
+                                                                    oneCollection
+                                                                }
+                                                                index={
+                                                                    globalIndex
+                                                                }
+                                                            />
+                                                        </Link>
+                                                    );
                                                 }
-                                            >
-                                                <Card
-                                                    data={oneCollection}
-                                                    index={globalIndex}
-                                                />
-                                            </Link>
-                                        );
-                                    }
+                                            )}
+                                        </Fragment>
+                                    )
                                 )}
-                            </Fragment>
-                        ))}
-                    </InfiniteScroll>
+                            </InfiniteScroll>
+                        </div>
+                    )}
                 </div>
             )}
-        </div>
+        </>
     );
 };
 
