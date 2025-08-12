@@ -3,6 +3,7 @@ import TitleSection from "@/commons/Title/TitleSection";
 import ListCollections from "./components/ListCollections";
 import styles from "./home.module.scss";
 import Tabs from "@/commons/Tabs/Tabs";
+import ListPost from "./components/ListPost";
 
 const Home = () => {
     return (
@@ -13,6 +14,7 @@ const Home = () => {
                 <Tabs />
                 {/* Agregar componente de input search con funcionalidad */}
                 <ListCollections />
+                <ListPost />
             </div>
         </div>
     );

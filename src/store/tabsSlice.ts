@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface TabsState {
-    tabs: "post" | "collections"; // <- type definition here
+    tabs: "post" | "collections";
 }
 
 const initialState: TabsState = {
-    tabs: "post",
+    tabs: "collections",
 };
 
 const tabsSlice = createSlice({

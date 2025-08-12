@@ -12,16 +12,16 @@ const Tabs = () => {
     return (
         <div className={styles.containerTabs}>
             <button
-                className={`${styles.tab} ${tabs === "post" ? styles.selectedTab : styles.inactiveTab}`}
-                onClick={() => dispatch(setTabs("post"))}
-            >
-                Entradas
-            </button>
-            <button
                 className={`${styles.tab} ${tabs === "collections" ? styles.selectedTab : styles.inactiveTab}`}
                 onClick={() => dispatch(setTabs("collections"))}
             >
                 Colecciones
+            </button>
+            <button
+                className={`${styles.tab} ${tabs === "post" ? styles.selectedTab : styles.inactiveTab}`}
+                onClick={() => dispatch(setTabs("post"))}
+            >
+                Entradas
             </button>
         </div>
     );
