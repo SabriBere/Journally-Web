@@ -17,6 +17,7 @@ import ServerDown from "@/commons/Ilustrations/ServerDown";
 
 const ListCollections = () => {
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
+    //obtener id del usuario de la sesión
     const { data, isLoading, isError, isSuccess, fetchNextPage } =
         useInfiniteQuery({
             queryKey: ["getAllCollections"],
