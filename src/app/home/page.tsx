@@ -4,6 +4,7 @@ import Tabs from "@/commons/Tabs/Tabs";
 import ListCollections from "./components/ListCollections";
 import ListPost from "./components/ListPost";
 import styles from "./home.module.scss";
+import InputSearch from "@/commons/Inputs/InputSearch";
 
 const Home = () => {
     return (
@@ -13,6 +14,7 @@ const Home = () => {
                 {/* Agregar componente de pestañas */}
                 {/* <Tabs /> */}
                 {/* Agregar componente de input search con funcionalidad */}
+                <InputSearch />
                 <ListCollections />
                 <ListPost />
             </div>
