@@ -79,7 +79,7 @@ const ListCollections = () => {
                                                         idx;
                                                     return (
                                                         <Link
-                                                            href={`/home/${oneCollection?.collection_id}`}
+                                                            href={`/collection/${oneCollection?.collection_id}`}
                                                             key={
                                                                 oneCollection?.collection_id
                                                             }
