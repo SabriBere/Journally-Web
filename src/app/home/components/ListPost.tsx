@@ -76,7 +76,7 @@ const ListPost = () => {
                                                         index;
                                                     return (
                                                         <Link
-                                                            href={`/home/`}
+                                                            href={`/entries/${onePost?.post_id}`}
                                                             key={
                                                                 onePost?.post_id
                                                             }
