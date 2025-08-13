@@ -17,12 +17,10 @@ import ServerDown from "@/commons/Ilustrations/ServerDown";
 
 const ListCollections = () => {
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
-    //obtener id del usuario de la sesión
     const { data, isLoading, isError, isSuccess, fetchNextPage } =
         useInfiniteQuery({
             queryKey: ["getAllCollections"],
-            queryFn: ({ pageParam = 1 }) =>
-                allCollection({ page: pageParam }),
+            queryFn: ({ pageParam = 1 }) => allCollection({ page: pageParam }),
             getNextPageParam: (lastPage: any, pages: any) => {
                 if (pages?.length - 1 < lastPage?.totalPages) {
                     return pages.length;
@@ -55,7 +53,7 @@ const ListCollections = () => {
                     ) : isSuccess &&
                       data?.pages[0]?.collectionList?.length === 0 ? (
                         <div className={styles.containerEmpty}>
-                            <NotEntries title="Crear una nueva entrada" />
+                            <NotEntries title="Crear una nueva collección" />
                         </div>
                     ) : null}
 

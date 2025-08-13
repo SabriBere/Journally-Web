@@ -3,10 +3,16 @@ import { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { CardsSkeletonGrid } from "@/commons/Skeletons/SkeletonList";
 import { getAllPost } from "@/services/post.service";
 import Link from "next/link";
 import Card from "@/commons/Cards/Card";
 import InfiniteScroll from "@/commons/InfinteScroll/InfiniteScroll";
+import ServerDown from "@/commons/Ilustrations/ServerDown";
+import MyUniverse from "@/commons/Ilustrations/MyUniverse";
+import SpaceExploration from "@/commons/Ilustrations/SpaceExploration";
+import NotEntries from "@/commons/EmptyStates/NotEntries";
+import Error from "@/commons/EmptyStates/Error";
 import styles from "./listCollection.module.scss";
 
 const ListPost = () => {
@@ -24,12 +30,34 @@ const ListPost = () => {
             initialPageParam: 1,
         });
 
-    // console.log(data);
-
     return (
         <>
             {tabs === "post" && (
                 <div className={styles.containerMain}>
+                    <div className={styles.containerImage}>
+                        {isError ? (
+                            <ServerDown />
+                        ) : isSuccess &&
+                          data?.pages[0]?.userPost?.legth === 0 ? (
+                            <MyUniverse />
+                        ) : (
+                            <SpaceExploration />
+                        )}
+                    </div>
+
+                    {isError ? (
+                        <div className={styles.containerEmpty}>
+                            <Error />
+                        </div>
+                    ) : isSuccess && data?.pages[0]?.userPost?.length === 0 ? (
+                        <div className={styles.containerEmpty}>
+                            <NotEntries title="Crear una nueva entrada" />
+                        </div>
+                    ) : null}
+
+                    {/* Skeletons */}
+                    {isLoading && <CardsSkeletonGrid count={9} />}
+
                     {isSuccess && (
                         <div className={styles.containerList}>
                             <InfiniteScroll fetchNextPage={fetchNextPage}>
