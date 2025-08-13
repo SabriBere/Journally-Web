@@ -20,8 +20,7 @@ const ListCollections = () => {
     const { data, isLoading, isError, isSuccess, fetchNextPage } =
         useInfiniteQuery({
             queryKey: ["getAllCollections"],
-            queryFn: ({ pageParam = 1 }) =>
-                allCollection({ page: pageParam, id: 6 }),
+            queryFn: ({ pageParam = 1 }) => allCollection({ page: pageParam }),
             getNextPageParam: (lastPage: any, pages: any) => {
                 if (pages?.length - 1 < lastPage?.totalPages) {
                     return pages.length;
@@ -54,7 +53,7 @@ const ListCollections = () => {
                     ) : isSuccess &&
                       data?.pages[0]?.collectionList?.length === 0 ? (
                         <div className={styles.containerEmpty}>
-                            <NotEntries title="Crear una nueva entrada" />
+                            <NotEntries title="Crear una nueva collección" />
                         </div>
                     ) : null}
 
@@ -80,7 +79,7 @@ const ListCollections = () => {
                                                         idx;
                                                     return (
                                                         <Link
-                                                            href={`/home/${oneCollection?.collection_id}`}
+                                                            href={`/collection/${oneCollection?.collection_id}`}
                                                             key={
                                                                 oneCollection?.collection_id
                                                             }
