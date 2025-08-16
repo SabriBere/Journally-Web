@@ -15,7 +15,7 @@ const Home = () => {
                 {/* <Tabs /> */}
                 {/* Agregar componente de input search con funcionalidad */}
                 <InputSearch />
-                {/* <ListCollections /> */}
+                <ListCollections />
                 {/* <ListPost /> */}
             </div>
         </div>

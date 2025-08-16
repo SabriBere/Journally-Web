@@ -17,10 +17,18 @@ import ServerDown from "@/commons/Ilustrations/ServerDown";
 
 const ListCollections = () => {
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
+    const searchTextCollection = useSelector(
+        (state: RootState) => state.user.searchTextCollection
+    );
+    // console.log(searchTextCollection);
     const { data, isLoading, isError, isSuccess, fetchNextPage } =
         useInfiniteQuery({
-            queryKey: ["getAllCollections"],
-            queryFn: ({ pageParam = 1 }) => allCollection({ page: pageParam }),
+            queryKey: ["getAllCollections", { search: searchTextCollection }],
+            queryFn: ({ pageParam = 1 }) =>
+                allCollection({
+                    page: pageParam,
+                    searchText: searchTextCollection,
+                }),
             getNextPageParam: (lastPage: any, pages: any) => {
                 if (pages?.length - 1 < lastPage?.totalPages) {
                     return pages.length;
@@ -29,6 +37,8 @@ const ListCollections = () => {
             },
             initialPageParam: 1,
         });
+
+    // console.log(data?.pages[0]?.collectionList);
 
     return (
         <>
