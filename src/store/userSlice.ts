@@ -3,11 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 interface UserState {
     email: string;
     password: string;
+    searchTextPost: string;
+    searchTextCollection: string;
 }
 
 const initialState: UserState = {
     email: "",
     password: "",
+    searchTextPost: "",
+    searchTextCollection: "",
 };
 
 const userSlice = createSlice({
@@ -20,8 +24,19 @@ const userSlice = createSlice({
         setInputPass: (state, action) => {
             state.password = action.payload;
         },
+        setSearchTextPost: (state, action) => {
+            state.searchTextPost = action.payload;
+        },
+        setSearchTextCollection: (state, action) => {
+            state.searchTextCollection = action.payload;
+        },
     },
 });
 
-export const { setInputEmail, setInputPass } = userSlice.actions;
+export const {
+    setInputEmail,
+    setInputPass,
+    setSearchTextPost,
+    setSearchTextCollection,
+} = userSlice.actions;
 export default userSlice.reducer;
