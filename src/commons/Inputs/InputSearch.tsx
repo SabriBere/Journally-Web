@@ -1,9 +1,10 @@
 "use client";
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import styles from "./inputSearch.module.scss";
+import { setSearchTextCollection, setSearchTextPost } from "@/store/userSlice";
 import Search from "@/styles/icons/Search";
+import styles from "./inputSearch.module.scss";
 
 const InputSearch = () => {
     const dispatch = useDispatch();
@@ -18,19 +19,30 @@ const InputSearch = () => {
         (state: RootState) => state.user.searchTextCollection
     );
 
+    const isCollections = tabs === "collections";
+    const label = isCollections ? "Buscar colección" : "Buscar posteo";
+    const placeholder = isCollections
+        ? "Ingresar colección"
+        : "Ingresar posteo";
+    const value = isCollections ? searchTextCollection : searchTextPost;
+
+    const handlerInputSearch = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        // console.log(value);
+        tabs === "collections"
+            ? dispatch(setSearchTextCollection(value))
+            : dispatch(setSearchTextPost(value));
+    };
+
     return (
         <div className={styles.containerInputSearch}>
-            <label>
-                {tabs === "collections" ? "Buscar colección" : "Buscar posteo"}
-            </label>
+            <label>{label}</label>
             <span className={styles.input}>
                 <Search width="20" height="20" />
                 <input
-                    placeholder={
-                        tabs === "collections"
-                            ? "Ingresar colección"
-                            : "Ingresar posteo"
-                    }
+                    placeholder={placeholder}
+                    onChange={handlerInputSearch}
+                    value={value}
                 ></input>
             </span>
         </div>
