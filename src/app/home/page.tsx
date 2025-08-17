@@ -9,11 +9,12 @@ import InputSearch from "@/commons/Inputs/InputSearch";
 const Home = () => {
     return (
         <div className={styles.containerHome}>
-            <div>
-                <TitleSection title={"Inicio"} />
+            <TitleSection title="Inicio" />
+            <div className={styles.controls}>
                 <Tabs />
                 <InputSearch />
             </div>
+
             <div className={styles.containerHeader}>
                 <ListCollections />
                 <ListPost />
