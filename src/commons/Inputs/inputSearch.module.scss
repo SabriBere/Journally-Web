@@ -19,10 +19,24 @@
             border: none;
             outline: none;
             background: transparent;
+            color: colors.$jungleGreen;
+            caret-color: colors.$jungleGreen;
+            font-family: var(--font-caveat);
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 1.5;
 
             &::placeholder {
                 color: colors.$mossGreen;
+                font-family: var(--font-caveat);
             }
         }
+    }
+
+    .clearBtn {
+        background: none;
+        border: none;
+        color: none;
+        padding: 0;
     }
 }
