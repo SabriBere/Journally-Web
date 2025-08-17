@@ -23,7 +23,7 @@ const ListCollections = () => {
     const { data, isLoading, isError, isSuccess, fetchNextPage } =
         useInfiniteQuery({
             queryKey: ["getAllCollections", { search: searchTextCollection }],
-            queryFn: ({ pageParam = 1 }) =>
+            queryFn: ({ pageParam = 0 }) =>
                 allCollection({
                     page: pageParam,
                     searchText: searchTextCollection,
@@ -34,8 +34,7 @@ const ListCollections = () => {
                 }
                 return undefined;
             },
-            initialPageParam: 1,
-            enabled: true,
+            initialPageParam: 0,
         });
 
     const flatCollection = (data?.pages ?? [])?.flatMap(
@@ -77,7 +76,7 @@ const ListCollections = () => {
                     {/* Listado de cards */}
                     {isSuccess && (
                         <div className={styles.containerList}>
-                            {/* <InfiniteScroll fetchNextPage={fetchNextPage}> */}
+                            <InfiniteScroll fetchNextPage={fetchNextPage}>
                                 {flatCollection?.map((one: any, i: number) => (
                                     <Link
                                         href={`/collection/${one.collection_id}`}
@@ -86,7 +85,7 @@ const ListCollections = () => {
                                         <Card data={one} index={i} />
                                     </Link>
                                 ))}
-                            {/* </InfiniteScroll> */}
+                            </InfiniteScroll>
                         </div>
                     )}
                 </div>
