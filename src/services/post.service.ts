@@ -19,9 +19,38 @@ export async function createPost(
 }
 
 //Trae todas las entradas
-export async function getAllPost({ page }: { page: number }) {
+//Pasar parametros, si tiene
+export async function getAllPost({
+    page,
+    searchText,
+    orderFiled,
+    orderDirection,
+}: {
+    page: string | number;
+    searchText?: string | undefined;
+    orderFiled?: string | undefined;
+    orderDirection?: string | undefined;
+}) {
     try {
-        const res = await axiosInstance.get(`/post/?page=${page}`);
+        const params = new URLSearchParams();
+
+        if (page !== undefined) {
+            params.append("page", page.toString());
+        }
+
+        if (searchText !== undefined) {
+            params.append("searchText", searchText);
+        }
+
+        if (orderFiled !== undefined) {
+            params.append("orderFild", orderFiled);
+        }
+
+        if (orderDirection !== undefined) {
+            params.append("orderDirection", orderDirection);
+        }
+
+        const res = await axiosInstance.get(`/post/?${params.toString()}`);
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);

@@ -1,0 +1,28 @@
+@use "../../styles/colors" as colors;
+
+.containerInputSearch {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 6px;
+
+    .input {
+        width: 70%;
+        display: flex;
+        align-items: center;
+        border-bottom: 2px solid colors.$jungleGreen;
+        gap: 8px;
+
+        input {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+
+            &::placeholder {
+                color: colors.$mossGreen;
+            }
+        }
+    }
+}
