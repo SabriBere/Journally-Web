@@ -27,7 +27,7 @@ export async function allCollection({
 }: {
     page: string | number;
     searchText?: string | undefined;
-    orderField?: string | undefined;
+    orderField?: string | undefined; //corregir nombre de parametro
     orderDirection?: string | undefined;
 }) {
     try {
@@ -63,7 +63,9 @@ export async function allCollection({
 //Obtener una colección por id
 export async function collectionById(id: string) {
     try {
-        const res = await axiosInstance.get(`/collections/collectionId?id=${id}`);
+        const res = await axiosInstance.get(
+            `/collections/collectionId?id=${id}`
+        );
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
@@ -77,7 +79,10 @@ export async function updateCollection(body: {
     collectionId: string;
 }) {
     try {
-        const res = await axiosInstance.put(`/collections/updateCollection`, body);
+        const res = await axiosInstance.put(
+            `/collections/updateCollection`,
+            body
+        );
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
@@ -88,7 +93,9 @@ export async function updateCollection(body: {
 //Eliminar una colección
 export async function deleteCollection(id: number | string | undefined) {
     try {
-        const res = await axiosInstance.delete(`/collections/deteleCollection?id=${id}`);
+        const res = await axiosInstance.delete(
+            `/collections/deteleCollection?id=${id}`
+        );
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
