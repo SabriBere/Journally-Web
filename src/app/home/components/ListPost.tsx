@@ -1,5 +1,4 @@
 "use client";
-import { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -13,7 +12,7 @@ import MyUniverse from "@/commons/Ilustrations/MyUniverse";
 import SpaceExploration from "@/commons/Ilustrations/SpaceExploration";
 import NotEntries from "@/commons/EmptyStates/NotEntries";
 import Error from "@/commons/EmptyStates/Error";
-import styles from "./listCollection.module.scss";
+import styles from "./listPost.module.scss";
 
 const ListPost = () => {
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
@@ -29,16 +28,15 @@ const ListPost = () => {
                 getAllPost({ page: pageParam, searchText: searchTextPost }),
             getNextPageParam: (lastPage: any, pages: any) => {
                 if (pages?.length - 1 < lastPage?.totalPages) {
-                    return pages.length;
+                    return pages.length + 1;
                 }
                 return undefined;
             },
             initialPageParam: 1,
         });
 
-    const flatPost = (data?.pages ?? [])?.flatMap(
-        (page: any) => page?.userPost ?? []
-    );
+    const flatPost =
+        data?.pages?.flatMap((page: any) => page?.userPost ?? []) ?? [];
 
     return (
         <>
@@ -70,16 +68,16 @@ const ListPost = () => {
 
                     {isSuccess && (
                         <div className={styles.containerList}>
-                            {/* <InfiniteScroll fetchNextPage={fetchNextPage}> */}
-                            {flatPost?.map((onePost: any, i: number) => (
-                                <Link
-                                    href={`/collection/${onePost.post_id}`}
-                                    key={`col-${String(onePost.post_id)}-${i}`}
-                                >
-                                    <Card data={onePost} index={i} />
-                                </Link>
-                            ))}
-                            {/* </InfiniteScroll> */}
+                            <InfiniteScroll fetchNextPage={fetchNextPage}>
+                                {flatPost?.map((onePost: any, i: number) => (
+                                    <Link
+                                        href={`/collection/${onePost.post_id}`}
+                                        key={`col-${String(onePost.post_id)}-${i}`}
+                                    >
+                                        <Card data={onePost} index={i} />
+                                    </Link>
+                                ))}
+                            </InfiniteScroll>
                         </div>
                     )}
                 </div>
