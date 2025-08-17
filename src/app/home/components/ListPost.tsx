@@ -36,6 +36,10 @@ const ListPost = () => {
             initialPageParam: 1,
         });
 
+    const flatPost = (data?.pages ?? [])?.flatMap(
+        (page: any) => page?.userPost ?? []
+    );
+
     return (
         <>
             {tabs === "post" && (
@@ -67,31 +71,14 @@ const ListPost = () => {
                     {isSuccess && (
                         <div className={styles.containerList}>
                             {/* <InfiniteScroll fetchNextPage={fetchNextPage}> */}
-                            {data?.pages?.map(
-                                (page: any, pageIndex: number) => (
-                                    <Fragment key={pageIndex}>
-                                        {page?.userPost?.map(
-                                            (onePost: any, index: number) => {
-                                                const globalIndex =
-                                                    pageIndex *
-                                                        page?.onePost?.length +
-                                                    index;
-                                                return (
-                                                    <Link
-                                                        href={`/entries/${onePost?.post_id}`}
-                                                        key={onePost?.post_id}
-                                                    >
-                                                        <Card
-                                                            data={onePost}
-                                                            index={globalIndex}
-                                                        />
-                                                    </Link>
-                                                );
-                                            }
-                                        )}
-                                    </Fragment>
-                                )
-                            )}
+                            {flatPost?.map((onePost: any, i: number) => (
+                                <Link
+                                    href={`/collection/${onePost.post_id}`}
+                                    key={`col-${String(onePost.post_id)}-${i}`}
+                                >
+                                    <Card data={onePost} index={i} />
+                                </Link>
+                            ))}
                             {/* </InfiniteScroll> */}
                         </div>
                     )}
