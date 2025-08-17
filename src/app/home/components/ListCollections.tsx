@@ -8,11 +8,12 @@ import Link from "next/link";
 import Card from "@/commons/Cards/Card";
 import InfiniteScroll from "@/commons/InfinteScroll/InfiniteScroll";
 import NotEntries from "@/commons/EmptyStates/NotEntries";
+import NotResults from "@/commons/EmptyStates/NotResults";
 import Error from "@/commons/EmptyStates/Error";
 import SpaceExploration from "@/commons/Ilustrations/SpaceExploration";
 import MyUniverse from "@/commons/Ilustrations/MyUniverse";
-import styles from "./listCollection.module.scss";
 import ServerDown from "@/commons/Ilustrations/ServerDown";
+import styles from "./listCollection.module.scss";
 
 const ListCollections = () => {
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
@@ -63,9 +64,16 @@ const ListCollections = () => {
                             <Error />
                         </div>
                     ) : isSuccess &&
-                      data?.pages[0]?.collectionList?.length === 0 ? (
+                      data?.pages[0]?.collectionList?.length === 0 &&
+                      searchTextCollection === "" ? (
                         <div className={styles.containerEmpty}>
                             <NotEntries title="Crear una nueva colección" />
+                        </div>
+                    ) : isSuccess &&
+                      searchTextCollection !== "" &&
+                      data?.pages[0]?.collectionList?.length === 0 ? (
+                        <div className={styles.containerEmpty}>
+                            <NotResults title="No se encontraron resultados" />
                         </div>
                     ) : null}
 
