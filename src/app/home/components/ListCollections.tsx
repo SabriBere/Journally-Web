@@ -23,23 +23,22 @@ const ListCollections = () => {
     const { data, isLoading, isError, isSuccess, fetchNextPage } =
         useInfiniteQuery({
             queryKey: ["getAllCollections", { search: searchTextCollection }],
-            queryFn: ({ pageParam = 0 }) =>
+            queryFn: ({ pageParam = 1 }) =>
                 allCollection({
                     page: pageParam,
                     searchText: searchTextCollection,
                 }),
             getNextPageParam: (lastPage: any, pages: any) => {
                 if (pages?.length - 1 < lastPage?.totalPages) {
-                    return pages.length;
+                    return pages.length + 1;
                 }
                 return undefined;
             },
-            initialPageParam: 0,
+            initialPageParam: 1,
         });
 
-    const flatCollection = (data?.pages ?? [])?.flatMap(
-        (page: any) => page?.collectionList ?? []
-    );
+    const flatCollection =
+        data?.pages?.flatMap((page: any) => page?.collectionList ?? []) ?? [];
 
     // console.log(data?.pages[0]?.collectionList);
 
