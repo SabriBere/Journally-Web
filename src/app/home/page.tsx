@@ -12,11 +12,11 @@ const Home = () => {
             <TitleSection title={"Inicio"} />
             <div className={styles.containerHeader}>
                 {/* Agregar componente de pestañas */}
-                {/* <Tabs /> */}
+                <Tabs />
                 {/* Agregar componente de input search con funcionalidad */}
                 <InputSearch />
                 <ListCollections />
-                {/* <ListPost /> */}
+                <ListPost />
             </div>
         </div>
     );
