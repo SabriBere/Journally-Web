@@ -12,6 +12,7 @@
     color: colors.$white;
     border-radius: 24px;
     gap: 20px;
+    cursor: pointer;
 
     transform: rotate(-2deg);
     transition:
@@ -32,6 +33,11 @@
         align-items: center;
         justify-content: center;
         background-color: colors.$intenseCoralRed;
-        cursor: pointer;
+        // cursor: pointer;
+    }
+
+    &:hover {
+        transform: rotate(0deg) translateY(-6px) scale(1.02);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
     }
 }

@@ -46,7 +46,7 @@ const ListPost = () => {
                         {isError ? (
                             <ServerDown />
                         ) : isSuccess &&
-                          data?.pages[0]?.userPost?.legth === 0 ? (
+                          data?.pages[0]?.userPost?.length === 0 ? (
                             <MyUniverse />
                         ) : (
                             <SpaceExploration />

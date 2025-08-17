@@ -65,7 +65,7 @@ const ListCollections = () => {
                     ) : isSuccess &&
                       data?.pages[0]?.collectionList?.length === 0 ? (
                         <div className={styles.containerEmpty}>
-                            <NotEntries title="Crear una nueva collección" />
+                            <NotEntries title="Crear una nueva colección" />
                         </div>
                     ) : null}
 
