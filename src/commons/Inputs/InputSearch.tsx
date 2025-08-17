@@ -20,7 +20,6 @@ const InputSearch = () => {
     );
 
     const isCollections = tabs === "collections";
-    const label = isCollections ? "Buscar colección" : "Buscar posteo";
     const placeholder = isCollections
         ? "Ingresar colección"
         : "Ingresar posteo";
@@ -36,7 +35,6 @@ const InputSearch = () => {
 
     return (
         <div className={styles.containerInputSearch}>
-            <label>{label}</label>
             <span className={styles.input}>
                 <Search width="20" height="20" />
                 <input
