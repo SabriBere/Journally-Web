@@ -30,17 +30,15 @@ const ListCollections = () => {
                 }),
             getNextPageParam: (lastPage: any, pages: any) => {
                 if (pages?.length - 1 < lastPage?.totalPages) {
-                    return pages.length;
+                    return pages.length + 1;
                 }
                 return undefined;
             },
             initialPageParam: 1,
-            enabled: true,
         });
 
-    const flatCollection = (data?.pages ?? [])?.flatMap(
-        (page: any) => page?.collectionList ?? []
-    );
+    const flatCollection =
+        data?.pages?.flatMap((page: any) => page?.collectionList ?? []) ?? [];
 
     // console.log(data?.pages[0]?.collectionList);
 
@@ -77,7 +75,7 @@ const ListCollections = () => {
                     {/* Listado de cards */}
                     {isSuccess && (
                         <div className={styles.containerList}>
-                            {/* <InfiniteScroll fetchNextPage={fetchNextPage}> */}
+                            <InfiniteScroll fetchNextPage={fetchNextPage}>
                                 {flatCollection?.map((one: any, i: number) => (
                                     <Link
                                         href={`/collection/${one.collection_id}`}
@@ -86,7 +84,7 @@ const ListCollections = () => {
                                         <Card data={one} index={i} />
                                     </Link>
                                 ))}
-                            {/* </InfiniteScroll> */}
+                            </InfiniteScroll>
                         </div>
                     )}
                 </div>

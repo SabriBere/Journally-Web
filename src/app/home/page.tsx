@@ -9,12 +9,12 @@ import InputSearch from "@/commons/Inputs/InputSearch";
 const Home = () => {
     return (
         <div className={styles.containerHome}>
-            <TitleSection title={"Inicio"} />
-            <div className={styles.containerHeader}>
-                {/* Agregar componente de pestañas */}
+            <div>
+                <TitleSection title={"Inicio"} />
                 <Tabs />
-                {/* Agregar componente de input search con funcionalidad */}
                 <InputSearch />
+            </div>
+            <div className={styles.containerHeader}>
                 <ListCollections />
                 <ListPost />
             </div>
