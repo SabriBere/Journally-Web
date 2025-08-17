@@ -11,9 +11,9 @@ import ServerDown from "@/commons/Ilustrations/ServerDown";
 import MyUniverse from "@/commons/Ilustrations/MyUniverse";
 import SpaceExploration from "@/commons/Ilustrations/SpaceExploration";
 import NotEntries from "@/commons/EmptyStates/NotEntries";
+import NotResults from "@/commons/EmptyStates/NotResults";
 import Error from "@/commons/EmptyStates/Error";
 import styles from "./listPost.module.scss";
-import NotResults from "@/commons/EmptyStates/NotResults";
 
 const ListPost = () => {
     const tabs = useSelector((state: RootState) => state.tabs.tabs);

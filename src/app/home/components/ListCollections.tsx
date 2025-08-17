@@ -41,8 +41,6 @@ const ListCollections = () => {
     const flatCollection =
         data?.pages?.flatMap((page: any) => page?.collectionList ?? []) ?? [];
 
-    // console.log(data?.pages[0]?.collectionList);
-
     return (
         <>
             {tabs === "collections" && (
