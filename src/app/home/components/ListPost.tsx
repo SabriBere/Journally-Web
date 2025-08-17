@@ -17,10 +17,16 @@ import styles from "./listCollection.module.scss";
 
 const ListPost = () => {
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
+
+    const searchTextPost = useSelector(
+        (state: RootState) => state.user.searchTextPost
+    );
+
     const { data, isLoading, isError, isSuccess, fetchNextPage } =
         useInfiniteQuery({
-            queryKey: ["getAllPost"],
-            queryFn: ({ pageParam = 1 }) => getAllPost({ page: pageParam }),
+            queryKey: ["getAllPost", { search: searchTextPost }],
+            queryFn: ({ pageParam = 1 }) =>
+                getAllPost({ page: pageParam, searchText: searchTextPost }),
             getNextPageParam: (lastPage: any, pages: any) => {
                 if (pages?.length - 1 < lastPage?.totalPages) {
                     return pages.length;
@@ -29,6 +35,10 @@ const ListPost = () => {
             },
             initialPageParam: 1,
         });
+
+    const flatPost = (data?.pages ?? [])?.flatMap(
+        (page: any) => page?.userPost ?? []
+    );
 
     return (
         <>
@@ -60,41 +70,16 @@ const ListPost = () => {
 
                     {isSuccess && (
                         <div className={styles.containerList}>
-                            <InfiniteScroll fetchNextPage={fetchNextPage}>
-                                {data?.pages?.map(
-                                    (page: any, pageIndex: number) => (
-                                        <Fragment key={pageIndex}>
-                                            {page?.userPost?.map(
-                                                (
-                                                    onePost: any,
-                                                    index: number
-                                                ) => {
-                                                    const globalIndex =
-                                                        pageIndex *
-                                                            page?.onePost
-                                                                ?.length +
-                                                        index;
-                                                    return (
-                                                        <Link
-                                                            href={`/entries/${onePost?.post_id}`}
-                                                            key={
-                                                                onePost?.post_id
-                                                            }
-                                                        >
-                                                            <Card
-                                                                data={onePost}
-                                                                index={
-                                                                    globalIndex
-                                                                }
-                                                            />
-                                                        </Link>
-                                                    );
-                                                }
-                                            )}
-                                        </Fragment>
-                                    )
-                                )}
-                            </InfiniteScroll>
+                            {/* <InfiniteScroll fetchNextPage={fetchNextPage}> */}
+                            {flatPost?.map((onePost: any, i: number) => (
+                                <Link
+                                    href={`/collection/${onePost.post_id}`}
+                                    key={`col-${String(onePost.post_id)}-${i}`}
+                                >
+                                    <Card data={onePost} index={i} />
+                                </Link>
+                            ))}
+                            {/* </InfiniteScroll> */}
                         </div>
                     )}
                 </div>
