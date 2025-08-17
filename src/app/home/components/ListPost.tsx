@@ -11,6 +11,7 @@ import ServerDown from "@/commons/Ilustrations/ServerDown";
 import MyUniverse from "@/commons/Ilustrations/MyUniverse";
 import SpaceExploration from "@/commons/Ilustrations/SpaceExploration";
 import NotEntries from "@/commons/EmptyStates/NotEntries";
+import NotResults from "@/commons/EmptyStates/NotResults";
 import Error from "@/commons/EmptyStates/Error";
 import styles from "./listPost.module.scss";
 
@@ -46,7 +47,7 @@ const ListPost = () => {
                         {isError ? (
                             <ServerDown />
                         ) : isSuccess &&
-                          data?.pages[0]?.userPost?.legth === 0 ? (
+                          data?.pages[0]?.userPost?.length === 0 ? (
                             <MyUniverse />
                         ) : (
                             <SpaceExploration />
@@ -57,9 +58,17 @@ const ListPost = () => {
                         <div className={styles.containerEmpty}>
                             <Error />
                         </div>
-                    ) : isSuccess && data?.pages[0]?.userPost?.length === 0 ? (
+                    ) : isSuccess &&
+                      data?.pages[0]?.userPost?.length === 0 &&
+                      searchTextPost === "" ? (
                         <div className={styles.containerEmpty}>
                             <NotEntries title="Crear una nueva entrada" />
+                        </div>
+                    ) : isSuccess &&
+                      data?.pages[0]?.userPost?.length === 0 &&
+                      searchTextPost !== "" ? (
+                        <div className={styles.containerEmpty}>
+                            <NotResults title="No se encontraron resultados" />
                         </div>
                     ) : null}
 
