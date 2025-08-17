@@ -3,6 +3,7 @@ import React, { ChangeEvent } from "react";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchTextCollection, setSearchTextPost } from "@/store/userSlice";
+import Close from "@/styles/icons/Close";
 import Search from "@/styles/icons/Search";
 import styles from "./inputSearch.module.scss";
 
@@ -21,8 +22,8 @@ const InputSearch = () => {
 
     const isCollections = tabs === "collections";
     const placeholder = isCollections
-        ? "Ingresar colección"
-        : "Ingresar posteo";
+        ? "Buscar colección"
+        : "Buscar posteo";
     const value = isCollections ? searchTextCollection : searchTextPost;
 
     const handlerInputSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,15 +34,30 @@ const InputSearch = () => {
             : dispatch(setSearchTextPost(value));
     };
 
+    const clearInput = () => {
+        tabs === "collections"
+            ? dispatch(setSearchTextCollection(""))
+            : dispatch(setSearchTextPost(""));
+    };
+
     return (
         <div className={styles.containerInputSearch}>
             <span className={styles.input}>
-                <Search width="20" height="20" />
+                <Search color="#015443" width="24" height="24" />
                 <input
                     placeholder={placeholder}
                     onChange={handlerInputSearch}
                     value={value}
                 ></input>
+                {value && (
+                    <button
+                        className={styles.clearBtn}
+                        onClick={clearInput}
+                        type="button"
+                    >
+                        <Close color="#e74828" width="24" height="24" />
+                    </button>
+                )}
             </span>
         </div>
     );
