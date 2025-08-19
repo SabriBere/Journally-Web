@@ -1,10 +1,11 @@
 // Card.tsx
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import TooltipWrapper from "@/commons/Tooltip/Tooltip";
 import Trash from "@/styles/icons/Trash";
 import Edit from "@/styles/icons/Edit";
 import styles from "./card.module.scss";
+import ModalEditName from "../Modals/ModalEditName";
 
 interface CardData {
     data?: any;
@@ -14,25 +15,48 @@ interface CardData {
 const colors = ["#e74828", "#d4844e", "#f4a124", "#6f4324"];
 
 const Card = ({ data, index = 0 }: CardData) => {
+    const [openModalEdit, setOpenModaEdit] = useState<boolean>(false);
+    const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
+    // console.log(data?.post_id, data?.collection_id);
+
+    const handleOpenEdit = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setOpenModaEdit((prev: boolean) => !prev);
+    };
+
     return (
-        <div
-            className={styles.containerCard}
-            style={{ backgroundColor: colors[index % colors.length] }}
-        >
-            <div className={styles.topCard}>
-                <h3>{data?.title}</h3>
-                <TooltipWrapper content={"Editar"}>
-                    <i>
-                        <Edit width="20" height="20" color="white" />
-                    </i>
+        <>
+            <div
+                className={styles.containerCard}
+                style={{ backgroundColor: colors[index % colors.length] }}
+            >
+                <div className={styles.topCard}>
+                    <h3>{data?.title}</h3>
+                    <TooltipWrapper content={"Editar"}>
+                        <button type="button" onClick={handleOpenEdit}>
+                            <i>
+                                <Edit width="20" height="20" color="white" />
+                            </i>
+                        </button>
+                    </TooltipWrapper>
+                </div>
+                <TooltipWrapper content={"Eliminar"}>
+                    <button type="button">
+                        <i className={styles.bottomCard}>
+                            <Trash width="20" height="20" color="white" />
+                        </i>
+                    </button>
                 </TooltipWrapper>
             </div>
-            <TooltipWrapper content={"Eliminar"}>
-                <i className={styles.bottomCard}>
-                    <Trash width="20" height="20" color="white" />
-                </i>
-            </TooltipWrapper>
-        </div>
+            {openModalEdit && (
+                <ModalEditName
+                    id={data}
+                    isOpen={openModalEdit}
+                    setClose={setOpenModaEdit}
+                />
+            )}
+        </>
     );
 };
 
