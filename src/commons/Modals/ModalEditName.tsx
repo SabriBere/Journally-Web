@@ -1,18 +1,13 @@
 "use client";
 import React, { ChangeEvent, useState } from "react";
-import {
-    useMutation,
-    useQueryClient,
-    QueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateCollection } from "@/services/collection.service";
 import Close from "@/styles/icons/Close";
 import Check from "@/styles/icons/Check";
 import styles from "./modalEditName.module.scss";
-import { Handlee } from "next/font/google";
 
 interface ModalProps {
-    id: number;
+    id: any;
     isOpen: boolean;
     setClose: React.Dispatch<React.SetStateAction<boolean>>;
     color: string;
@@ -22,7 +17,6 @@ interface ModalProps {
 const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
     const QueryClient = useQueryClient();
     const [newName, setNewName] = useState<string>("");
-    // console.log(newName);
     //captura de valores
 
     const handlerInputName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -37,27 +31,28 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                 collectionId: string | number;
             }) => updateCollection(body),
             mutationKey: ["editNameCollection"],
-            onSuccess: () => {
-                //invalidar la query si se ejecuta más de una vez
+            onSuccess: async () => {
                 //toast con el mensaje de editado correctamente
-                //cerrar modal
-                //refech del listado (usar query con el nombre de la querykey del listado)
+                setClose(false);
+                await QueryClient.refetchQueries({
+                    queryKey: ["getAllCollections"],
+                });
             },
             onError: () => {
                 //llamar al toast con el mensaje de error
-                //Cerrar el modal
+                setClose(false);
             },
         });
 
     const handlerEdit = async (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        if (!newName.trim()) return console.log("Ingrese un nombre");
 
+        if (!newName.trim()) return console.log("Ingrese un nombre");
         try {
             const body = {
                 title: newName,
-                collectionId: id,
+                collectionId: id?.collection_id,
             };
             await editNameMutation(body);
         } catch (error) {
@@ -69,11 +64,9 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
         <div
             className={styles.containerModalName}
             style={{ backgroundColor: color }}
-            onClick={(e) => e.stopPropagation()}
-            onMouseDown={(e) => e.stopPropagation()}
-            onMouseUp={(e) => e.stopPropagation()}
-            onPointerDown={(e) => e.stopPropagation()}
-            onPointerUp={(e) => e.stopPropagation()}
+            onClick={(e: React.MouseEvent) => {
+                e.stopPropagation(), e.preventDefault();
+            }}
         >
             <input
                 className={styles.inputName}
@@ -84,7 +77,7 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                 disabled={isPendingEdit}
             />
             <button
-                type="button"
+                type="submit"
                 title="Guardar"
                 className={styles.buttonEdit}
                 onClick={handlerEdit}
@@ -96,10 +89,10 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                 type="button"
                 title="Cancelar"
                 className={styles.buttonEdit}
-                onClick={(e) => {
-                    e.stopPropagation();
-                    setClose(false);
-                }}
+                // onClick={(e) => {
+                //     // e.stopPropagation();
+                //     setClose(false);
+                // }}
                 disabled={isPendingEdit}
             >
                 <Close color={"#FFFFFF"} width="20" height="20" />

@@ -1,11 +1,11 @@
 // Card.tsx
 "use client";
 import React, { useState } from "react";
+import ModalEditName from "../Modals/ModalEditName";
 import TooltipWrapper from "@/commons/Tooltip/Tooltip";
 import Trash from "@/styles/icons/Trash";
 import Edit from "@/styles/icons/Edit";
 import styles from "./card.module.scss";
-import ModalEditName from "../Modals/ModalEditName";
 
 interface CardData {
     data?: any;
