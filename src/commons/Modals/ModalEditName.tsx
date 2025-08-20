@@ -18,6 +18,10 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
     const QueryClient = useQueryClient();
     const [newName, setNewName] = useState<string>("");
     //captura de valores
+    const body = {
+        title: newName,
+        collectionId: id?.collection_id,
+    };
 
     const handlerInputName = (e: ChangeEvent<HTMLInputElement>) => {
         e.stopPropagation();
@@ -44,16 +48,12 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
             },
         });
 
-    const handlerEdit = async (e: React.MouseEvent) => {
+    const handlerEdit = async (e: React.FormEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
-        if (!newName.trim()) return console.log("Ingrese un nombre");
+        if (!newName.trim()) return console.log("Ingrese un nombre"); //mostrar toast
         try {
-            const body = {
-                title: newName,
-                collectionId: id?.collection_id,
-            };
             await editNameMutation(body);
         } catch (error) {
             console.log(error);
@@ -61,11 +61,18 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
     };
 
     return (
-        <div
+        <form
             className={styles.containerModalName}
             style={{ backgroundColor: color }}
             onClick={(e: React.MouseEvent) => {
                 e.stopPropagation(), e.preventDefault();
+            }}
+            onSubmit={handlerEdit}
+            onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    e.stopPropagation(); // evita que el Link ancestro navegue
+                }
             }}
         >
             <input
@@ -83,21 +90,20 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                 onClick={handlerEdit}
                 disabled={isPendingEdit}
             >
-                <Check color={"#FFFFFF"} width="20" height="20" />
+                <Check color={"#11796f"} width="20" height="20" />
             </button>
             <button
                 type="button"
                 title="Cancelar"
                 className={styles.buttonEdit}
-                // onClick={(e) => {
-                //     // e.stopPropagation();
-                //     setClose(false);
-                // }}
+                onClick={(e) => {
+                    setClose(false);
+                }}
                 disabled={isPendingEdit}
             >
-                <Close color={"#FFFFFF"} width="20" height="20" />
+                <Close color={"#0d1e2b"} width="20" height="20" />
             </button>
-        </div>
+        </form>
     );
 };
 
