@@ -76,7 +76,7 @@ export async function collectionById(id: string) {
 //Actualizar el nombre de una colección
 export async function updateCollection(body: {
     title: string;
-    collectionId: string;
+    collectionId: string | number;
 }) {
     try {
         const res = await axiosInstance.put(
