@@ -1,17 +1,41 @@
-.containerModalName{
+@use "../../styles/colors" as colors;
+
+.containerModalName {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    // background-color: colors.$softMustard;
+    padding: 10px;
+    border-radius: 20px;
 
-    .containerInputs{
-        width: 100%;
-        z-index: 100;
+    .containerInputs {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        // width: 100%;
+        // z-index: 100;
     }
 
-    .inputName{
+    .inputName {
+        background-color: transparent;
+        border: none;
+        outline: none;
+        font-size: 18px;
+        font-weight: bold;
+        letter-spacing: 1.5;
 
+        &::placeholder {
+            color: colors.$white;
+            font-family: var(--font-caveat);
+        }
     }
 
-    .buttonEdit{
-        
+    .buttonEdit {
+        // display: flex;
+        // flex-direction: row;
+        // justify-content: center;
+        // align-items: center;
     }
 }
