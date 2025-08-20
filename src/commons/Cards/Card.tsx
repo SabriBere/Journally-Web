@@ -25,6 +25,12 @@ const Card = ({ data, index = 0 }: CardData) => {
         setOpenModaEdit((prev: boolean) => !prev);
     };
 
+    const handlerOpenDelete = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setOpenModalDelete((prev: boolean) => !prev);
+    };
+
     return (
         <>
             <div
@@ -42,7 +48,7 @@ const Card = ({ data, index = 0 }: CardData) => {
                     </TooltipWrapper>
                 </div>
                 <TooltipWrapper content={"Eliminar"}>
-                    <button type="button">
+                    <button type="button" onClick={handlerOpenDelete}>
                         <i className={styles.bottomCard}>
                             <Trash width="20" height="20" color="white" />
                         </i>
@@ -54,6 +60,7 @@ const Card = ({ data, index = 0 }: CardData) => {
                     id={data}
                     isOpen={openModalEdit}
                     setClose={setOpenModaEdit}
+                    color={colors[index % colors.length]}
                 />
             )}
         </>
