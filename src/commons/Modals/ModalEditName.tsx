@@ -49,7 +49,8 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
             updateCollection(body),
         mutationKey: ["editNameCollection"],
         onSuccess: async () => {
-            // toast.error("Se muestra el toast?"); //ajustar para cuando sale bien
+            toast.success("Colección actualizada");
+            //ajustar para cuando sale bien
             setClose(false);
             await QueryClient.refetchQueries({
                 queryKey: ["getAllCollections"],
@@ -81,7 +82,8 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                 ),
             mutationKey: ["editNamePost"],
             onSuccess: async () => {
-                // toast.error("Se muestra el toast?"); //ajustar para cuando sale bien
+                toast.success("Post actualizado");
+                //ajustar para cuando sale bien
                 setClose(false);
                 await QueryClient.refetchQueries({
                     queryKey: ["getAllPost"],

@@ -9,7 +9,7 @@ export async function createPost(
     try {
         //pasar body y parametros x query
         const res = await axiosInstance.post(
-            `/create?userId=${userId}&collectionId=${collectionId}`,
+            `/post/create?userId=${userId}&collectionId=${collectionId}`,
             body
         );
         return res.data.data;
@@ -61,7 +61,7 @@ export async function getAllPost({
 //Traer una entrada por id
 export async function getPostById(postId: number | string) {
     try {
-        const res = await axiosInstance.get(`/findOne?postId=${postId}`);
+        const res = await axiosInstance.get(`/post/findOne?postId=${postId}`);
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
@@ -97,7 +97,7 @@ export async function updatePost(
 //Eliminar un post
 export async function deletePost(postId: string | number) {
     try {
-        const res = await axiosInstance.delete(`/updatePost?postId=${postId}`);
+        const res = await axiosInstance.delete(`/post/updatePost?postId=${postId}`);
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
