@@ -5,11 +5,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateCollection } from "@/services/collection.service";
+import { updatePost } from "@/services/post.service";
 import Close from "@/styles/icons/Close";
 import Check from "@/styles/icons/Check";
 import styles from "./modalEditName.module.scss";
-import { updatePost } from "@/services/post.service";
-import { title } from "process";
 
 interface ModalProps {
     id: any;
@@ -56,9 +55,11 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                 queryKey: ["getAllCollections"],
             });
         },
-        onError: () => {
+        onError: (error: any) => {
             //llamar al toast con el mensaje de error
-            toast.error("Error al editar nombre");
+            toast.error(
+                error?.response?.data?.message ?? "Error al editar nombre"
+            );
             setClose(false);
         },
     });
@@ -89,9 +90,11 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                     queryKey: ["getAllPost"],
                 });
             },
-            onError: () => {
+            onError: (error: any) => {
                 //llamar al toast con el mensaje de error
-                toast.error("Error al editar nombre");
+                toast.error(
+                    error?.response?.data?.message ?? "Error al editar nombre"
+                );
                 setClose(false);
             },
         });
