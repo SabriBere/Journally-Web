@@ -72,14 +72,19 @@ export async function getPostById(postId: number | string) {
 //Actualizar un post sin colección
 export async function updatePost(
     body: {
-        title?: string;
+        title?: string | undefined;
         description: string;
     },
     postId: string | number
 ) {
     try {
+        const params = new URLSearchParams();
+
+        if (postId !== undefined) {
+            params.append("postId", postId.toString());
+        }
         const res = await axiosInstance.put(
-            `/updatePost?postId=${postId}`,
+            `/post/updatePost/?${params.toString()}`,
             body
         );
         return res.data.data;
