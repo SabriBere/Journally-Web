@@ -1,6 +1,6 @@
 "use client";
 import React, { ChangeEvent, useState } from "react";
-import { toast } from "sonner";
+import { showError, showSuccess } from "../Toast/toastHelpers";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -48,8 +48,7 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
             updateCollection(body),
         mutationKey: ["editNameCollection"],
         onSuccess: async () => {
-            toast.success("Colección actualizada");
-            //ajustar para cuando sale bien
+            showSuccess("Guardado correctamente 🎉");
             setClose(false);
             await QueryClient.refetchQueries({
                 queryKey: ["getAllCollections"],
@@ -57,9 +56,7 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
         },
         onError: (error: any) => {
             //llamar al toast con el mensaje de error
-            toast.error(
-                error?.response?.data?.message ?? "Error al editar nombre"
-            );
+            showError("Error al editar nombre");
             setClose(false);
         },
     });
@@ -83,7 +80,8 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                 ),
             mutationKey: ["editNamePost"],
             onSuccess: async () => {
-                toast.success("Post actualizado");
+                // toast.success("Post actualizado");
+                showSuccess("Guardado correctamente 🎉");
                 //ajustar para cuando sale bien
                 setClose(false);
                 await QueryClient.refetchQueries({
@@ -92,9 +90,7 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
             },
             onError: (error: any) => {
                 //llamar al toast con el mensaje de error
-                toast.error(
-                    error?.response?.data?.message ?? "Error al editar nombre"
-                );
+                showError("Error al editar nombre");
                 setClose(false);
             },
         });
