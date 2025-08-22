@@ -1,8 +1,6 @@
 import React from "react";
 import { Toaster } from "sonner";
 
-//customizar mejor para diferentes casos
-//de momento solo para error
 const Toast = () => {
     return (
         <Toaster
