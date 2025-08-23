@@ -6,6 +6,7 @@ import TooltipWrapper from "@/commons/Tooltip/Tooltip";
 import Trash from "@/styles/icons/Trash";
 import Edit from "@/styles/icons/Edit";
 import styles from "./card.module.scss";
+import ModalDelete from "../Modals/ModalDelete";
 
 interface CardData {
     data?: any;
@@ -55,11 +56,19 @@ const Card = ({ data, index = 0 }: CardData) => {
                     </button>
                 </TooltipWrapper>
             </div>
-            {openModalEdit && (
+            {openModalEdit && !openModalDelete && (
                 <ModalEditName
                     id={data}
                     isOpen={openModalEdit}
                     setClose={setOpenModaEdit}
+                    color={colors[index % colors.length]}
+                />
+            )}
+            {openModalDelete && !openModalEdit && (
+                <ModalDelete
+                    id={data}
+                    isOpen={openModalDelete}
+                    setClose={setOpenModalDelete}
                     color={colors[index % colors.length]}
                 />
             )}
