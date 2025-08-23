@@ -2,11 +2,11 @@
 "use client";
 import React, { useState } from "react";
 import ModalEditName from "../Modals/ModalEditName";
+import ModalDelete from "../Modals/ModalDelete";
 import TooltipWrapper from "@/commons/Tooltip/Tooltip";
 import Trash from "@/styles/icons/Trash";
 import Edit from "@/styles/icons/Edit";
 import styles from "./card.module.scss";
-import ModalDelete from "../Modals/ModalDelete";
 
 interface CardData {
     data?: any;
@@ -16,21 +16,23 @@ interface CardData {
 const colors = ["#e74828", "#d4844e", "#f4a124", "#6f4324"];
 
 const Card = ({ data, index = 0 }: CardData) => {
-    const [openModalEdit, setOpenModaEdit] = useState<boolean>(false);
-    const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
-    // console.log(data?.post_id, data?.collection_id);
+    const [openModal, setOpenModal] = useState<"none" | "edit" | "delete">(
+        "none"
+    );
 
     const handleOpenEdit = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        setOpenModaEdit((prev: boolean) => !prev);
+        setOpenModal((prev) => (prev === "edit" ? "none" : "edit"));
     };
 
     const handlerOpenDelete = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        setOpenModalDelete((prev: boolean) => !prev);
+        setOpenModal((prev) => (prev === "delete" ? "none" : "delete"));
     };
+
+    const handleClose = () => setOpenModal("none");
 
     return (
         <>
@@ -56,19 +58,21 @@ const Card = ({ data, index = 0 }: CardData) => {
                     </button>
                 </TooltipWrapper>
             </div>
-            {openModalEdit && !openModalDelete && (
+
+            {openModal === "edit" && (
                 <ModalEditName
                     id={data}
-                    isOpen={openModalEdit}
-                    setClose={setOpenModaEdit}
+                    isOpen={true}
+                    setClose={handleClose}
                     color={colors[index % colors.length]}
                 />
             )}
-            {openModalDelete && !openModalEdit && (
+
+            {openModal === "delete" && (
                 <ModalDelete
                     id={data}
-                    isOpen={openModalDelete}
-                    setClose={setOpenModalDelete}
+                    isOpen={true}
+                    setClose={handleClose}
                     color={colors[index % colors.length]}
                 />
             )}

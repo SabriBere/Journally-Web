@@ -18,7 +18,7 @@ interface ModalProps {
 }
 
 const ModalDelete = ({ id, isOpen, setClose, color }: ModalProps) => {
-    console.log(id);
+    // console.log(id);
     const QueryClient = useQueryClient();
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
     const textModal =
