@@ -30,7 +30,8 @@ const ModalDelete = ({ id, isOpen, setClose, color }: ModalProps) => {
         mutateAsync: deleteCollectionMutation,
         isPending: isPendingCollection,
     } = useMutation({
-        mutationFn: (id: any) => deleteCollection(id?.collection_id),
+        mutationFn: (collectionId: number | string) =>
+            deleteCollection(collectionId),
         mutationKey: ["deleteCollection"],
         onSuccess: async () => {
             showSuccess("Eliminado correctamente 🎉");
@@ -47,7 +48,7 @@ const ModalDelete = ({ id, isOpen, setClose, color }: ModalProps) => {
 
     const { mutateAsync: deletePostMutation, isPending: isPendingPost } =
         useMutation({
-            mutationFn: (id: any) => deletePost(id?.post_id),
+            mutationFn: (postId: number | string) => deletePost(postId),
             mutationKey: ["deletePost"],
             onSuccess: async () => {
                 showSuccess("Eliminado correctamente 🎉");
@@ -88,7 +89,7 @@ const ModalDelete = ({ id, isOpen, setClose, color }: ModalProps) => {
             <button type="button" onClick={handlerDelete}>
                 <Check color={"#11796f"} width="20" height="20" />
             </button>
-            <button type="button" onClick={handlerDelete}>
+            <button type="button" onClick={() => setClose(false)}>
                 <Close color={"#0d1e2b"} width="20" height="20" />
             </button>
         </div>
