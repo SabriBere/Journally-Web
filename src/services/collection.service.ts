@@ -93,8 +93,14 @@ export async function updateCollection(body: {
 //Eliminar una colección
 export async function deleteCollection(id: number | string | undefined) {
     try {
+        const params = new URLSearchParams();
+
+        if (id !== undefined) {
+            params.append("id", id.toString());
+        }
+
         const res = await axiosInstance.delete(
-            `/collections/deteleCollection?id=${id}`
+            `/collections/deteleCollection?${params.toString()}`
         );
         return res.data.data;
     } catch (error: any) {
