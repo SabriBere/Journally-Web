@@ -97,7 +97,9 @@ export async function updatePost(
 //Eliminar un post
 export async function deletePost(postId: string | number) {
     try {
-        const res = await axiosInstance.delete(`/post/updatePost?postId=${postId}`);
+        const res = await axiosInstance.delete(
+            `/post/deletePost?postId=${postId}`
+        );
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
