@@ -39,6 +39,13 @@ const Card = ({ data, index = 0 }: CardData) => {
             <div
                 className={styles.containerCard}
                 style={{ backgroundColor: colors[index % colors.length] }}
+                onClick={(e) => {
+                    if (openModal !== "none") {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleClose();
+                    }
+                }}
             >
                 <div className={styles.topCard}>
                     <h3>{data?.title}</h3>
