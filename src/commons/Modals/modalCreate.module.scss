@@ -1,0 +1,29 @@
+@use "../../styles/colors" as colors;
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.35);
+    display: grid;
+    place-items: center;
+}
+
+.containerModalCreate {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .inputs {
+        font-size: 18px;
+        font-weight: bold;
+        letter-spacing: 1.5;
+        font-family: var(--font-caveat);
+
+        &::placeholder {
+            // color: colors.$white;
+            font-family: var(--font-caveat);
+        }
+    }
+}
