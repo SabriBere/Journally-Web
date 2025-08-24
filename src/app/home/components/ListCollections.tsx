@@ -20,6 +20,8 @@ const ListCollections = () => {
     const searchTextCollection = useSelector(
         (state: RootState) => state.user.searchTextCollection
     );
+
+    const forceEmptyEntries = true;
     // console.log(searchTextCollection);
     const { data, isLoading, isError, isSuccess, fetchNextPage } =
         useInfiniteQuery({
@@ -41,6 +43,21 @@ const ListCollections = () => {
     const flatCollection =
         data?.pages?.flatMap((page: any) => page?.collectionList ?? []) ?? [];
 
+    // 🔹 Override total: mostramos “crear nueva colección” pase lo que pase
+    if (forceEmptyEntries) {
+        return (
+            <div className={styles.containerMain}>
+                <div className={styles.containerImage}>
+                    {/* Fondo para empty “sin entradas” */}
+                    <MyUniverse />
+                </div>
+                <div className={styles.containerEmpty}>
+                    <NotEntries title="Crear una nueva colección" />
+                </div>
+            </div>
+        );
+    }
+
     return (
         <>
             {tabs === "collections" && (
@@ -57,7 +74,7 @@ const ListCollections = () => {
                         )}
                     </div>
 
-                    {isError ? (
+                    {forceEmptyEntries ? (
                         <div className={styles.containerEmpty}>
                             <Error />
                         </div>
