@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { showError, showSuccess } from "../Toast/toastHelpers";
+import { createCollection } from "@/services/collection.service";
 import Close from "@/styles/icons/Close";
 import styles from "./modalCreate.module.scss";
 
@@ -8,11 +11,40 @@ interface ModalProps {
 //Sirve para crear colecciones/post
 //que al presionar enter se envie (si completo todos los campos)
 const ModalCreate = ({ setModal }: ModalProps) => {
-    const [nameCollection, setNameCollection] = useState<boolean>(false);
-    //cuando lo crea, llamar a la query que corresponda
+    const QueryClient = useQueryClient();
+    const [nameCollection, setNameCollection] = useState<string>("");
 
-    const handlerCreate = async () => {
-        setModal(false);
+    //cuando lo crea, llamar a la query que corresponda
+    const { mutateAsync: createCollectionMutation } = useMutation({
+        mutationFn: (body: {
+            collectionName: string;
+            title: string;
+        }) => createCollection(body),
+        mutationKey: ["createCollection"],
+        onSuccess: async () => {
+            showSuccess("Creado correctamente");
+            setModal(false);
+            await QueryClient.refetchQueries({
+                queryKey: ["getAllCollections"],
+            });
+        },
+        onError: (error: any) => {
+            showError("Error al crear colección");
+            setModal(false);
+        },
+    });
+
+    const handlerCreate = async (e: React.FormEvent) => {
+        try {
+            const body = {
+                collectionName: nameCollection,
+                title: nameCollection,
+            };
+            // console.log(body);
+            await createCollectionMutation(body);
+        } catch (error) {
+            console.log(error);
+        }
     };
     return (
         <div className={styles.overlay}>
@@ -30,10 +62,19 @@ const ModalCreate = ({ setModal }: ModalProps) => {
                         title="Crear"
                         placeholder="Ingrese un nombre"
                         className={styles.inputs}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            setNameCollection(e.target.value)
+                        }
+                        value={nameCollection}
                     />
                 </div>
                 <div className={styles.containerButtons}>
-                    <button onClick={handlerCreate}>Crear</button>
+                    <button
+                        onClick={handlerCreate}
+                        className={styles.btnCreate}
+                    >
+                        Crear
+                    </button>
                     <button
                         type="submit"
                         title="Cancelar"

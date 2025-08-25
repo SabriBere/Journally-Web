@@ -43,21 +43,6 @@ const ListCollections = () => {
     const flatCollection =
         data?.pages?.flatMap((page: any) => page?.collectionList ?? []) ?? [];
 
-    // 🔹 Override total: mostramos “crear nueva colección” pase lo que pase
-    if (forceEmptyEntries && tabs === "collections") {
-        return (
-            <div className={styles.containerMain}>
-                <div className={styles.containerImage}>
-                    {/* Fondo para empty “sin entradas” */}
-                    <MyUniverse />
-                </div>
-                <div className={styles.containerEmpty}>
-                    <NotEntries title="Crear una nueva colección" />
-                </div>
-            </div>
-        );
-    }
-
     return (
         <>
             {tabs === "collections" && (
@@ -74,7 +59,7 @@ const ListCollections = () => {
                         )}
                     </div>
 
-                    {forceEmptyEntries ? (
+                    {isError ? (
                         <div className={styles.containerEmpty}>
                             <Error />
                         </div>
