@@ -1,7 +1,7 @@
 @use "sass:color";
 @use "../../styles/colors" as colors;
 
-$color: colors.$darkTurquoise;
+$color: colors.$darkNavyBlue;
 
 .overlay {
     position: fixed;
@@ -48,37 +48,63 @@ $color: colors.$darkTurquoise;
         display: flex;
         flex-direction: column;
         gap: 10px;
-        border-bottom: 2px solid colors.$clayBrown;
     }
 
     .inputs {
         border: none;
         outline: none;
         background: colors.$white;
-        color: colors.$jungleGreen;
+        color: colors.$darkOrange;
         caret-color: colors.$clayBrown;
         font-size: 18px;
         font-weight: bold;
         letter-spacing: 1.5;
         font-family: var(--font-caveat);
         padding: 12px;
+        border-bottom: 2px solid colors.$clayBrown;
 
         &::placeholder {
             color: colors.$clayBrown;
             font-family: var(--font-caveat);
         }
 
-        // &:focus {
-        //     outline: none;
-        //     border-color: color.scale($color, $lightness: 15%);
-        //     // background-color: colors.$paperBeige;
-        //     box-shadow: 0 0 0 4px rgba(205, 133, 63, 0.2);
-        // }
+        &:focus {
+            border-bottom: 2px solid colors.$darkOrange;
+        }
     }
 
     .containerButtons {
         display: flex;
         flex-direction: row;
         gap: 16px;
+    }
+
+    .btnCreate {
+        position: relative;
+        font-family: var(--font-caveat);
+        font-size: 20px;
+        font-weight: bold;
+        padding: 6px 12px;
+        border: none;
+        background: none;
+        color: colors.$clayBrown;
+        cursor: pointer;
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 24%;
+            height: 60%;
+            background: rgba(255, 255, 0, 0.5);
+            transform: skewX(-10deg);
+            z-index: -1;
+            border-radius: 4px;
+        }
+
+        &:hover::before {
+            background: rgba(255, 255, 0, 0.7);
+        }
     }
 }
