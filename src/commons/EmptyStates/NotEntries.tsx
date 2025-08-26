@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import ModalCreate from "../Modals/ModalCreate";
+import ModalCreateCollection from "../Modals/ModalCreateCollection";
 import Plus from "@/styles/icons/Plus";
 import styles from "./notEntries.module.scss";
 
@@ -15,7 +15,9 @@ const NotEntries = ({ title }: { title: string }) => {
                     <Plus color="white" width="24" height="24" />
                 </button>
             </div>
-            {openModalCreate && <ModalCreate setModal={setOpenModalCreate} />}
+            {openModalCreate && (
+                <ModalCreateCollection setModal={setOpenModalCreate} />
+            )}
         </>
     );
 };

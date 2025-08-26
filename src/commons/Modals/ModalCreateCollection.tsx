@@ -11,7 +11,7 @@ interface ModalProps {
 }
 //Sirve para crear colecciones/post
 //que al presionar enter se envie (si completo todos los campos)
-const ModalCreate = ({ setModal }: ModalProps) => {
+const ModalCreateCollection = ({ setModal }: ModalProps) => {
     const QueryClient = useQueryClient();
     const [nameCollection, setNameCollection] = useState<string>("");
 
@@ -90,4 +90,4 @@ const ModalCreate = ({ setModal }: ModalProps) => {
     );
 };
 
-export default ModalCreate;
+export default ModalCreateCollection;
