@@ -1,3 +1,4 @@
+"use client";
 import React, { ChangeEvent, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { showError, showSuccess } from "../Toast/toastHelpers";
@@ -29,6 +30,7 @@ const ModalCreate = ({ setModal }: ModalProps) => {
             });
         },
         onError: (error: any) => {
+            console.log(error);
             showError("Error al crear colección");
             setModal(false);
         },
@@ -36,11 +38,11 @@ const ModalCreate = ({ setModal }: ModalProps) => {
 
     const handlerCreate = async (e: React.FormEvent) => {
         try {
+            e.preventDefault(); 
             const body = {
-                collectionName: nameCollection,
+                collectionName: nameCollection.trim(),
                 title: nameCollection,
             };
-            // console.log(body);
             await createCollectionMutation(body);
         } catch (error) {
             console.log(error);

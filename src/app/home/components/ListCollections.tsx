@@ -21,7 +21,6 @@ const ListCollections = () => {
         (state: RootState) => state.user.searchTextCollection
     );
 
-    const forceEmptyEntries = true;
     // console.log(searchTextCollection);
     const { data, isLoading, isError, isSuccess, fetchNextPage } =
         useInfiniteQuery({
