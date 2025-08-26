@@ -4,7 +4,6 @@ import axiosInstance from "@/config/axiosInterceptor.server";
 export async function createCollection(body: {
     collectionName: string;
     title: string;
-    userId?: number;
 }) {
     try {
         const res = await axiosInstance.post(
