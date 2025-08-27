@@ -3,13 +3,12 @@ import axiosInstance from "@/config/axiosInterceptor.server";
 //Crear un post sin colección
 export async function createPost(
     body: { title: string; description: string },
-    userId: number | string,
-    collectionId: number | string
+    collectionId?: number | string
 ) {
     try {
         //pasar body y parametros x query
         const res = await axiosInstance.post(
-            `/post/create?userId=${userId}&collectionId=${collectionId}`,
+            `/post/createOne?collectionId=${collectionId}`,
             body
         );
         return res.data.data;

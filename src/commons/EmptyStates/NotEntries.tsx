@@ -16,14 +16,22 @@ const NotEntries = ({ title }: { title: string }) => {
         <>
             <div className={styles.containerEmptyState}>
                 <h2>{title}</h2>
-                <button onClick={() => setOpenModalCreate(true)}>
-                    <Plus color="white" width="24" height="24" />
-                </button>
+                {tabs === "collections" ? (
+                    <button onClick={() => setOpenModalCreate(true)}>
+                        <Plus color="white" width="24" height="24" />
+                    </button>
+                ) : (
+                    <button onClick={() => setOpenModalPost(true)}>
+                        <Plus color="white" width="24" height="24" />
+                    </button>
+                )}
             </div>
             {openModalCreate && tabs === "collections" && (
                 <ModalCreateCollection setModal={setOpenModalCreate} />
             )}
-            {openModalPost && tabs === "post" && <ModalCreatePost />}
+            {openModalPost && tabs === "post" && (
+                <ModalCreatePost setModal={setOpenModalPost} />
+            )}
         </>
     );
 };

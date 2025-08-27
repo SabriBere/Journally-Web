@@ -17,20 +17,18 @@ const ModalCreateCollection = ({ setModal }: ModalProps) => {
 
     //cuando lo crea, llamar a la query que corresponda
     const { mutateAsync: createCollectionMutation } = useMutation({
-        mutationFn: (body: {
-            collectionName: string;
-            title: string;
-        }) => createCollection(body),
+        mutationFn: (body: { collectionName: string; title: string }) =>
+            createCollection(body),
         mutationKey: ["createCollection"],
         onSuccess: async () => {
             showSuccess("Creado correctamente");
+            setNameCollection("");
             setModal(false);
             await QueryClient.refetchQueries({
                 queryKey: ["getAllCollections"],
             });
         },
         onError: (error: any) => {
-            console.log(error);
             showError("Error al crear colección");
             setModal(false);
         },
@@ -38,7 +36,7 @@ const ModalCreateCollection = ({ setModal }: ModalProps) => {
 
     const handlerCreate = async (e: React.FormEvent) => {
         try {
-            e.preventDefault(); 
+            e.preventDefault();
             const body = {
                 collectionName: nameCollection.trim(),
                 title: nameCollection,
@@ -78,7 +76,7 @@ const ModalCreateCollection = ({ setModal }: ModalProps) => {
                         Crear
                     </button>
                     <button
-                        type="submit"
+                        type="button"
                         title="Cancelar"
                         onClick={() => setModal(false)}
                     >
