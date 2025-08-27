@@ -1,19 +1,23 @@
 "use client";
 import React, { ChangeEvent, useState } from "react";
+import { RootState } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setOpenModalCollection } from "@/store/userSlice";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { showError, showSuccess } from "../Toast/toastHelpers";
 import { createCollection } from "@/services/collection.service";
 import Close from "@/styles/icons/Close";
 import styles from "./modalCreate.module.scss";
 
-interface ModalProps {
-    setModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
 //Sirve para crear colecciones/post
 //que al presionar enter se envie (si completo todos los campos)
-const ModalCreateCollection = ({ setModal }: ModalProps) => {
+const ModalCreateCollection = () => {
+    const dispatch = useDispatch();
     const QueryClient = useQueryClient();
     const [nameCollection, setNameCollection] = useState<string>("");
+    const openModalCollection = useSelector(
+        (state: RootState) => state.user.openModalCollection
+    );
 
     //cuando lo crea, llamar a la query que corresponda
     const { mutateAsync: createCollectionMutation } = useMutation({
@@ -23,14 +27,14 @@ const ModalCreateCollection = ({ setModal }: ModalProps) => {
         onSuccess: async () => {
             showSuccess("Creado correctamente");
             setNameCollection("");
-            setModal(false);
+            dispatch(setOpenModalCollection(false));
             await QueryClient.refetchQueries({
                 queryKey: ["getAllCollections"],
             });
         },
         onError: (error: any) => {
             showError("Error al crear colección");
-            setModal(false);
+            dispatch(setOpenModalCollection(false));
         },
     });
 
@@ -47,44 +51,54 @@ const ModalCreateCollection = ({ setModal }: ModalProps) => {
         }
     };
     return (
-        <div className={styles.overlay}>
-            <form className={styles.containerModalCreate}>
-                <div className={styles.containerTop}>
-                    <h2>Crear una colección</h2>
-                    <button onClick={() => setModal(false)}>
-                        <Close width="24" height="24" color="white" />
-                    </button>
+        <>
+            {openModalCollection && (
+                <div className={styles.overlay}>
+                    <form className={styles.containerModalCreate}>
+                        <div className={styles.containerTop}>
+                            <h2>Crear una colección</h2>
+                            <button
+                                onClick={() =>
+                                    dispatch(setOpenModalCollection(false))
+                                }
+                            >
+                                <Close width="24" height="24" color="white" />
+                            </button>
+                        </div>
+                        <div className={styles.containerInput}>
+                            <label>Nombre</label>
+                            <input
+                                type="text"
+                                title="Crear"
+                                placeholder="Ingrese un nombre"
+                                className={styles.inputs}
+                                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                    setNameCollection(e.target.value)
+                                }
+                                value={nameCollection}
+                            />
+                        </div>
+                        <div className={styles.containerButtons}>
+                            <button
+                                onClick={handlerCreate}
+                                className={styles.btnCreate}
+                            >
+                                Crear
+                            </button>
+                            <button
+                                type="button"
+                                title="Cancelar"
+                                onClick={() =>
+                                    dispatch(setOpenModalCollection(false))
+                                }
+                            >
+                                Cancelar
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <div className={styles.containerInput}>
-                    <label>Nombre</label>
-                    <input
-                        type="text"
-                        title="Crear"
-                        placeholder="Ingrese un nombre"
-                        className={styles.inputs}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                            setNameCollection(e.target.value)
-                        }
-                        value={nameCollection}
-                    />
-                </div>
-                <div className={styles.containerButtons}>
-                    <button
-                        onClick={handlerCreate}
-                        className={styles.btnCreate}
-                    >
-                        Crear
-                    </button>
-                    <button
-                        type="button"
-                        title="Cancelar"
-                        onClick={() => setModal(false)}
-                    >
-                        Cancelar
-                    </button>
-                </div>
-            </form>
-        </div>
+            )}
+        </>
     );
 };
 
