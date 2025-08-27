@@ -1,18 +1,14 @@
 import React, { ChangeEvent, useState } from "react";
 import { createPost } from "@/services/post.service";
-import {
-    useMutation,
-    useQueryClient,
-} from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
+import { setOpenModalPost } from "@/store/userSlice";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { showError, showSuccess } from "../Toast/toastHelpers";
 import Close from "@/styles/icons/Close";
 import styles from "./modalCreate.module.scss";
 
-interface ModalProps {
-    setModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const ModalCreatePost = ({ setModal }: ModalProps) => {
+const ModalCreatePost = () => {
+    const dispatch = useDispatch();
     const QueryClient = useQueryClient();
     const [namePost, setNamePost] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -25,14 +21,14 @@ const ModalCreatePost = ({ setModal }: ModalProps) => {
         onSuccess: async () => {
             showSuccess("Creado correctamente");
             setNamePost("");
-            setModal(false);
+            dispatch(setOpenModalPost(false));
             await QueryClient.refetchQueries({
-                queryKey: ["getAllCollections"],
+                queryKey: ["getAllPost"],
             });
         },
         onError: (error: any) => {
             showError("Error al crear el post");
-            setModal(false);
+            dispatch(setOpenModalPost(false));
         },
     });
     const handlerCreatePost = async (e: React.FormEvent) => {
@@ -52,7 +48,7 @@ const ModalCreatePost = ({ setModal }: ModalProps) => {
             <form className={styles.containerModalCreate}>
                 <div className={styles.containerTop}>
                     <h2>Crear un post</h2>
-                    <button onClick={() => setModal(false)}>
+                    <button onClick={() => dispatch(setOpenModalPost(false))}>
                         <Close width="24" height="24" color="white" />
                     </button>
                 </div>
@@ -90,7 +86,7 @@ const ModalCreatePost = ({ setModal }: ModalProps) => {
                     <button
                         type="button"
                         title="Cancelar"
-                        onClick={() => setModal(false)}
+                        onClick={() => dispatch(setOpenModalPost(false))}
                     >
                         Cancelar
                     </button>
