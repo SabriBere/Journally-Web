@@ -18,7 +18,7 @@ $color: colors.$darkNavyBlue;
     justify-content: center;
     align-items: center;
     width: 400px;
-    max-height: 300px;
+    max-height: 400px;
     background-color: colors.$orangeYellow;
     color: colors.$white;
     font-size: 18px;
@@ -107,4 +107,7 @@ $color: colors.$darkNavyBlue;
             background: rgba(255, 255, 0, 0.7);
         }
     }
+}
+
+.containerModalPost {
 }
