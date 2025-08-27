@@ -22,8 +22,6 @@ const ListPost = () => {
         (state: RootState) => state.user.searchTextPost
     );
 
-    const forceEmptyEntries = true;
-
     const { data, isLoading, isError, isSuccess, fetchNextPage } =
         useInfiniteQuery({
             queryKey: ["getAllPost", { search: searchTextPost }],
@@ -41,21 +39,6 @@ const ListPost = () => {
     const flatPost =
         data?.pages?.flatMap((page: any) => page?.userPost ?? []) ?? [];
 
-    // 🔹 Override total: mostramos “crear nueva colección” pase lo que pase
-    if (forceEmptyEntries) {
-        return (
-            <div className={styles.containerMain}>
-                <div className={styles.containerImage}>
-                    {/* Fondo para empty “sin entradas” */}
-                    <MyUniverse />
-                </div>
-                <div className={styles.containerEmpty}>
-                    <NotEntries title="Crear una nueva colección" />
-                </div>
-            </div>
-        );
-    }
-
     return (
         <>
             {tabs === "post" && (
@@ -71,7 +54,7 @@ const ListPost = () => {
                         )}
                     </div>
 
-                    {forceEmptyEntries ? (
+                    {isError ? (
                         <div className={styles.containerEmpty}>
                             <Error />
                         </div>
