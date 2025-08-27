@@ -1,0 +1,120 @@
+@use "sass:color";
+@use "../../styles/colors" as colors;
+
+$color: colors.$darkNavyBlue;
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.35);
+    display: grid;
+    place-items: center;
+}
+
+.containerModalCreate {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    max-height: 400px;
+    background-color: colors.$orangeYellow;
+    color: colors.$white;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1.5;
+    font-family: var(--font-caveat);
+    border-radius: 24px;
+    padding: 20px;
+    gap: 16px;
+    transform: rotate(-2deg);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+    flex: 1;
+
+    .containerTop {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .containerInput {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .inputs {
+        border: none;
+        outline: none;
+        background: colors.$white;
+        color: colors.$darkOrange;
+        caret-color: colors.$clayBrown;
+        font-size: 18px;
+        font-weight: bold;
+        letter-spacing: 1.5;
+        font-family: var(--font-caveat);
+        padding: 12px;
+        border-bottom: 2px solid colors.$clayBrown;
+
+        &::placeholder {
+            color: colors.$clayBrown;
+            font-family: var(--font-caveat);
+        }
+
+        &:focus {
+            border-bottom: 2px solid colors.$darkOrange;
+        }
+    }
+
+    .containerButtons {
+        display: flex;
+        flex-direction: row;
+        gap: 16px;
+    }
+
+    .btnCreate {
+        position: relative;
+        font-family: var(--font-caveat);
+        font-size: 20px;
+        font-weight: bold;
+        padding: 6px 12px;
+        border: none;
+        background: none;
+        color: colors.$clayBrown;
+        cursor: pointer;
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 24%;
+            height: 60%;
+            background: rgba(255, 255, 0, 0.5);
+            transform: skewX(-10deg);
+            z-index: -1;
+            border-radius: 4px;
+        }
+
+        &:hover::before {
+            background: rgba(255, 255, 0, 0.7);
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+            color: colors.$clayBrown;
+
+            &::before {
+                background: rgba(200, 200, 200, 0.4);
+            }
+        }
+    }
+}
