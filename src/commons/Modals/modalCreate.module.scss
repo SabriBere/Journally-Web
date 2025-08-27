@@ -106,8 +106,15 @@ $color: colors.$darkNavyBlue;
         &:hover::before {
             background: rgba(255, 255, 0, 0.7);
         }
-    }
-}
 
-.containerModalPost {
+        &:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+            color: colors.$clayBrown;
+
+            &::before {
+                background: rgba(200, 200, 200, 0.4);
+            }
+        }
+    }
 }

@@ -1,3 +1,4 @@
+"use client";
 import React, { ChangeEvent, useState } from "react";
 import { createPost } from "@/services/post.service";
 import { useDispatch } from "react-redux";
@@ -12,9 +13,10 @@ const ModalCreatePost = () => {
     const QueryClient = useQueryClient();
     const [namePost, setNamePost] = useState<string>("");
     const [description, setDescription] = useState<string>("");
+    const isDisabled = !namePost.trim() && !description.trim();
 
     //escribir mutación y consulta al end point
-    const { mutateAsync: createPostMutation } = useMutation({
+    const { mutateAsync: createPostMutation, isPending } = useMutation({
         mutationFn: (body: { title: string; description: string }) =>
             createPost(body),
         mutationKey: ["createPost"],
@@ -78,17 +80,18 @@ const ModalCreatePost = () => {
                 </div>
                 <div className={styles.containerButtons}>
                     <button
-                        onClick={handlerCreatePost}
-                        className={styles.btnCreate}
-                    >
-                        Crear
-                    </button>
-                    <button
                         type="button"
                         title="Cancelar"
                         onClick={() => dispatch(setOpenModalPost(false))}
                     >
                         Cancelar
+                    </button>
+                    <button
+                        onClick={handlerCreatePost}
+                        className={styles.btnCreate}
+                        disabled={isPending || isDisabled}
+                    >
+                        Crear post
                     </button>
                 </div>
             </form>

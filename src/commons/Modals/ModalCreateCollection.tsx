@@ -15,12 +15,13 @@ const ModalCreateCollection = () => {
     const dispatch = useDispatch();
     const QueryClient = useQueryClient();
     const [nameCollection, setNameCollection] = useState<string>("");
+    const isDisabled = !nameCollection.trim();
     const openModalCollection = useSelector(
         (state: RootState) => state.user.openModalCollection
     );
 
     //cuando lo crea, llamar a la query que corresponda
-    const { mutateAsync: createCollectionMutation } = useMutation({
+    const { mutateAsync: createCollectionMutation, isPending } = useMutation({
         mutationFn: (body: { collectionName: string; title: string }) =>
             createCollection(body),
         mutationKey: ["createCollection"],
@@ -80,12 +81,6 @@ const ModalCreateCollection = () => {
                         </div>
                         <div className={styles.containerButtons}>
                             <button
-                                onClick={handlerCreate}
-                                className={styles.btnCreate}
-                            >
-                                Crear
-                            </button>
-                            <button
                                 type="button"
                                 title="Cancelar"
                                 onClick={() =>
@@ -93,6 +88,13 @@ const ModalCreateCollection = () => {
                                 }
                             >
                                 Cancelar
+                            </button>
+                            <button
+                                onClick={handlerCreate}
+                                className={styles.btnCreate}
+                                disabled={isPending || isDisabled}
+                            >
+                                Crear colección
                             </button>
                         </div>
                     </form>
