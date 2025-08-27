@@ -9,7 +9,6 @@ import Plus from "@/styles/icons/Plus";
 import styles from "./buttonCreate.module.scss";
 
 const ButtonCreate = () => {
-    //estados globales?
     const dispatch = useDispatch();
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
     const openModalCollection = useSelector(
