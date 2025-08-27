@@ -20,6 +20,7 @@ const ListCollections = () => {
     const searchTextCollection = useSelector(
         (state: RootState) => state.user.searchTextCollection
     );
+
     // console.log(searchTextCollection);
     const { data, isLoading, isError, isSuccess, fetchNextPage } =
         useInfiniteQuery({
