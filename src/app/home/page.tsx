@@ -13,8 +13,10 @@ const Home = () => {
             <TitleSection title="Inicio" />
             <div className={styles.controls}>
                 <Tabs />
-                <InputSearch />
-                <ButtonCreate />
+                <div className={styles.options}>
+                    <InputSearch />
+                    <ButtonCreate />
+                </div>
             </div>
 
             <div className={styles.containerHeader}>
