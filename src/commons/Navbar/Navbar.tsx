@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
-import styles from "./navbar.module.scss";
 import Brand from "@/styles/icons/Brand";
+import ButtonLogOut from "../Buttons/ButtonLogOut";
+import styles from "./navbar.module.scss";
 
 const Navbar = () => {
     return (
@@ -13,6 +14,7 @@ const Navbar = () => {
                     <Brand color="#FFFFFF" width={"24"} height={"24"} />
                 </span>
             </Link>
+            <ButtonLogOut />
         </div>
     );
 };
