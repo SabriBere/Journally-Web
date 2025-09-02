@@ -8,9 +8,9 @@ import { getAllPost } from "@/services/post.service";
 import { allCollection } from "@/services/collection.service";
 import ModalCreateCollection from "../Modals/ModalCreateCollection";
 import ModalCreatePost from "../Modals/ModalCreatePost";
+import TooltipWrapper from "../Tooltip/Tooltip";
 import Plus from "@/styles/icons/Plus";
 import styles from "./buttonCreate.module.scss";
-import TooltipWrapper from "../Tooltip/Tooltip";
 
 const ButtonCreate = () => {
     const dispatch = useDispatch();
@@ -46,7 +46,7 @@ const ButtonCreate = () => {
     return (
         <>
             {tabs === "collections"
-                ? collections !== undefined && (
+                ? collections !== 0 && (
                       <TooltipWrapper content="Crear colección">
                           <button
                               className={styles.containerButton}
@@ -58,7 +58,7 @@ const ButtonCreate = () => {
                           </button>
                       </TooltipWrapper>
                   )
-                : posts !== undefined && (
+                : (posts !== 0) && (
                       <TooltipWrapper content={"Crear entrada"}>
                           <button
                               className={styles.containerButton}
