@@ -3,8 +3,12 @@ import React from "react";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { setOpenModalCollection, setOpenModalPost } from "@/store/userSlice";
+import { useQuery } from "@tanstack/react-query";
+import { getAllPost } from "@/services/post.service";
+import { allCollection } from "@/services/collection.service";
 import ModalCreateCollection from "../Modals/ModalCreateCollection";
 import ModalCreatePost from "../Modals/ModalCreatePost";
+import TooltipWrapper from "../Tooltip/Tooltip";
 import Plus from "@/styles/icons/Plus";
 import styles from "./buttonCreate.module.scss";
 
@@ -18,23 +22,52 @@ const ButtonCreate = () => {
         (state: RootState) => state.user.openModalPost
     );
 
+    const collectionsCall = useQuery({
+        queryKey: ["getAllCollections", { page: 1 }],
+        queryFn: () => allCollection({ page: 1 }),
+        enabled: tabs === "collections",
+        staleTime: 5 * 60 * 1000,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+    });
+
+    const postsCall = useQuery({
+        queryKey: ["getAllPost", { page: 1 }],
+        queryFn: () => getAllPost({ page: 1 }),
+        enabled: tabs === "post",
+        staleTime: 5 * 60 * 1000,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+    });
+
+    const collections = collectionsCall.data?.collectionList?.length;
+    const posts = postsCall.data?.userPost?.length;
+
     return (
         <>
-            {tabs === "collections" ? (
-                <button
-                    className={styles.containerButton}
-                    onClick={() => dispatch(setOpenModalCollection(true))}
-                >
-                    <Plus color="white" width="24" height="24" />
-                </button>
-            ) : (
-                <button
-                    className={styles.containerButton}
-                    onClick={() => dispatch(setOpenModalPost(true))}
-                >
-                    <Plus color="white" width="24" height="24" />
-                </button>
-            )}
+            {tabs === "collections"
+                ? collections !== 0 && (
+                      <TooltipWrapper content="Crear colección">
+                          <button
+                              className={styles.containerButton}
+                              onClick={() =>
+                                  dispatch(setOpenModalCollection(true))
+                              }
+                          >
+                              <Plus color="white" width="24" height="24" />
+                          </button>
+                      </TooltipWrapper>
+                  )
+                : (posts !== 0) && (
+                      <TooltipWrapper content={"Crear entrada"}>
+                          <button
+                              className={styles.containerButton}
+                              onClick={() => dispatch(setOpenModalPost(true))}
+                          >
+                              <Plus color="white" width="24" height="24" />
+                          </button>
+                      </TooltipWrapper>
+                  )}
             {openModalCollection && tabs === "collections" && (
                 <ModalCreateCollection />
             )}
