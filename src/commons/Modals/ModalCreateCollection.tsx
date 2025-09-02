@@ -9,8 +9,6 @@ import { createCollection } from "@/services/collection.service";
 import Close from "@/styles/icons/Close";
 import styles from "./modalCreate.module.scss";
 
-//Sirve para crear colecciones/post
-//que al presionar enter se envie (si completo todos los campos)
 const ModalCreateCollection = () => {
     const dispatch = useDispatch();
     const QueryClient = useQueryClient();
@@ -20,7 +18,6 @@ const ModalCreateCollection = () => {
         (state: RootState) => state.user.openModalCollection
     );
 
-    //cuando lo crea, llamar a la query que corresponda
     const { mutateAsync: createCollectionMutation, isPending } = useMutation({
         mutationFn: (body: { collectionName: string; title: string }) =>
             createCollection(body),
