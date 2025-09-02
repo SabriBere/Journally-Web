@@ -16,7 +16,7 @@ const LoginForm = () => {
     const inputEmail = useSelector((state: RootState) => state.user.email);
     const inputPass = useSelector((state: RootState) => state.user.password);
     const [loading, setLoading] = useState<boolean>(false);
-    const isDisabled = !inputEmail && !inputPass;
+    const isDisabled = !inputEmail || !inputPass;
 
     const handlerLogin = async (e: React.SyntheticEvent) => {
         e.preventDefault();
@@ -32,6 +32,7 @@ const LoginForm = () => {
             //agregar un spinner o pantalla de carga
             if (!res?.ok) {
                 showError("Credenciales invalidas");
+                return null
             }
 
             return router.push(`/home`);
@@ -55,7 +56,7 @@ const LoginForm = () => {
                 <button
                     disabled={isDisabled || loading}
                     className={styles.buttonSubmit}
-                    // type="submit"
+                    type="submit"
                 >
                     {loading ? <Spinner /> : "Iniciar sesión"}
                 </button>
