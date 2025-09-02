@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Caveat, Inter } from "next/font/google";
+import { getServerSession } from "next-auth";
 import Providers from "./providers";
 import Navbar from "@/commons/Navbar/Navbar";
 import Footer from "@/commons/Footer/Footer";
@@ -22,24 +23,25 @@ export const metadata: Metadata = {
     title: "Journally App",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const session = await getServerSession();
     return (
         <html lang="en" className={`${caveat.variable} ${inter.variable}`}>
             <body className={styles.layout}>
-                <header>
-                    <Navbar />
-                </header>
-                {/* generar sidebar flotante */}
-                <main className={styles.mainContent}>
-                    <Providers>{children}</Providers>
-                </main>
-                <footer>
-                    <Footer />
-                </footer>
+                <Providers session={session}>
+                    <header>
+                        <Navbar />
+                    </header>
+                    {/* generar sidebar flotante */}
+                    <main className={styles.mainContent}>{children}</main>
+                    <footer>
+                        <Footer />
+                    </footer>
+                </Providers>
             </body>
         </html>
     );

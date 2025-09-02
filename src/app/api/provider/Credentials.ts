@@ -1,5 +1,5 @@
 import { NextAuthOptions } from "next-auth";
-import { refreshAccessToken, userLoging } from "../actions";
+import { userLoging } from "../actions";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
             id: "credentials",
             name: "Credentials",
             credentials: {
-                user: { label: "Email", type: "email" },
+                email: { label: "Email", type: "email" },
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials: any) {
@@ -43,25 +43,23 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         async jwt({ token, user }: any) {
-            // console.log(data, 'que vuelve de la función')
 
             if (user) {
-                // console.log(user?.refreshToken, "hola");
-                // const data = refreshAccessToken(user);
+                // console.log(user?.accessToken, "seteo en jwt");
                 return {
                     ...token,
                     userId: user?.id,
                     userName: user?.name,
                     userEmail: user?.email,
                     accessToken: user?.accessToken,
-                    refreshToken: user?.refreshToken,
+                    // refreshToken: user?.refreshToken,
                 };
             }
 
             return token;
         },
         async session({ session, token }: any) {
-            // console.log(session, token, 'session')
+            // console.log(token?.accessToken, "seteo en sesion");
             return {
                 ...session,
                 user: {
@@ -69,7 +67,7 @@ export const authOptions: NextAuthOptions = {
                     name: token?.userName,
                     email: token?.userEmail,
                     accessToken: token?.accessToken,
-                    refreshToken: token?.refreshToken,
+                    // refreshToken: token?.refreshToken,
                 },
             };
         },
