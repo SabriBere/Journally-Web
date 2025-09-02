@@ -54,7 +54,7 @@ const ModalDelete = ({ id, isOpen, setClose, color }: ModalProps) => {
                 showSuccess("Eliminado correctamente 🎉");
                 setClose(false);
                 await QueryClient.refetchQueries({
-                    queryKey: ["getAllCollections"],
+                    queryKey: ["getAllPost"],
                 });
             },
             onError: async () => {
