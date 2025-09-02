@@ -1,4 +1,3 @@
-//configuración de axios
 import { getSession } from "next-auth/react";
 import axios, { AxiosInstance } from "axios";
 
@@ -14,8 +13,6 @@ axiosInstance.interceptors.request.use(
 
         if (session?.user?.accessToken) {
             config.headers["x-access-token"] = session?.user?.accessToken;
-        } else {
-            delete config.headers["x-access-token"];
         }
 
         //tengo que hacer que se envien solo cuando se vence el token
