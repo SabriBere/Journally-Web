@@ -25,7 +25,7 @@ const LoginForm = () => {
         try {
             const res = await signIn("credentials", {
                 redirect: false,
-                user: inputEmail,
+                email: inputEmail,
                 password: inputPass,
             });
 
@@ -55,7 +55,7 @@ const LoginForm = () => {
                 <button
                     disabled={isDisabled || loading}
                     className={styles.buttonSubmit}
-                    type="submit"
+                    // type="submit"
                 >
                     {loading ? <Spinner /> : "Iniciar sesión"}
                 </button>
