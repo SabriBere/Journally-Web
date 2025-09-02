@@ -15,8 +15,8 @@ const InputPassword = () => {
         (state: RootState) => state.user.password
     );
     const [showPassword, setShowPassword] = useState<boolean>(false);
-    // const [isValidPass, setIsValidPass] = useState<boolean>(false);
-    // const passRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    const [isValidPass, setIsValidPass] = useState<boolean>(false);
+    const passRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
     const toggleShowPassword = () => setShowPassword((prev) => !prev);
 
@@ -37,7 +37,7 @@ const InputPassword = () => {
                     value={inputPassword}
                 />
                 <TooltipWrapper content={showPassword ? "Ocultar" : "Mostrar"}>
-                    <button onClick={toggleShowPassword}>
+                    <button type="button" onClick={toggleShowPassword}>
                         {showPassword ? (
                             <Eye width="24" height="24" color="#4a4a4a" />
                         ) : (

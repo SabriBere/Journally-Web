@@ -1,4 +1,3 @@
-//configuración de axios
 import { getSession } from "next-auth/react";
 import axios, { AxiosInstance } from "axios";
 
@@ -10,7 +9,7 @@ const axiosInstance: AxiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     async (config: any) => {
         const session: any = await getSession();
-        // console.log(session);
+        // console.log(session?.user?.accessToken, 'token del usuario?');
 
         if (session?.user?.accessToken) {
             config.headers["x-access-token"] = session?.user?.accessToken;

@@ -6,10 +6,15 @@ import { Provider } from "react-redux";
 import { store } from "../store/store";
 import Toast from "@/commons/Toast/Toast";
 
-const Providers = ({ children }: { children: React.ReactNode }) => {
+interface Props{
+    children: React.ReactNode,
+    session: any
+}
+
+const Providers = ({ children, session }: Props) => {
     const queryClient = new QueryClient();
     return (
-        <SessionProvider>
+        <SessionProvider session={session}>
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     {children}
