@@ -8,6 +8,7 @@ import { deletePost } from "@/services/post.service";
 import Check from "@/styles/icons/Check";
 import Close from "@/styles/icons/Close";
 import styles from "./ModalDelete.module.scss";
+import TooltipWrapper from "../Tooltip/Tooltip";
 
 //Model a un common de types
 interface ModalProps {
@@ -86,12 +87,16 @@ const ModalDelete = ({ id, isOpen, setClose, color }: ModalProps) => {
             <div className={styles.miniModal}>
                 <p>{textModal}</p>
             </div>
-            <button type="button" onClick={handlerDelete}>
-                <Check color={"#11796f"} width="20" height="20" />
-            </button>
-            <button type="button" onClick={() => setClose(false)}>
-                <Close color={"#0d1e2b"} width="20" height="20" />
-            </button>
+            <TooltipWrapper content={"Eliminar"}>
+                <button type="button" onClick={handlerDelete}>
+                    <Check color={"#11796f"} width="20" height="20" />
+                </button>
+            </TooltipWrapper>
+            <TooltipWrapper content={"Cancelar"}>
+                <button type="button" onClick={() => setClose(false)}>
+                    <Close color={"#0d1e2b"} width="20" height="20" />
+                </button>
+            </TooltipWrapper>
         </div>
     );
 };

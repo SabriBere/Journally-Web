@@ -7,6 +7,7 @@ import ModalCreateCollection from "../Modals/ModalCreateCollection";
 import ModalCreatePost from "../Modals/ModalCreatePost";
 import Plus from "@/styles/icons/Plus";
 import styles from "./buttonCreate.module.scss";
+import TooltipWrapper from "../Tooltip/Tooltip";
 
 const ButtonCreate = () => {
     const dispatch = useDispatch();
@@ -21,19 +22,23 @@ const ButtonCreate = () => {
     return (
         <>
             {tabs === "collections" ? (
-                <button
-                    className={styles.containerButton}
-                    onClick={() => dispatch(setOpenModalCollection(true))}
-                >
-                    <Plus color="white" width="24" height="24" />
-                </button>
+                <TooltipWrapper content={"Crear colección"}>
+                    <button
+                        className={styles.containerButton}
+                        onClick={() => dispatch(setOpenModalCollection(true))}
+                    >
+                        <Plus color="white" width="24" height="24" />
+                    </button>
+                </TooltipWrapper>
             ) : (
-                <button
-                    className={styles.containerButton}
-                    onClick={() => dispatch(setOpenModalPost(true))}
-                >
-                    <Plus color="white" width="24" height="24" />
-                </button>
+                <TooltipWrapper content={"Crear entrada"}>
+                    <button
+                        className={styles.containerButton}
+                        onClick={() => dispatch(setOpenModalPost(true))}
+                    >
+                        <Plus color="white" width="24" height="24" />
+                    </button>
+                </TooltipWrapper>
             )}
             {openModalCollection && tabs === "collections" && (
                 <ModalCreateCollection />
