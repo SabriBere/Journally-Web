@@ -9,6 +9,7 @@ import { updatePost } from "@/services/post.service";
 import Close from "@/styles/icons/Close";
 import Check from "@/styles/icons/Check";
 import styles from "./modalEditName.module.scss";
+import TooltipWrapper from "../Tooltip/Tooltip";
 
 interface ModalProps {
     id: any;
@@ -133,26 +134,30 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                 value={newName}
                 disabled={isPendingEditCollection}
             />
-            <button
-                type="submit"
-                title="Guardar"
-                className={styles.buttonEdit}
-                onClick={handlerEdit}
-                disabled={isPendingEditCollection}
-            >
-                <Check color={"#11796f"} width="20" height="20" />
-            </button>
-            <button
-                type="button"
-                title="Cancelar"
-                className={styles.buttonEdit}
-                onClick={(e) => {
-                    setClose(false);
-                }}
-                disabled={isPendingEditCollection}
-            >
-                <Close color={"#0d1e2b"} width="20" height="20" />
-            </button>
+            <TooltipWrapper content={"Guardar"}>
+                <button
+                    type="submit"
+                    title="Guardar"
+                    className={styles.buttonEdit}
+                    onClick={handlerEdit}
+                    disabled={isPendingEditCollection}
+                >
+                    <Check color={"#11796f"} width="20" height="20" />
+                </button>
+            </TooltipWrapper>
+            <TooltipWrapper content={"Cancelar"}>
+                <button
+                    type="button"
+                    title="Cancelar"
+                    className={styles.buttonEdit}
+                    onClick={(e) => {
+                        setClose(false);
+                    }}
+                    disabled={isPendingEditCollection}
+                >
+                    <Close color={"#0d1e2b"} width="20" height="20" />
+                </button>
+            </TooltipWrapper>
         </form>
     );
 };
