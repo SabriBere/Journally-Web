@@ -1,9 +1,13 @@
 "use client";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import styles from "./navbar.module.scss";
 import Brand from "@/styles/icons/Brand";
+import ButtonLogOut from "../Buttons/ButtonLogOut";
+import styles from "./navbar.module.scss";
 
 const Navbar = () => {
+    const { data: session, status } = useSession();
+
     return (
         <div className={styles.containerNavbar}>
             <Link className={styles.containerBrand} href={"/home"}>
@@ -13,6 +17,9 @@ const Navbar = () => {
                     <Brand color="#FFFFFF" width={"24"} height={"24"} />
                 </span>
             </Link>
+
+            {/* Renderizar solo si hay sesión */}
+            {status === "authenticated" && <ButtonLogOut />}
         </div>
     );
 };

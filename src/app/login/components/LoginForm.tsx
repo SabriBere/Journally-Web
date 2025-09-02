@@ -16,7 +16,7 @@ const LoginForm = () => {
     const inputEmail = useSelector((state: RootState) => state.user.email);
     const inputPass = useSelector((state: RootState) => state.user.password);
     const [loading, setLoading] = useState<boolean>(false);
-    const isDisabled = !inputEmail && !inputPass;
+    const isDisabled = !inputEmail || !inputPass;
 
     const handlerLogin = async (e: React.SyntheticEvent) => {
         e.preventDefault();
@@ -25,13 +25,14 @@ const LoginForm = () => {
         try {
             const res = await signIn("credentials", {
                 redirect: false,
-                user: inputEmail,
+                email: inputEmail,
                 password: inputPass,
             });
 
             //agregar un spinner o pantalla de carga
             if (!res?.ok) {
                 showError("Credenciales invalidas");
+                return null
             }
 
             return router.push(`/home`);

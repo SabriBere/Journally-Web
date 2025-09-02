@@ -1,1 +1,14 @@
-@use "../../../styles/colors" as colors;
+@use "../../styles/colors" as colors;
+
+.buttonLogOut {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-caveat);
+    background-color: colors.$intenseCoralRed;
+    color: colors.$white;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 20px;
+    letter-spacing: .5;
+    cursor: pointer;
+}
