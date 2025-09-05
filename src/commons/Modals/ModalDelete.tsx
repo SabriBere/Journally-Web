@@ -88,12 +88,12 @@ const ModalDelete = ({ id, isOpen, setClose, color }: ModalProps) => {
                 <p>{textModal}</p>
             </div>
             <TooltipWrapper content={"Eliminar"}>
-                <button type="button" onClick={handlerDelete}>
+                <button type="button" onClick={handlerDelete} disabled={isPendingPost || isPendingCollection}>
                     <Check color={"#11796f"} width="20" height="20" />
                 </button>
             </TooltipWrapper>
             <TooltipWrapper content={"Cancelar"}>
-                <button type="button" onClick={() => setClose(false)}>
+                <button type="button" onClick={() => setClose(false)} disabled={isPendingPost || isPendingCollection}>
                     <Close color={"#0d1e2b"} width="20" height="20" />
                 </button>
             </TooltipWrapper>
