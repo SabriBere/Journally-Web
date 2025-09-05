@@ -6,6 +6,7 @@ import { setOpenModalCollection } from "@/store/userSlice";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { showError, showSuccess } from "../Toast/toastHelpers";
 import { createCollection } from "@/services/collection.service";
+import SpinnerDots from "../Spinner/SipnnerDots";
 import Close from "@/styles/icons/Close";
 import styles from "./modalCreate.module.scss";
 
@@ -89,9 +90,9 @@ const ModalCreateCollection = () => {
                             <button
                                 onClick={handlerCreate}
                                 className={styles.btnCreate}
-                                disabled={isPending || isDisabled}
+                                disabled={isDisabled}
                             >
-                                Crear colección
+                                {!isPending ? "Crear colección" : (<SpinnerDots color="#FFFFFF" size={6} />)}
                             </button>
                         </div>
                     </form>

@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { setOpenModalPost } from "@/store/userSlice";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { showError, showSuccess } from "../Toast/toastHelpers";
+import SpinnerDots from "../Spinner/SipnnerDots";
 import Close from "@/styles/icons/Close";
 import styles from "./modalCreate.module.scss";
 
@@ -91,7 +92,7 @@ const ModalCreatePost = () => {
                         className={styles.btnCreate}
                         disabled={isPending || isDisabled}
                     >
-                        Crear post
+                        {!isPending ? "Crear post" : (<SpinnerDots color="#FFFFFF" size={6} />)}
                     </button>
                 </div>
             </form>
