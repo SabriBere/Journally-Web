@@ -122,7 +122,7 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
             onKeyDown={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
-                    e.stopPropagation(); // evita que el Link ancestro navegue
+                    e.stopPropagation();
                 }
             }}
         >
@@ -132,7 +132,7 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                 type="text"
                 onChange={handlerInputName}
                 value={newName}
-                disabled={isPendingEditCollection}
+                disabled={isPendingEditCollection || isPendingEditPost}
             />
             <TooltipWrapper content={"Guardar"}>
                 <button
@@ -140,7 +140,7 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                     title="Guardar"
                     className={styles.buttonEdit}
                     onClick={handlerEdit}
-                    disabled={isPendingEditCollection}
+                    disabled={isPendingEditCollection || isPendingEditPost}
                 >
                     <Check color={"#11796f"} width="20" height="20" />
                 </button>
@@ -153,7 +153,7 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                     onClick={(e) => {
                         setClose(false);
                     }}
-                    disabled={isPendingEditCollection}
+                    disabled={isPendingEditCollection || isPendingEditPost}
                 >
                     <Close color={"#0d1e2b"} width="20" height="20" />
                 </button>
