@@ -4,6 +4,7 @@ import Link from "next/link";
 import Brand from "@/styles/icons/Brand";
 import ButtonLogOut from "../Buttons/ButtonLogOut";
 import styles from "./navbar.module.scss";
+import Tabs from "../Tabs/Tabs";
 
 const Navbar = () => {
     const { data: session, status } = useSession();
@@ -17,7 +18,7 @@ const Navbar = () => {
                     <Brand color="#FFFFFF" width={"24"} height={"24"} />
                 </span>
             </Link>
-
+            <Tabs />
             {/* Renderizar solo si hay sesión */}
             {status === "authenticated" && <ButtonLogOut />}
         </div>

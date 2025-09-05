@@ -10,13 +10,10 @@ import styles from "./home.module.scss";
 const Home = () => {
     return (
         <div className={styles.containerHome}>
-            <TitleSection title="Inicio" />
             <div className={styles.controls}>
-                <Tabs />
-                <div className={styles.options}>
-                    <InputSearch />
-                    <ButtonCreate />
-                </div>
+                <TitleSection title="Inicio" />
+                <InputSearch />
+                <ButtonCreate />
             </div>
 
             <div className={styles.containerHeader}>
