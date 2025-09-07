@@ -1,6 +1,5 @@
 import React from "react";
 import TitleSection from "@/commons/Title/TitleSection";
-import Tabs from "@/commons/Tabs/Tabs";
 import ListCollections from "./components/ListCollections";
 import ListPost from "./components/ListPost";
 import InputSearch from "@/commons/Inputs/InputSearch";
@@ -10,8 +9,8 @@ import styles from "./home.module.scss";
 const Home = () => {
     return (
         <div className={styles.containerHome}>
+            <TitleSection title="Inicio" />
             <div className={styles.controls}>
-                <TitleSection title="Inicio" />
                 <InputSearch />
                 <ButtonCreate />
             </div>
