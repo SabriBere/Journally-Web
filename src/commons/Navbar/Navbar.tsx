@@ -19,7 +19,6 @@ const Navbar = () => {
                 </span>
             </Link>
             <Tabs />
-            {/* Renderizar solo si hay sesión */}
             {status === "authenticated" && <ButtonLogOut />}
         </div>
     );
