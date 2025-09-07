@@ -6,7 +6,7 @@
     justify-content: space-between;
     background-color: colors.$petroleumBlue;
     height: 50px;
-    width: 100%;
+    // width: 100%;
     padding: 10px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -25,5 +25,10 @@
             font-family: var(--font-inter);
             font-size: 18px;
         }
+    }
+
+    .containerLeft {
+        display: flex;
+        flex-direction: row;
     }
 }
