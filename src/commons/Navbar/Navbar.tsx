@@ -18,7 +18,7 @@ const Navbar = () => {
                     <Brand color="#FFFFFF" width={"24"} height={"24"} />
                 </span>
             </Link>
-            <Tabs />
+            {status === "authenticated" && <Tabs />}
             {status === "authenticated" && <ButtonLogOut />}
         </div>
     );
