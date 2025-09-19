@@ -1,6 +1,5 @@
 import React from "react";
 import TitleSection from "@/commons/Title/TitleSection";
-import Tabs from "@/commons/Tabs/Tabs";
 import ListCollections from "./components/ListCollections";
 import ListPost from "./components/ListPost";
 import InputSearch from "@/commons/Inputs/InputSearch";
@@ -12,11 +11,8 @@ const Home = () => {
         <div className={styles.containerHome}>
             <TitleSection title="Inicio" />
             <div className={styles.controls}>
-                <Tabs />
-                <div className={styles.options}>
-                    <InputSearch />
-                    <ButtonCreate />
-                </div>
+                <InputSearch />
+                <ButtonCreate />
             </div>
 
             <div className={styles.containerHeader}>
