@@ -19,7 +19,7 @@
     }
 
     .selectedTab {
-        color: colors.$darkTurquoise;
+        color: colors.$orangeYellow;
         position: relative;
 
         &::after {
@@ -35,7 +35,7 @@
     }
 
     .inactiveTab {
-        color: colors.$darkNavyBlue;
+        color: colors.$white;
         padding: 8px 16px;
         position: relative;
     }
