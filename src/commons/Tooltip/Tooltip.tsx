@@ -2,9 +2,11 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import styles from "./tooltip.module.scss";
 
 const TooltipWrapper = ({
+    key,
     content,
     children,
 }: {
+    key?: number,
     content: string;
     children: React.ReactNode;
 }) => {
