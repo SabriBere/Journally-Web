@@ -80,7 +80,7 @@ const ListPost = () => {
                             <InfiniteScroll fetchNextPage={fetchNextPage}>
                                 {flatPost?.map((onePost: any, i: number) => (
                                     <Link
-                                        href={`/collection/${onePost.post_id}`}
+                                        href={`/entries/${onePost.post_id}`}
                                         key={`col-${String(onePost.post_id)}-${i}`}
                                     >
                                         <Card data={onePost} index={i} />
