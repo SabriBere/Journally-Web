@@ -1,3 +1,4 @@
+"use client"
 import * as Tooltip from "@radix-ui/react-tooltip";
 import styles from "./tooltip.module.scss";
 
