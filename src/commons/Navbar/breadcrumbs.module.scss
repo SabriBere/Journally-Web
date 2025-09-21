@@ -1,0 +1,29 @@
+@use "../../styles/colors" as colors;
+
+.containerBreads {
+    position: relative;
+    display: flex;
+    width: auto;
+
+    p {
+        color: colors.$darkNavyBlue;
+        font-family: var(--font-inter);
+        font-weight: 400;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .space {
+        margin: auto 0.5rem;
+        color: colors.$darkTurquoise;
+        font-family: var(--font-inter);
+        font-weight: 700;
+        font-size: 16px;
+    }
+    .lastPage {
+        color: colors.$darkTurquoise;
+        font-family: var(--font-inter);
+        font-weight: 700;
+        font-size: 16px;
+    }
+}
