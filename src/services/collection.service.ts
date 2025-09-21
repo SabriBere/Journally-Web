@@ -60,7 +60,7 @@ export async function allCollection({
 }
 
 //Obtener una colección por id
-export async function collectionById(id: string) {
+export async function collectionById(id: number) {
     try {
         const res = await axiosInstance.get(
             `/collections/collectionId?id=${id}`
