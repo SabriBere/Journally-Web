@@ -30,7 +30,7 @@ const Breadcrumbs = () => {
     const breadcrumbsList = [
         {
             nameOfLastPage: "Entradas",
-            nameOfCurrentPage: `Detalle de entrada - ${postById?.title}`,
+            nameOfCurrentPage: `Detalle de entrada > ${postById?.title}`,
             condition: (pathSegment: string) =>
                 pathSegment === `/entries/${id}`,
         },
