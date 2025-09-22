@@ -6,26 +6,33 @@ import { getPostById } from "@/services/post.service";
 import { collectionById } from "@/services/collection.service";
 import styles from "./breadcrumbs.module.scss";
 
+const toNumber = (v: string | string[] | undefined) => {
+    if (!v || Array.isArray(v)) return undefined;
+    const n = Number(v);
+    return Number.isFinite(n) ? n : undefined;
+};
+
 const Breadcrumbs = () => {
     const router = useRouter();
-    const pathSegment = usePathname();
-    const { id } = useParams();
-    const convertId = Number(id);
-    const isEntryRoute = pathSegment === `/entries/`;
-    const isCollectionRoute = pathSegment === `/collection/`;
+    const pathname = usePathname();
+    const { id } = useParams<{ id: string }>();
 
-    //detalle de cualquier post
+    const convertId = toNumber(id);
+    const isEntryRoute = pathname?.startsWith("/entries/");
+    const isCollectionRoute = pathname?.startsWith("/collection/");
+
+    // Detalle de post (solo si estoy en /entries/:id)
     const { data: postById } = useQuery({
-        queryKey: ["oneEntry"],
-        queryFn: () => getPostById(convertId),
+        queryKey: ["oneEntry", convertId],
+        queryFn: () => getPostById(convertId as number),
         enabled: Boolean(convertId && isEntryRoute),
         retry: false,
     });
 
-    //Detalle de una colección
+    // Detalle de colección (solo si estoy en /collection/:id)
     const { data: collectionData } = useQuery({
-        queryKey: ["oneCollection"],
-        queryFn: () => collectionById(convertId),
+        queryKey: ["oneCollection", convertId],
+        queryFn: () => collectionById(convertId as number),
         enabled: Boolean(convertId && isCollectionRoute),
         retry: false,
     });
@@ -33,43 +40,26 @@ const Breadcrumbs = () => {
     const breadcrumbsList = [
         {
             nameOfLastPage: "Entradas",
-            nameOfCurrentPage: `Detalle de entrada > ${postById?.title}`,
-            condition: (pathSegment: string) =>
-                pathSegment === `/entries/${id}`,
+            nameOfCurrentPage: `Detalle de entrada > ${postById?.title ?? ""}`,
+            condition: (path: string) => path === `/entries/${id}`,
         },
         {
             nameOfLastPage: "Colecciones",
-            nameOfCurrentPage: `${collectionData?.collection_name} > ${collectionData?.title}`,
-            condition: (pathSegment: string) =>
-                pathSegment === `/collection/${id}`,
+            nameOfCurrentPage: `${collectionData?.collection_name ?? ""} > ${collectionData?.title ?? ""}`,
+            condition: (path: string) => path === `/collection/${id}`,
         },
     ];
 
-    const getCurrentBreadcrumb = () => {
-        const currentConfig = breadcrumbsList.find((config) =>
-            config.condition(pathSegment)
-        );
-        return currentConfig && <p>{currentConfig.nameOfCurrentPage}</p>;
-    };
-
-    const getLastPageName = (nameOfLastPage: string, index: number) => (
-        <p
-            key={index}
-            className={styles.lastPage}
-            onClick={() => router.back()}
-        >
-            {nameOfLastPage} <span className={styles.space}>{">"}</span>
-        </p>
-    );
-
+    const current = breadcrumbsList.find((c) => c.condition(pathname));
     return (
         <div className={styles.containerBreads}>
-            {breadcrumbsList.map((config, index) =>
-                config.condition(pathSegment)
-                    ? getLastPageName(config.nameOfLastPage, index)
-                    : null
+            {current && (
+                <p className={styles.lastPage} onClick={() => router.back()}>
+                    {current.nameOfLastPage}{" "}
+                    <span className={styles.space}>{">"}</span>
+                </p>
             )}
-            {getCurrentBreadcrumb()}
+            {current && <p>{current.nameOfCurrentPage}</p>}
         </div>
     );
 };
