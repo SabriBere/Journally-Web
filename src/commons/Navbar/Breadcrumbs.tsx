@@ -6,10 +6,10 @@ import { getPostById } from "@/services/post.service";
 import { collectionById } from "@/services/collection.service";
 import styles from "./breadcrumbs.module.scss";
 
-const toNumber = (v: string | string[] | undefined) => {
-    if (!v || Array.isArray(v)) return undefined;
-    const n = Number(v);
-    return Number.isFinite(n) ? n : undefined;
+const toNumber = (id: string | string[] | undefined) => {
+    if (!id || Array.isArray(id)) return undefined;
+    const convertId = Number(id);
+    return Number.isFinite(convertId) ? convertId : undefined;
 };
 
 const Breadcrumbs = () => {
@@ -50,7 +50,7 @@ const Breadcrumbs = () => {
         },
     ];
 
-    const current = breadcrumbsList.find((c) => c.condition(pathname));
+    const current = breadcrumbsList.find((option) => option.condition(pathname));
     return (
         <div className={styles.containerBreads}>
             {current && (
