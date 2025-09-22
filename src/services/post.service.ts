@@ -58,7 +58,7 @@ export async function getAllPost({
 }
 
 //Traer una entrada por id
-export async function getPostById(postId: number | string) {
+export async function getPostById(postId: number | string | undefined) {
     try {
         const res = await axiosInstance.get(`/post/findOne?postId=${postId}`);
         return res.data.data;
