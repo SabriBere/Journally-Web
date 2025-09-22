@@ -1,12 +1,12 @@
 import React from "react";
-import TitleSection from "@/commons/Title/TitleSection";
 import ToolBar from "@/commons/Navbar/ToolBar";
-import styles from './oneEntry.module.scss'
+import styles from "./oneEntry.module.scss";
+import Breadcrumbs from "@/commons/Navbar/Breadcrumbs";
 
 const CollectionDetail = () => {
     return (
         <div className={styles.contanerEditor}>
-            <TitleSection title={"Detalle de entrada"} />
+            <Breadcrumbs />
             <ToolBar />
         </div>
     );
