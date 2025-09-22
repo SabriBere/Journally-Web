@@ -1,11 +1,11 @@
 import React from "react";
-import TitleSection from "@/commons/Title/TitleSection";
+import Breadcrumbs from "@/commons/Navbar/Breadcrumbs";
 
 const page = () => {
     return (
         <div>
             {/* Cambiar por breacrums */}
-            <TitleSection title={"Detalle de colección"} />
+            <Breadcrumbs />
         </div>
     );
 };
