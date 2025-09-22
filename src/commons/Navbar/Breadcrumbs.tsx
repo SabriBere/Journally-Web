@@ -10,21 +10,24 @@ const Breadcrumbs = () => {
     const router = useRouter();
     const pathSegment = usePathname();
     const { id } = useParams();
-    const postId = Number(id);
-    const collectionId = Number(id);
+    const convertId = Number(id);
+    const isEntryRoute = pathSegment === `/entries/`;
+    const isCollectionRoute = pathSegment === `/collection/`;
 
     //detalle de cualquier post
     const { data: postById } = useQuery({
         queryKey: ["oneEntry"],
-        queryFn: () => getPostById(postId),
-        enabled: !!postId,
+        queryFn: () => getPostById(convertId),
+        enabled: Boolean(convertId && isEntryRoute),
+        retry: false,
     });
 
     //Detalle de una colección
     const { data: collectionData } = useQuery({
         queryKey: ["oneCollection"],
-        queryFn: () => collectionById(postId),
-        enabled: !!collectionId,
+        queryFn: () => collectionById(convertId),
+        enabled: Boolean(convertId && isCollectionRoute),
+        retry: false,
     });
 
     const breadcrumbsList = [
