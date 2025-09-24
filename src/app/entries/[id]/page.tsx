@@ -1,12 +1,14 @@
 import React from "react";
-import ToolBar from "@/commons/Navbar/ToolBar";
-import styles from "./oneEntry.module.scss";
 import Breadcrumbs from "@/commons/Navbar/Breadcrumbs";
+import ToolBar from "@/commons/Navbar/ToolBar";
+import Editor from "@/commons/Editor/Editor";
+import styles from "./oneEntry.module.scss";
 
 const CollectionDetail = () => {
     return (
         <div className={styles.contanerEditor}>
             <Breadcrumbs />
+            <Editor />
             <ToolBar />
         </div>
     );
