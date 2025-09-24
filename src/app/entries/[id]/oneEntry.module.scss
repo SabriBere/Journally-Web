@@ -1,6 +1,13 @@
 .contanerEditor {
     flex: 1;
-    // height: 62vh;
     display: flex;
     flex-direction: column;
+    // width: 100%;
+
+    .contend {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-content: center;
+    }
 }

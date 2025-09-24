@@ -15,13 +15,20 @@ const Editor = () => {
         enabled: !!convertId,
         retry: false,
     });
+    //Colocar skeletons de carga
+    //Colocar empty state para cuando falla la api
 
     // console.log(entry);
     //fecha de conversión de fecha y hora
     return (
-        <div className={styles.containerEditor}>
-            <h1>{entry?.title}</h1>
-            <p>{entry.created_at}</p>
+        <div className={styles.containerPaper}>
+            <div>
+                <h1>{entry?.title}</h1>
+                <p>{entry?.created_at}</p>
+            </div>
+            {/* <div>
+                <textarea name="message" rows="5" cols="30" placeholder="Enter your message here..."></textarea>
+            </div> */}
         </div>
     );
 };
