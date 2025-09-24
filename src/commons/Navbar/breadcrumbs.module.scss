@@ -7,23 +7,23 @@
 
     p {
         color: colors.$darkNavyBlue;
-        font-family: var(--font-inter);
+        font-family: var(--font-caveat);
         font-weight: 400;
-        font-size: 16px;
+        font-size: 24px;
         cursor: pointer;
     }
 
     .space {
         margin: auto 0.5rem;
         color: colors.$darkTurquoise;
-        font-family: var(--font-inter);
+        font-family: var(--font-caveat);
         font-weight: 700;
-        font-size: 16px;
+        font-size: 24px;
     }
     .lastPage {
         color: colors.$darkTurquoise;
-        font-family: var(--font-inter);
+        font-family: var(--font-caveat);
         font-weight: 700;
-        font-size: 16px;
+        font-size: 24px;
     }
 }
