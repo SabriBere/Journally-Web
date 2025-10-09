@@ -12,6 +12,7 @@ const CollectionDetail = () => {
             <div className={styles.contend}>
                 <Editor />
                 <ToolBar />
+                {/* Agregar paginado */}
             </div>
         </div>
     );

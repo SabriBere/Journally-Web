@@ -33,11 +33,11 @@ const Editor = () => {
             )}
             {isSuccess && (
                 <div className={styles.containerPaper}>
-                    <div>
+                    <div className={styles.header}>
                         <h1>{entry?.title}</h1>
                         <p>{`${converDate(entry?.created_at)}`}</p>
                     </div>
-                    <div>
+                    <div className={styles.text}>
                         <p>
                             Lorem Ipsum is simply dummy text of the printing and
                             typesetting industry. Lorem Ipsum has been the
