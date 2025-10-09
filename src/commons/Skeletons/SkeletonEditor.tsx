@@ -15,9 +15,9 @@ const SkeletonEditor = () => {
         >
             <ContentLoader
                 speed={2}
-                width={600}
+                width={800}
                 height={400}
-                viewBox="0 0 600 400"
+                viewBox="0 0 800 400"
                 backgroundColor="#ead6b8"
                 foregroundColor="#f9ecd5"
                 uniqueKey={`editor-skel`}
