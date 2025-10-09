@@ -3,6 +3,7 @@ import React from "react";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getPostById } from "@/services/post.service";
+import { converDate } from "@/utils/formatDate";
 import styles from "./editor.module.scss";
 
 const Editor = () => {
@@ -23,36 +24,66 @@ const Editor = () => {
     //Colocar skeletons de carga
     //Colocar empty state para cuando falla la api
 
-    // console.log(entry);
-    //fecha de conversión de fecha y hora
-    const converDate = (date: string | undefined) => {
-        const recibeDate = date;
-        const splitDate: any = recibeDate?.split("T");
-
-        const options: Intl.DateTimeFormatOptions = {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-        };
-
-        const formattedDate = new Intl.DateTimeFormat("es", options).format(
-            new Date(splitDate[0])
-        );
-        return formattedDate;
-    };
-
     return (
-        <div className={styles.containerPaper}>
-            {isSuccess && (
+        <>
+            {isLoading && (
                 <div>
-                    <h1>{entry?.title}</h1>
-                    <p>{`${converDate(entry?.created_at)}`}</p>
+                    <p>Cargando...</p>
                 </div>
             )}
-            {/* <div>
-                <textarea name="message" rows="5" cols="30" placeholder="Enter your message here..."></textarea>
-            </div> */}
-        </div>
+            {isSuccess && (
+                <div className={styles.containerPaper}>
+                    <div>
+                        <h1>{entry?.title}</h1>
+                        <p>{`${converDate(entry?.created_at)}`}</p>
+                    </div>
+                    <div>
+                        <p>
+                            Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry. Lorem Ipsum has been the
+                            industrys standard dummy text ever since the 1500s,
+                            when an unknown printer took a galley of type and
+                            scrambled it to make a type specimen book. It has
+                            survived not only five centuries, but also the leap
+                            into electronic typesetting, remaining essentially
+                            unchanged. It was popularised in the 1960s with the
+                            release of Letraset sheets containing Lorem Ipsum
+                            passages, and more recently with desktop publishing
+                            software like Aldus PageMaker including versions of
+                            Lorem Ipsum.
+                        </p>
+                        <p>
+                            Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry. Lorem Ipsum has been the
+                            industrys standard dummy text ever since the 1500s,
+                            when an unknown printer took a galley of type and
+                            scrambled it to make a type specimen book. It has
+                            survived not only five centuries, but also the leap
+                            into electronic typesetting, remaining essentially
+                            unchanged. It was popularised in the 1960s with the
+                            release of Letraset sheets containing Lorem Ipsum
+                            passages, and more recently with desktop publishing
+                            software like Aldus PageMaker including versions of
+                            Lorem Ipsum.
+                        </p>
+                        <p>
+                            Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry. Lorem Ipsum has been the
+                            industrys standard dummy text ever since the 1500s,
+                            when an unknown printer took a galley of type and
+                            scrambled it to make a type specimen book. It has
+                            survived not only five centuries, but also the leap
+                            into electronic typesetting, remaining essentially
+                            unchanged. It was popularised in the 1960s with the
+                            release of Letraset sheets containing Lorem Ipsum
+                            passages, and more recently with desktop publishing
+                            software like Aldus PageMaker including versions of
+                            Lorem Ipsum.
+                        </p>
+                    </div>
+                </div>
+            )}
+        </>
     );
 };
 

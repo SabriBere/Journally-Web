@@ -8,6 +8,7 @@ const CollectionDetail = () => {
     return (
         <div className={styles.contanerEditor}>
             <Breadcrumbs />
+
             <div className={styles.contend}>
                 <Editor />
                 <ToolBar />
