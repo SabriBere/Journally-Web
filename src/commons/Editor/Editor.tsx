@@ -9,7 +9,12 @@ const Editor = () => {
     const { id } = useParams();
     const convertId = Number(id);
 
-    const { data: entry } = useQuery({
+    const {
+        data: entry,
+        isSuccess,
+        isError,
+        isLoading,
+    } = useQuery({
         queryKey: ["onePost", convertId],
         queryFn: () => getPostById(convertId as number),
         enabled: !!convertId,
@@ -20,12 +25,30 @@ const Editor = () => {
 
     // console.log(entry);
     //fecha de conversión de fecha y hora
+    const converDate = (date: string | undefined) => {
+        const recibeDate = date;
+        const splitDate: any = recibeDate?.split("T");
+
+        const options: Intl.DateTimeFormatOptions = {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+        };
+
+        const formattedDate = new Intl.DateTimeFormat("es", options).format(
+            new Date(splitDate[0])
+        );
+        return formattedDate;
+    };
+
     return (
         <div className={styles.containerPaper}>
-            <div>
-                <h1>{entry?.title}</h1>
-                <p>{entry?.created_at}</p>
-            </div>
+            {isSuccess && (
+                <div>
+                    <h1>{entry?.title}</h1>
+                    <p>{`${converDate(entry?.created_at)}`}</p>
+                </div>
+            )}
             {/* <div>
                 <textarea name="message" rows="5" cols="30" placeholder="Enter your message here..."></textarea>
             </div> */}
