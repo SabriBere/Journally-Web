@@ -19,7 +19,7 @@ const Editor = () => {
         queryKey: ["onePost", convertId],
         queryFn: () => getPostById(convertId as number),
         enabled: !!convertId,
-        retry: false,
+        // retry: false,
     });
     //Colocar skeletons de carga
     //Colocar empty state para cuando falla la api
@@ -27,7 +27,7 @@ const Editor = () => {
     return (
         <>
             {isLoading && (
-                <div>
+                <div className={styles.containerPaper}>
                     <p>Cargando...</p>
                 </div>
             )}
