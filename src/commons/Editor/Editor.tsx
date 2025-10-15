@@ -4,8 +4,9 @@ import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getPostById } from "@/services/post.service";
 import { converDate } from "@/utils/formatDate";
+import Error from "@/commons/EmptyStates/Error";
+import SkeletonEditor from "@/commons/Skeletons/SkeletonEditor";
 import styles from "./editor.module.scss";
-import SkeletonEditor from "../Skeletons/SkeletonEditor";
 
 const Editor = () => {
     const { id } = useParams();
@@ -27,10 +28,11 @@ const Editor = () => {
 
     return (
         <>
-            {isLoading && (
-                // <div className={styles.containerPaper}>
-                <SkeletonEditor />
-                // </div>
+            {isLoading && <SkeletonEditor />}
+            {isError && (
+                <div className={styles.containerError}>
+                    <Error />
+                </div>
             )}
             {isSuccess && (
                 <div className={styles.containerPaper}>
