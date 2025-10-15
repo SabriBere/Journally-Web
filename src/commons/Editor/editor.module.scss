@@ -24,3 +24,12 @@
         font-size: 24px;
     }
 }
+
+.containerError {
+    flex: 1;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
