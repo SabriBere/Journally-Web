@@ -1,13 +1,20 @@
 "use client";
 import React, { useState } from "react";
+import { RootState } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setEditText, setSavePost } from "@/store/editSlice";
+import TooltipWrapper from "../Tooltip/Tooltip";
 import Copy from "@/styles/icons/Copy";
 import Edit from "@/styles/icons/Edit";
 import Save from "@/styles/icons/Save";
 import Delete from "@/styles/icons/Delete";
-import TooltipWrapper from "../Tooltip/Tooltip";
 import styles from "./toolbar.module.scss";
+import Plus from "@/styles/icons/Plus";
 
 const ToolBar = () => {
+    const dispatch = useDispatch();
+    const editText = useSelector((state: RootState) => state.edit.editText);
+    const savePost = useSelector((state: RootState) => state.edit.savePost);
     const [showTools, setShowTools] = useState(false);
     const toggle = () => setShowTools((p) => !p);
 
@@ -31,24 +38,31 @@ const ToolBar = () => {
             icon: <Save color="white" width="24" height="24" />,
             name: "Guardar",
             color: "#11796f",
-            action: () => console.log("Guardar"),
+            action: () => dispatch(setSavePost(!savePost)),
         },
         {
             id: 3,
             icon: <Edit color="white" width="24" height="24" />,
             name: "Editar",
             color: "#0d1e2b",
+            action: () => dispatch(setEditText(!editText)),
+        },
+        {
+            id: 4,
+            icon: <Plus color="white" width="24" height="24" />,
+            name: "Herramientas",
+            color: "#e74828",
             action: toggle,
         },
     ];
 
-    const edit = options.find((ops) => ops.id === 3)!;
-    const tools = options.filter((ops) => ops.id !== 3);
+    const edit = options.find((ops) => ops.id === 4)!;
+    const tools = options.filter((ops) => ops.id !== 4);
 
     return (
         <div className={styles.containerToolBar}>
             {showTools &&
-                tools.map((opt) => (
+                tools?.map((opt) => (
                     <TooltipWrapper key={opt.id} content={opt.name}>
                         <button
                             className={styles.buttonEdit}
