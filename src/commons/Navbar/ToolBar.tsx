@@ -28,11 +28,6 @@ const ToolBar = () => {
     const [showTools, setShowTools] = useState(false);
     const toggle = () => setShowTools((p) => !p);
 
-    const body = {
-        title: "",
-        description: newText,
-    };
-
     const {
         mutateAsync: updatePostMutation,
         isPending: isPendingEdit,
@@ -40,27 +35,29 @@ const ToolBar = () => {
     } = useMutation({
         mutationFn: ({ body, postId }: { body: PostBody; postId: number }) =>
             updatePost(body, postId),
-        mutationKey: ["editPost"],
+        mutationKey: ["editPost", postId],
         onSuccess: async () => {
             showSuccess("Guardado correctamente 🎉");
-            // setClose(false);
-            // await QueryClient.refetchQueries({
-            //     queryKey: ["onePost"],
-            // });
+            await QueryClient.invalidateQueries({ queryKey: ["onePost", postId] });
         },
         onError: (error: any) => {
-            //llamar al toast con el mensaje de error
             showError("Error al editar nombre");
-            // setClose(false);
         },
     });
 
     const handlerEditPost = async () => {
-        try {
-            await updatePostMutation({ body, postId });
-        } catch (error) {
-            console.log(error);
+        if (!newText?.trim()) {
+            showError("No hay cambios para guardar");
+            return;
         }
+        const body = {
+            title: "",
+            description: newText,
+        };
+        await updatePostMutation({ body, postId });
+
+        dispatch(setEditText(false));
+        dispatch(setSavePost(false));
     };
 
     const options = [
@@ -83,14 +80,20 @@ const ToolBar = () => {
             icon: <Save color="white" width="24" height="24" />,
             name: "Guardar",
             color: "#11796f",
-            action: () => dispatch(setSavePost(!savePost)),
+            action: async () => {
+                if (isPendingEdit) return;
+                try {
+                    await handlerEditPost();
+                } catch (error) {
+                    console.error(error);
+                }
+            },
         },
         {
             id: 3,
             icon: <Edit color="white" width="24" height="24" />,
             name: "Editar",
             color: "#0d1e2b",
-            //colocar aca la acción
             action: () => dispatch(setEditText(!editText)),
         },
         {

@@ -18,7 +18,6 @@ const Editor = () => {
 
     const editText = useSelector((state: RootState) => state.edit.editText);
     const newText = useSelector((state: RootState) => state.edit.newText);
-    // const [editTitle, setEditTitle] = useState<boolean>(false);
 
     const handlerChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         dispatch(setNewText(e.target.value));
