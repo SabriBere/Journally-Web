@@ -6,10 +6,10 @@ import { RootState } from "@/store/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateCollection } from "@/services/collection.service";
 import { updatePost } from "@/services/post.service";
+import TooltipWrapper from "../Tooltip/Tooltip";
 import Close from "@/styles/icons/Close";
 import Check from "@/styles/icons/Check";
 import styles from "./modalEditName.module.scss";
-import TooltipWrapper from "../Tooltip/Tooltip";
 
 interface ModalProps {
     id: any;
