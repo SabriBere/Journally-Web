@@ -1,12 +1,12 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { RootState } from "@/store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getPostById } from "@/services/post.service";
 import { converDate } from "@/utils/formatDate";
-import { setNewText } from "@/store/editSlice";
+import { setCuerrentDescription, setNewText } from "@/store/editSlice";
 import Error from "@/commons/EmptyStates/Error";
 import SkeletonEditor from "@/commons/Skeletons/SkeletonEditor";
 import styles from "./editor.module.scss";
@@ -15,7 +15,6 @@ const Editor = () => {
     const { id } = useParams();
     const convertId = Number(id);
     const dispatch = useDispatch();
-
     const editText = useSelector((state: RootState) => state.edit.editText);
     const newText = useSelector((state: RootState) => state.edit.newText);
 
@@ -33,6 +32,13 @@ const Editor = () => {
         queryFn: () => getPostById(convertId as number),
         enabled: !!convertId,
     });
+
+    useEffect(() => {
+        if (editText && entry?.description !== undefined) {
+            dispatch(setCuerrentDescription(entry.description ?? ""));
+            dispatch(setNewText(entry.description ?? ""));
+        }
+    }, [editText, entry?.description, dispatch]);
 
     return (
         <>

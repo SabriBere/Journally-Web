@@ -31,7 +31,7 @@ const editSlice = createSlice({
         setCurrentTtitle: (state, actions) => {
             state.currentTitle = actions.payload;
         },
-        setCuerrentDescripton: (state, actions) => {
+        setCuerrentDescription: (state, actions) => {
             state.currentDescription = actions.payload;
         },
         setCleanText: (state) => {
@@ -49,7 +49,7 @@ const editSlice = createSlice({
 export const {
     setEditText,
     setNewText,
-    setCuerrentDescripton,
+    setCuerrentDescription,
     setCleanText,
     setSavePost,
     setDeletePost,

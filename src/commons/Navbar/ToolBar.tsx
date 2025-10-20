@@ -24,32 +24,47 @@ const ToolBar = () => {
     const QueryClient = useQueryClient();
     const editText = useSelector((state: RootState) => state.edit.editText);
     const newText = useSelector((state: RootState) => state.edit.newText);
-    const savePost = useSelector((state: RootState) => state.edit.savePost);
+    const currentDescription = useSelector(
+        (s: RootState) => s.edit.currentDescription
+    );
     const [showTools, setShowTools] = useState(false);
     const toggle = () => setShowTools((p) => !p);
 
-    const {
-        mutateAsync: updatePostMutation,
-        isPending: isPendingEdit,
-        isError: isErrorEdit,
-    } = useMutation({
-        mutationFn: ({ body, postId }: { body: PostBody; postId: number }) =>
-            updatePost(body, postId),
-        mutationKey: ["editPost", postId],
-        onSuccess: async () => {
-            showSuccess("Guardado correctamente 🎉");
-            await QueryClient.invalidateQueries({ queryKey: ["onePost", postId] });
-        },
-        onError: (error: any) => {
-            showError("Error al editar nombre");
-        },
-    });
+    console.log(newText, currentDescription)
+
+    const { mutateAsync: updatePostMutation, isPending: isPendingEdit } =
+        useMutation({
+            mutationFn: ({
+                body,
+                postId,
+            }: {
+                body: PostBody;
+                postId: number;
+            }) => updatePost(body, postId),
+            mutationKey: ["editPost", postId],
+            onSuccess: async () => {
+                showSuccess("Guardado correctamente 🎉");
+                await QueryClient.refetchQueries({
+                    queryKey: ["onePost", postId],
+                });
+                await QueryClient.invalidateQueries({
+                    queryKey: ["onePost", postId],
+                });
+            },
+            onError: (error: any) => {
+                if (isDirty) {
+                    showError("No hay cambios para guardar");
+                    return;
+                }
+                showError("Error al editar");
+            },
+        });
+
+    const normalize = (version?: string) =>
+        (version ?? "").replace(/\s+/g, " ").trim();
+    const isDirty = normalize(newText) !== normalize(currentDescription);
 
     const handlerEditPost = async () => {
-        if (!newText?.trim()) {
-            showError("No hay cambios para guardar");
-            return;
-        }
         const body = {
             title: "",
             description: newText,
@@ -79,9 +94,9 @@ const ToolBar = () => {
             id: 2,
             icon: <Save color="white" width="24" height="24" />,
             name: "Guardar",
-            color: "#11796f",
+            color: !isDirty || isPendingEdit ? "#a4a492" : "#11796f",
             action: async () => {
-                if (isPendingEdit) return;
+                if (isPendingEdit || !isDirty) return;
                 try {
                     await handlerEditPost();
                 } catch (error) {
