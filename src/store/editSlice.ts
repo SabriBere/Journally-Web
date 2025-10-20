@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 interface EditState {
     editText: boolean;
     newText: string;
+    currentTitle: string;
+    currentDescription: string;
     savePost: boolean;
     deletePost: boolean;
 }
@@ -10,6 +12,8 @@ interface EditState {
 const initialState: EditState = {
     editText: false,
     newText: "",
+    currentTitle: "",
+    currentDescription: "",
     savePost: false,
     deletePost: false,
 };
@@ -24,6 +28,15 @@ const editSlice = createSlice({
         setNewText: (state, actions) => {
             state.newText = actions.payload;
         },
+        setCurrentTtitle: (state, actions) => {
+            state.currentTitle = actions.payload;
+        },
+        setCuerrentDescripton: (state, actions) => {
+            state.currentDescription = actions.payload;
+        },
+        setCleanText: (state) => {
+            state.newText = "";
+        },
         setSavePost: (state, actions) => {
             state.savePost = actions.payload;
         },
@@ -33,6 +46,12 @@ const editSlice = createSlice({
     },
 });
 
-export const { setEditText, setNewText, setSavePost, setDeletePost } =
-    editSlice.actions;
+export const {
+    setEditText,
+    setNewText,
+    setCuerrentDescripton,
+    setCleanText,
+    setSavePost,
+    setDeletePost,
+} = editSlice.actions;
 export default editSlice.reducer;
