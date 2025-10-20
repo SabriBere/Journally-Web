@@ -1,22 +1,67 @@
 "use client";
 import React, { useState } from "react";
+import { useParams } from "next/navigation";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { setEditText, setSavePost } from "@/store/editSlice";
+import { showSuccess, showError } from "../Toast/toastHelpers";
+import { updatePost } from "@/services/post.service";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import TooltipWrapper from "../Tooltip/Tooltip";
 import Copy from "@/styles/icons/Copy";
 import Edit from "@/styles/icons/Edit";
 import Save from "@/styles/icons/Save";
 import Delete from "@/styles/icons/Delete";
-import styles from "./toolbar.module.scss";
 import Plus from "@/styles/icons/Plus";
+import styles from "./toolbar.module.scss";
+
+type PostBody = { title: string; description: string };
 
 const ToolBar = () => {
+    const { id } = useParams<{ id: string }>();
+    const postId = Number(id);
     const dispatch = useDispatch();
+    const QueryClient = useQueryClient();
     const editText = useSelector((state: RootState) => state.edit.editText);
+    const newText = useSelector((state: RootState) => state.edit.newText);
     const savePost = useSelector((state: RootState) => state.edit.savePost);
     const [showTools, setShowTools] = useState(false);
     const toggle = () => setShowTools((p) => !p);
+
+    const body = {
+        title: "",
+        description: newText,
+    };
+
+    const {
+        mutateAsync: updatePostMutation,
+        isPending: isPendingEdit,
+        isError: isErrorEdit,
+    } = useMutation({
+        mutationFn: ({ body, postId }: { body: PostBody; postId: number }) =>
+            updatePost(body, postId),
+        mutationKey: ["editPost"],
+        onSuccess: async () => {
+            showSuccess("Guardado correctamente 🎉");
+            // setClose(false);
+            // await QueryClient.refetchQueries({
+            //     queryKey: ["onePost"],
+            // });
+        },
+        onError: (error: any) => {
+            //llamar al toast con el mensaje de error
+            showError("Error al editar nombre");
+            // setClose(false);
+        },
+    });
+
+    const handlerEditPost = async () => {
+        try {
+            await updatePostMutation({ body, postId });
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const options = [
         {
@@ -45,6 +90,7 @@ const ToolBar = () => {
             icon: <Edit color="white" width="24" height="24" />,
             name: "Editar",
             color: "#0d1e2b",
+            //colocar aca la acción
             action: () => dispatch(setEditText(!editText)),
         },
         {
