@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./userSlice";
 import tabsReducer from "./tabsSlice";
+import editReducer from './editSlice'
 
 export const store = configureStore({
     reducer: {
         user: userReducer,
         tabs: tabsReducer,
+        edit: editReducer
     },
 });
 
