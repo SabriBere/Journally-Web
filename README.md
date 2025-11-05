@@ -2,6 +2,21 @@
 
 ## Indice
 
+- [Introducción](#introducción)
+    - [Funcionalidades](#funcionalidades)
+- [Clonar el repositorio](#clonar-el-repositorio)
+- [Instalación](#instalación)
+- [Stack del proyecto](#stack-del-proyecto)
+- [Entornos e Integración](#entornos-e-integración)
+    - [Scripts disponibles](#scripts-disponibles)
+- [Arquitectura](#arquitectura)
+- [Instalación](#instalación)
+    - [Clonar el repositorio](#clonar-el-repositorio)
+- [Configuraciones de formato](#configuraciones-de-formato)
+    - [Prettier](#prettier)
+    - [ESLint](#eslint)
+- [Testing](#testing)
+
 ---
 
 ## Introducción:
@@ -12,12 +27,15 @@ La propuesta es que el usuario pueda tener una herramienta digital que le permit
 ### Funcionalidades
 
 ---
+
 ## Clonar el repositorio
 
 ---
+
 ## Instalación
 
 ---
+
 ## Stack del proyecto:
 
 - Next.js v.15
@@ -38,7 +56,7 @@ La propuesta es que el usuario pueda tener una herramienta digital que le permit
 
 ---
 
-## Configuraciones de fromato
+## Configuraciones de formato
 
 ### Prettier
 
