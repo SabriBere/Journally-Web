@@ -26,9 +26,13 @@ La propuesta es que el usuario pueda tener una herramienta digital que le permit
 
 ### Funcionalidades
 
+- Crear colecciones que contengan entradas. Es decir, agrupar.
+- Crear entradas en un díario
+- Editar y eliminar colecciones y entradas creadas
+
 ---
 
-## Clonar el repositorio
+## Fork repositorio
 
 ---
 
@@ -53,6 +57,66 @@ La propuesta es que el usuario pueda tener una herramienta digital que le permit
 ---
 
 ## Arquitectura
+
+```bash
+src/
+├───app
+│   ├───api
+│   │   ├───auth
+│   │   │   └───[...nextauth]
+│   │   └───router
+│   │   ├───provider
+│   │   │   └───Credentials
+│   │   └───actions
+│   ├───collection
+│   │   ├───collection
+│   │   │   └───[id]
+|   |   |
+│   │   ├───
+│   │   │   └───[]
+│   │   │   └───
+│   │   ├───
+│   │   │   └───
+│   │   ├───
+│   │   │   └───[]
+│   │   │   └───
+│   │   └───
+│   │       └───
+│   └───
+├───commons
+│   ├───
+│   ├───
+│   ├───
+│   ├───
+│   ├───
+│   ├───
+│   ├───
+│   ├───
+│   ├───
+│   ├───
+│   ├───
+│   ├───
+│   └───
+├───components
+│   ├───
+│   ├───
+│   ├───
+│   ├───
+│   ├───
+│   │   └───
+│   ├───
+│   └───
+├───hooks
+├───store
+├───styles
+│   ├───
+│   ├───
+│   │   └───
+│   ├───
+│   └───
+├───types
+└───utils
+```
 
 ---
 
