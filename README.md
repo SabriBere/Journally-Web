@@ -58,65 +58,51 @@ La propuesta es que el usuario pueda tener una herramienta digital que le permit
 
 ## Arquitectura
 
+````bash
 ```bash
 src/
-├───app
-│   ├───api
-│   │   ├───auth
-│   │   │   └───[...nextauth]
-│   │   └───router
-│   │   ├───provider
-│   │   │   └───Credentials
-│   │   └───actions
-│   ├───collection
-│   │   ├───collection
-│   │   │   └───[id]
-|   |   |
-│   │   ├───
-│   │   │   └───[]
-│   │   │   └───
-│   │   ├───
-│   │   │   └───
-│   │   ├───
-│   │   │   └───[]
-│   │   │   └───
-│   │   └───
-│   │       └───
-│   └───
-├───commons
-│   ├───
-│   ├───
-│   ├───
-│   ├───
-│   ├───
-│   ├───
-│   ├───
-│   ├───
-│   ├───
-│   ├───
-│   ├───
-│   ├───
-│   └───
-├───components
-│   ├───
-│   ├───
-│   ├───
-│   ├───
-│   ├───
-│   │   └───
-│   ├───
-│   └───
-├───hooks
-├───store
-├───styles
-│   ├───
-│   ├───
-│   │   └───
-│   ├───
-│   └───
-├───types
-└───utils
-```
+├── app
+│   ├── api
+│   │   ├── auth
+│   │   │   └── [...nextauth]
+│   │   └── provider
+│   ├── collection
+│   │   └── [id]
+│   ├── entries
+│   │   └── [id]
+│   ├── home
+│   │   └── components
+│   └── login
+│       └── components
+├── commons
+│   ├── Buttons
+│   ├── Cards
+│   ├── Dropdowns
+│   ├── Editor
+│   ├── EmptyStates
+│   ├── Footer
+│   ├── Ilustrations
+│   ├── InfinteScroll
+│   ├── Inputs
+│   ├── Modals
+│   ├── Navbar
+│   ├── NotFound
+│   ├── Sidebar
+│   ├── Skeletons
+│   ├── Spinner
+│   ├── Tabs
+│   ├── Title
+│   ├── Toast
+│   └── Tooltip
+├── config
+├── hooks
+├── services
+├── store
+├── styles
+│   └── icons
+└── utils
+
+````
 
 ---
 
