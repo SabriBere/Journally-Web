@@ -20,6 +20,7 @@ Diseñada con una estética suave, ilustrada y minimalista pensada para sentirse
     - [Prettier](#prettier)
     - [ESLint](#eslint)
 - [Testing](#testing)
+- [Capturas](#capturas)
 
 ---
 
@@ -219,9 +220,12 @@ A definir. El proyecto está preparado para incorporar Jest + React Testing Libr
 [Edición de colección]()
 
 - 📝 Detalle de entrada
-[Entradas]()
+[Entradas](./captions/Capture7.png)
 
 - 🗃 Modales y herramientas
-[Tools]()
+[Tools](./captions/capture3.png)
+[Tools](./captions/capture4.png)
+[Tools](./captions/capture5.png)
+[Tools](./captions/capture6.png)
 
 ---
