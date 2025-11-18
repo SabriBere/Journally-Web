@@ -210,13 +210,18 @@ A definir. El proyecto está preparado para incorporar Jest + React Testing Libr
 ## 📸 Capturas
 
 - 🔐 Página de inicio de sesión
+[Inicio de sesión](./captions/caption1.png)
 
 - 🗂 Vista general de colecciones
+[Colecciones](./captions/caption2.png)
 
 - ✏️ Edición de nombre en colección
+[Edición de colección]()
 
 - 📝 Detalle de entrada
+[Entradas]()
 
 - 🗃 Modales y herramientas
+[Tools]()
 
 ---
