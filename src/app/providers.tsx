@@ -20,7 +20,7 @@ const Providers = ({ children, session }: Props) => {
                     {children}
                     <Toast />
                 </Provider>
-                {/* <ReactQueryDevtools buttonPosition="bottom-right" /> */}
+                <ReactQueryDevtools buttonPosition="bottom-right" />
             </QueryClientProvider>
         </SessionProvider>
     );
