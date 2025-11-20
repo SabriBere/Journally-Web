@@ -211,21 +211,21 @@ A definir. El proyecto está preparado para incorporar Jest + React Testing Libr
 ## 📸 Capturas
 
 - 🔐 Página de inicio de sesión
-[Inicio de sesión](./captions/caption1.png)
+![Inicio de sesión](./captions/caption1.png)
 
 - 🗂 Vista general de colecciones
-[Colecciones](./captions/caption2.png)
+![Colecciones](./captions/caption2.png)
 
 - ✏️ Edición de nombre en colección
-[Edición de colección]()
+![Edición de colección]()
 
 - 📝 Detalle de entrada
-[Entradas](./captions/Capture7.png)
+![Entradas](./captions/Capture7.png)
 
 - 🗃 Modales y herramientas
-[Tools](./captions/capture3.png)
-[Tools](./captions/capture4.png)
-[Tools](./captions/capture5.png)
-[Tools](./captions/capture6.png)
+![Tools](./captions/capture3.png)
+![Tools](./captions/capture4.png)
+![Tools](./captions/capture5.png)
+![Tools](./captions/capture6.png)
 
 ---
