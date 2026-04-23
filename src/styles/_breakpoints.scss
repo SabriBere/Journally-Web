@@ -3,6 +3,7 @@ $tablet: 768px;
 $desktop: 1024px;
 $widescreen: 1440px;
 $fullhd: 1920px;
+$ultrawide: 2560px;
 
 // Alias por si en algún archivo se usa "table" en lugar de "tablet".
 $table: $tablet;
@@ -45,6 +46,12 @@ $table: $tablet;
 
 @mixin fullhd {
     @media (min-width: #{$fullhd}) {
+        @content;
+    }
+}
+
+@mixin ultrawide {
+    @media (min-width: #{$ultrawide}) {
         @content;
     }
 }
