@@ -1,8 +1,11 @@
+@use "../../styles/breakpoints" as bp;
+
 .containerHome {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    min-height: 0;
 
     h1 {
         font-family: var(--font-caveat);
@@ -12,8 +15,15 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: space-between;
+        gap: 16px;
         padding-left: 12px;
         padding-right: 12px;
+
+        @include bp.tablet-down {
+            gap: 12px;
+            align-items: flex-end;
+        }
     }
 
     .options {
@@ -25,5 +35,7 @@
     .containerHeader {
         display: flex;
         flex-direction: column;
+        flex: 1;
+        min-height: 0;
     }
 }

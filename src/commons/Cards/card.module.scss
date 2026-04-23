@@ -1,11 +1,25 @@
+@use "../../styles/breakpoints" as bp;
 @use "../../styles/colors" as colors;
+
+.cardShell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+}
+
+.cardShellOpen {
+    z-index: 10;
+}
 
 .containerCard {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background-color: colors.$mangoYellow;
-    width: 160px;
+    width: min(100%, 160px);
     height: 120px;
     padding: 8px 10px;
     border-radius: 24px;
@@ -15,6 +29,14 @@
     transition:
         transform 0.25s ease,
         box-shadow 0.25s ease;
+
+    @include bp.tablet-down {
+        width: 100%;
+    }
+
+    @include bp.mobile {
+        min-height: 112px;
+    }
 
     .topCard {
         display: flex;
@@ -46,5 +68,27 @@
     &:hover {
         transform: rotate(0deg) translateY(-6px) scale(1.02);
         box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
+    }
+}
+
+.cardPopover {
+    position: relative;
+    z-index: 30;
+    width: 100%;
+}
+
+.editPopover {
+    max-width: min(100vw - 32px, 22rem);
+
+    @include bp.tablet-down {
+        max-width: min(18rem, calc(100vw - 32px));
+    }
+}
+
+.deletePopover {
+    max-width: min(100vw - 32px, 24rem);
+
+    @include bp.tablet-down {
+        max-width: min(20rem, calc(100vw - 32px));
     }
 }

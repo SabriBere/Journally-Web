@@ -1,6 +1,7 @@
 // Card.tsx
 "use client";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import ModalEditName from "../Modals/ModalEditName";
 import ModalDelete from "../Modals/ModalDelete";
 import TooltipWrapper from "@/commons/Tooltip/Tooltip";
@@ -16,6 +17,7 @@ interface CardData {
 const colors = ["#e74828", "#d4844e", "#f4a124", "#6f4324"];
 
 const Card = ({ data, index = 0 }: CardData) => {
+    const router = useRouter();
     const [openModal, setOpenModal] = useState<"none" | "edit" | "delete">(
         "none"
     );
@@ -34,18 +36,32 @@ const Card = ({ data, index = 0 }: CardData) => {
 
     const handleClose = () => setOpenModal("none");
 
+    const handleCardClick = (e: React.MouseEvent) => {
+        if (openModal !== "none") {
+            e.preventDefault();
+            e.stopPropagation();
+            handleClose();
+            return;
+        }
+
+        if (data?.collection_id) {
+            router.push(`/collection/${data.collection_id}`);
+            return;
+        }
+
+        if (data?.post_id) {
+            router.push(`/entries/${data.post_id}`);
+        }
+    };
+
     return (
-        <>
+        <div
+            className={`${styles.cardShell} ${openModal !== "none" ? styles.cardShellOpen : ""}`}
+        >
             <div
                 className={styles.containerCard}
                 style={{ backgroundColor: colors[index % colors.length] }}
-                onClick={(e) => {
-                    if (openModal !== "none") {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        handleClose();
-                    }
-                }}
+                onClick={handleCardClick}
             >
                 <div className={styles.topCard}>
                     <h3>{data?.title}</h3>
@@ -65,25 +81,28 @@ const Card = ({ data, index = 0 }: CardData) => {
                     </button>
                 </TooltipWrapper>
             </div>
-
             {openModal === "edit" && (
-                <ModalEditName
-                    id={data}
-                    isOpen={true}
-                    setClose={handleClose}
-                    color={colors[index % colors.length]}
-                />
+                <div className={`${styles.cardPopover} ${styles.editPopover}`}>
+                    <ModalEditName
+                        id={data}
+                        isOpen={true}
+                        setClose={handleClose}
+                        color={colors[index % colors.length]}
+                    />
+                </div>
             )}
 
             {openModal === "delete" && (
-                <ModalDelete
-                    id={data}
-                    isOpen={true}
-                    setClose={handleClose}
-                    color={colors[index % colors.length]}
-                />
+                <div className={`${styles.cardPopover} ${styles.deletePopover}`}>
+                    <ModalDelete
+                        id={data}
+                        isOpen={true}
+                        setClose={handleClose}
+                        color={colors[index % colors.length]}
+                    />
+                </div>
             )}
-        </>
+        </div>
     );
 };
 

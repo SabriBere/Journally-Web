@@ -1,24 +1,48 @@
+@use "../../../styles/breakpoints" as bp;
+
 .containerMain {
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: flex-start;
     overflow: hidden;
-    height: 67vh;
+    flex: 1;
+    width: 100%;
+    min-height: clamp(22rem, 54vh, 42rem);
+
+    @include bp.mobile {
+        min-height: clamp(18rem, 42vh, 26rem);
+    }
+
+    @include bp.tablet {
+        min-height: clamp(20rem, 48vh, 34rem);
+    }
+
+    @include bp.widescreen {
+        min-height: clamp(24rem, 58vh, 46rem);
+    }
+
+    @include bp.fullhd {
+        min-height: clamp(28rem, 64vh, 54rem);
+    }
 }
 
 .containerImage {
     position: absolute;
-    bottom: -180;
-    right: 20;
+    bottom: -180px;
+    right: 20px;
     z-index: -1;
-    min-height: 100%;
     pointer-events: none;
 
     svg {
         max-width: 650px;
         height: 650px;
+    }
+
+    @include bp.fullhd {
+        bottom: -160px;
+        right: 32px;
     }
 }
 
@@ -26,11 +50,43 @@
     flex: 1;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
     padding: 10px 60px 0px 20px;
-    justify-items: flex-start;
+    justify-items: stretch;
     overflow-y: auto;
+    min-height: 0;
+
+    > a {
+        width: 100%;
+        display: flex;
+    }
+
+    @include bp.mobile {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        padding: 10px 12px 0;
+    }
+
+    @include bp.tablet {
+        padding: 10px 24px 0px 20px;
+    }
+
+    @include bp.desktop {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        padding: 10px 60px 0px 20px;
+    }
+
+    @include bp.fullhd {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        row-gap: 14px;
+        padding-right: 80px;
+    }
+
+    @include bp.ultrawide {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        row-gap: 10px;
+    }
 }
 
 .containerEmpty {
@@ -39,7 +95,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100%;
+    min-height: 0;
 
     svg {
         max-width: 750px;

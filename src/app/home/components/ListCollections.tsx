@@ -4,7 +4,6 @@ import { RootState } from "@/store/store";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { CardsSkeletonGrid } from "@/commons/Skeletons/SkeletonList";
 import { allCollection } from "@/services/collection.service";
-import Link from "next/link";
 import Card from "@/commons/Cards/Card";
 import InfiniteScroll from "@/commons/InfinteScroll/InfiniteScroll";
 import NotEntries from "@/commons/EmptyStates/NotEntries";
@@ -84,12 +83,11 @@ const ListCollections = () => {
                         <div className={styles.containerList}>
                             <InfiniteScroll fetchNextPage={fetchNextPage}>
                                 {flatCollection?.map((one: any, i: number) => (
-                                    <Link
-                                        href={`/collection/${one.collection_id}`}
+                                    <Card
+                                        data={one}
+                                        index={i}
                                         key={`col-${String(one.collection_id)}-${i}`}
-                                    >
-                                        <Card data={one} index={i} />
-                                    </Link>
+                                    />
                                 ))}
                             </InfiniteScroll>
                         </div>

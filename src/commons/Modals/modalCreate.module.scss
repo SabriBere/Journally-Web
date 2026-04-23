@@ -13,6 +13,7 @@ $color: colors.$darkNavyBlue;
 }
 
 .containerModalCreate {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -28,11 +29,21 @@ $color: colors.$darkNavyBlue;
     border-radius: 24px;
     padding: 20px;
     gap: 16px;
-    transform: rotate(-2deg);
     transition:
         transform 0.25s ease,
         box-shadow 0.25s ease;
     flex: 1;
+    isolation: isolate;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 24px;
+        background-color: colors.$orangeYellow;
+        transform: rotate(-2deg);
+        z-index: -1;
+    }
 
     .containerTop {
         width: 100%;
@@ -62,6 +73,8 @@ $color: colors.$darkNavyBlue;
         font-family: var(--font-caveat);
         padding: 12px;
         border-bottom: 2px solid colors.$clayBrown;
+        position: relative;
+        z-index: 1;
 
         &::placeholder {
             color: colors.$clayBrown;

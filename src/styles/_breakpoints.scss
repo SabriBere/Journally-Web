@@ -1,0 +1,57 @@
+$mobile: 480px;
+$tablet: 768px;
+$desktop: 1024px;
+$widescreen: 1440px;
+$fullhd: 1920px;
+$ultrawide: 2560px;
+
+// Alias por si en algún archivo se usa "table" en lugar de "tablet".
+$table: $tablet;
+
+@mixin mobile {
+    @media (max-width: #{$mobile}) {
+        @content;
+    }
+}
+
+@mixin tablet-down {
+    @media (max-width: #{$tablet - 1px}) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (min-width: #{$tablet}) {
+        @content;
+    }
+}
+
+@mixin table {
+    @media (min-width: #{$table}) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: #{$desktop}) {
+        @content;
+    }
+}
+
+@mixin widescreen {
+    @media (min-width: #{$widescreen}) {
+        @content;
+    }
+}
+
+@mixin fullhd {
+    @media (min-width: #{$fullhd}) {
+        @content;
+    }
+}
+
+@mixin ultrawide {
+    @media (min-width: #{$ultrawide}) {
+        @content;
+    }
+}
