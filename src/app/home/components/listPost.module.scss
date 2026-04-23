@@ -78,7 +78,14 @@
     }
 
     @include bp.fullhd {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        row-gap: 14px;
         padding-right: 80px;
+    }
+
+    @include bp.ultrawide {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        row-gap: 10px;
     }
 }
 
