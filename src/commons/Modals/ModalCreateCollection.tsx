@@ -53,10 +53,14 @@ const ModalCreateCollection = () => {
         <>
             {openModalCollection && (
                 <div className={styles.overlay}>
-                    <form className={styles.containerModalCreate}>
+                    <form
+                        className={styles.containerModalCreate}
+                        onSubmit={handlerCreate}
+                    >
                         <div className={styles.containerTop}>
                             <h2>Crear una colección</h2>
                             <button
+                                type="button"
                                 onClick={() =>
                                     dispatch(setOpenModalCollection(false))
                                 }
@@ -88,9 +92,9 @@ const ModalCreateCollection = () => {
                                 Cancelar
                             </button>
                             <button
-                                onClick={handlerCreate}
+                                type="submit"
                                 className={styles.btnCreate}
-                                disabled={isDisabled}
+                                disabled={isPending || isDisabled}
                             >
                                 {!isPending ? "Crear colección" : (<SpinnerDots color="#FFFFFF" size={6} />)}
                             </button>
