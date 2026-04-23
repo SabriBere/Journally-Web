@@ -84,7 +84,7 @@ const ModalDelete = ({ id, isOpen, setClose, color }: ModalProps) => {
                 e.stopPropagation(), e.preventDefault();
             }}
         >
-            <div className={styles.miniModal}>
+            <div className={styles.miniModal} aria-hidden="true">
                 <p>{textModal}</p>
             </div>
             <TooltipWrapper content={"Eliminar"}>
