@@ -9,6 +9,7 @@ import { updatePost } from "@/services/post.service";
 import TooltipWrapper from "../Tooltip/Tooltip";
 import Close from "@/styles/icons/Close";
 import Check from "@/styles/icons/Check";
+import Edit from "@/styles/icons/Edit";
 import styles from "./modalEditName.module.scss";
 
 interface ModalProps {
@@ -126,6 +127,9 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                 }
             }}
         >
+            <span className={styles.writeHint} aria-hidden="true">
+                <Edit width="16" height="16" color="white" />
+            </span>
             <input
                 className={styles.inputName}
                 placeholder="Ingrese nuevo nombre"
