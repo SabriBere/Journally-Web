@@ -4,7 +4,6 @@ import { RootState } from "@/store/store";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { CardsSkeletonGrid } from "@/commons/Skeletons/SkeletonList";
 import { getAllPost } from "@/services/post.service";
-import Link from "next/link";
 import Card from "@/commons/Cards/Card";
 import InfiniteScroll from "@/commons/InfinteScroll/InfiniteScroll";
 import ServerDown from "@/commons/Ilustrations/ServerDown";
@@ -79,12 +78,11 @@ const ListPost = () => {
                         <div className={styles.containerList}>
                             <InfiniteScroll fetchNextPage={fetchNextPage}>
                                 {flatPost?.map((onePost: any, i: number) => (
-                                    <Link
-                                        href={`/entries/${onePost.post_id}`}
+                                    <Card
+                                        data={onePost}
+                                        index={i}
                                         key={`col-${String(onePost.post_id)}-${i}`}
-                                    >
-                                        <Card data={onePost} index={i} />
-                                    </Link>
+                                    />
                                 ))}
                             </InfiniteScroll>
                         </div>

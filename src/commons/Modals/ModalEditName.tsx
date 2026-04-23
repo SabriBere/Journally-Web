@@ -117,15 +117,9 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
             className={styles.containerModalName}
             style={{ backgroundColor: color }}
             onClick={(e: React.MouseEvent) => {
-                e.stopPropagation(), e.preventDefault();
+                e.stopPropagation();
             }}
             onSubmit={handlerEdit}
-            onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-            }}
         >
             <span className={styles.writeHint} aria-hidden="true">
                 <Edit width="16" height="16" color="white" />
@@ -143,7 +137,6 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                     type="submit"
                     title="Guardar"
                     className={styles.buttonEdit}
-                    onClick={handlerEdit}
                     disabled={isPendingEditCollection || isPendingEditPost}
                 >
                     <Check color={"#11796f"} width="20" height="20" />
@@ -154,7 +147,7 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                     type="button"
                     title="Cancelar"
                     className={styles.buttonEdit}
-                    onClick={(e) => {
+                    onClick={() => {
                         setClose(false);
                     }}
                     disabled={isPendingEditCollection || isPendingEditPost}
