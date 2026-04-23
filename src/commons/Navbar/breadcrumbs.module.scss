@@ -3,8 +3,10 @@
 .containerBreads {
     position: relative;
     display: flex;
+    flex-wrap: wrap;
     width: auto;
     padding-left: 12px;
+    gap: 4px;
 
     p {
         color: colors.$darkNavyBlue;
