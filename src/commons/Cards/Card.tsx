@@ -35,7 +35,9 @@ const Card = ({ data, index = 0 }: CardData) => {
     const handleClose = () => setOpenModal("none");
 
     return (
-        <>
+        <div
+            className={`${styles.cardShell} ${openModal !== "none" ? styles.cardShellOpen : ""}`}
+        >
             <div
                 className={styles.containerCard}
                 style={{ backgroundColor: colors[index % colors.length] }}
@@ -65,25 +67,28 @@ const Card = ({ data, index = 0 }: CardData) => {
                     </button>
                 </TooltipWrapper>
             </div>
-
             {openModal === "edit" && (
-                <ModalEditName
-                    id={data}
-                    isOpen={true}
-                    setClose={handleClose}
-                    color={colors[index % colors.length]}
-                />
+                <div className={`${styles.cardPopover} ${styles.editPopover}`}>
+                    <ModalEditName
+                        id={data}
+                        isOpen={true}
+                        setClose={handleClose}
+                        color={colors[index % colors.length]}
+                    />
+                </div>
             )}
 
             {openModal === "delete" && (
-                <ModalDelete
-                    id={data}
-                    isOpen={true}
-                    setClose={handleClose}
-                    color={colors[index % colors.length]}
-                />
+                <div className={`${styles.cardPopover} ${styles.deletePopover}`}>
+                    <ModalDelete
+                        id={data}
+                        isOpen={true}
+                        setClose={handleClose}
+                        color={colors[index % colors.length]}
+                    />
+                </div>
             )}
-        </>
+        </div>
     );
 };
 
