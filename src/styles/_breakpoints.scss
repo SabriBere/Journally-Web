@@ -13,6 +13,12 @@ $table: $tablet;
     }
 }
 
+@mixin tablet-down {
+    @media (max-width: #{$tablet - 1px}) {
+        @content;
+    }
+}
+
 @mixin tablet {
     @media (min-width: #{$tablet}) {
         @content;
