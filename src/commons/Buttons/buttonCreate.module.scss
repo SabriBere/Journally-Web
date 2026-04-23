@@ -1,3 +1,4 @@
+@use "../../styles/breakpoints" as bp;
 @use "../../styles/colors" as colors;
 
 .containerButton {
@@ -9,4 +10,10 @@
     justify-content: center;
     background-color: colors.$intenseCoralRed;
     cursor: pointer;
+    flex-shrink: 0;
+
+    @include bp.tablet-down {
+        width: 46px;
+        height: 46px;
+    }
 }

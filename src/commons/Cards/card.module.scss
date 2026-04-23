@@ -1,3 +1,4 @@
+@use "../../styles/breakpoints" as bp;
 @use "../../styles/colors" as colors;
 
 .containerCard {
@@ -5,7 +6,7 @@
     flex-direction: column;
     justify-content: space-between;
     background-color: colors.$mangoYellow;
-    width: 160px;
+    width: min(100%, 160px);
     height: 120px;
     padding: 8px 10px;
     border-radius: 24px;
@@ -15,6 +16,14 @@
     transition:
         transform 0.25s ease,
         box-shadow 0.25s ease;
+
+    @include bp.tablet-down {
+        width: 100%;
+    }
+
+    @include bp.mobile {
+        min-height: 112px;
+    }
 
     .topCard {
         display: flex;
