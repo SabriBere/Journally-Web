@@ -48,10 +48,16 @@ const ModalCreatePost = () => {
     };
     return (
         <div className={styles.overlay}>
-            <form className={styles.containerModalCreate}>
+            <form
+                className={styles.containerModalCreate}
+                onSubmit={handlerCreatePost}
+            >
                 <div className={styles.containerTop}>
                     <h2>Crear un post</h2>
-                    <button onClick={() => dispatch(setOpenModalPost(false))}>
+                    <button
+                        type="button"
+                        onClick={() => dispatch(setOpenModalPost(false))}
+                    >
                         <Close width="24" height="24" color="white" />
                     </button>
                 </div>
@@ -88,7 +94,7 @@ const ModalCreatePost = () => {
                         Cancelar
                     </button>
                     <button
-                        onClick={handlerCreatePost}
+                        type="submit"
                         className={styles.btnCreate}
                         disabled={isPending || isDisabled}
                     >
