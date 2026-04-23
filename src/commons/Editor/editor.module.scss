@@ -6,7 +6,7 @@
     background: linear-gradient(180deg, #f7e8cb 0%, #f3dfb8 100%);
     border-radius: 24px;
     padding: 24px 20px;
-    width: 60%;
+    width: min(100%, 72rem);
     gap: 20px;
     box-shadow:
         0 4px 12px rgba(0, 0, 0, 0.08),
@@ -17,8 +17,14 @@
         color: colors.$darkOrange;
     }
 
+    .header {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
     .text {
-        
+        min-height: 8rem;
     }
 
     p {
