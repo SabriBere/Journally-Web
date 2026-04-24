@@ -30,6 +30,9 @@ const ToolBar = () => {
     );
     const [showTools, setShowTools] = useState(false);
     const toggle = () => setShowTools((p) => !p);
+    const normalize = (version?: string) =>
+        (version ?? "").replace(/\s+/g, " ").trim();
+    const isDirty = normalize(newText) !== normalize(currentDescription);
 
     const { mutateAsync: updatePostMutation, isPending: isPendingEdit } =
         useMutation({
@@ -51,7 +54,7 @@ const ToolBar = () => {
                 });
             },
             onError: (error: any) => {
-                if (isDirty) {
+                if (!isDirty) {
                     showError("No hay cambios para guardar");
                     return;
                 }
@@ -59,11 +62,11 @@ const ToolBar = () => {
             },
         });
 
-    const normalize = (version?: string) =>
-        (version ?? "").replace(/\s+/g, " ").trim();
-    const isDirty = normalize(newText) !== normalize(currentDescription);
+    const canSave = editText && isDirty && !isPendingEdit;
 
     const handlerEditPost = async () => {
+        if (!canSave) return;
+
         const body = {
             title: "",
             description: newText,
@@ -93,6 +96,22 @@ const ToolBar = () => {
         await deletePostMutation({ postId });
     };
 
+    const handlerCopyPost = async () => {
+        const textToCopy = editText ? newText : currentDescription;
+
+        if (!textToCopy.trim()) {
+            showError("No hay texto para copiar");
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            showSuccess("Texto copiado al portapapeles");
+        } catch (error) {
+            showError("No se pudo copiar el texto");
+        }
+    };
+
     const options = [
         {
             id: 0,
@@ -112,17 +131,15 @@ const ToolBar = () => {
             icon: <Copy color="white" width="24" height="24" />,
             name: "Copiar",
             color: "#f4a534",
-            action: () => console.log("Copiar"),
+            action: handlerCopyPost,
         },
         {
             id: 2,
             icon: <Save color="white" width="24" height="24" />,
             name: "Guardar",
-            color: isDirty || isPendingEdit ? "#a4a492" : "#11796f",
-            action: async () => {
-                // if (isPendingEdit || isDirty) return;
-                await handlerEditPost();
-            },
+            color: canSave ? "#11796f" : "#a4a492",
+            disabled: !canSave,
+            action: handlerEditPost,
         },
         {
             id: 3,
@@ -151,6 +168,7 @@ const ToolBar = () => {
                         <button
                             className={styles.buttonEdit}
                             style={{ backgroundColor: opt.color }}
+                            disabled={opt.disabled}
                             onClick={opt.action}
                         >
                             {opt.icon}
