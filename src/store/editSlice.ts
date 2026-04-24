@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface EditState {
     editText: boolean;
+    newTitle: string;
     newText: string;
     currentTitle: string;
     currentDescription: string;
@@ -11,6 +12,7 @@ interface EditState {
 
 const initialState: EditState = {
     editText: false,
+    newTitle: "",
     newText: "",
     currentTitle: "",
     currentDescription: "",
@@ -27,6 +29,9 @@ const editSlice = createSlice({
         },
         setNewText: (state, actions) => {
             state.newText = actions.payload;
+        },
+        setNewTitle: (state, actions) => {
+            state.newTitle = actions.payload;
         },
         setCurrentTtitle: (state, actions) => {
             state.currentTitle = actions.payload;
@@ -48,7 +53,9 @@ const editSlice = createSlice({
 
 export const {
     setEditText,
+    setNewTitle,
     setNewText,
+    setCurrentTtitle,
     setCuerrentDescription,
     setCleanText,
     setSavePost,

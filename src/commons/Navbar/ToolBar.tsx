@@ -3,7 +3,11 @@ import React, { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { setEditText, setSavePost } from "@/store/editSlice";
+import {
+    setEditText,
+    setNewTitle,
+    setSavePost,
+} from "@/store/editSlice";
 import { showSuccess, showError } from "../Toast/toastHelpers";
 import { deletePost, updatePost } from "@/services/post.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -24,12 +28,20 @@ const ToolBar = () => {
     const dispatch = useDispatch();
     const QueryClient = useQueryClient();
     const editText = useSelector((state: RootState) => state.edit.editText);
+    const savePost = useSelector((state: RootState) => state.edit.savePost);
+    const newTitle = useSelector((state: RootState) => state.edit.newTitle);
     const newText = useSelector((state: RootState) => state.edit.newText);
+    const currentTitle = useSelector((state: RootState) => state.edit.currentTitle);
     const currentDescription = useSelector(
         (s: RootState) => s.edit.currentDescription
     );
     const [showTools, setShowTools] = useState(false);
     const toggle = () => setShowTools((p) => !p);
+    const normalize = (version?: string) =>
+        (version ?? "").replace(/\s+/g, " ").trim();
+    const isDirty =
+        normalize(newTitle) !== normalize(currentTitle) ||
+        normalize(newText) !== normalize(currentDescription);
 
     const { mutateAsync: updatePostMutation, isPending: isPendingEdit } =
         useMutation({
@@ -51,7 +63,7 @@ const ToolBar = () => {
                 });
             },
             onError: (error: any) => {
-                if (isDirty) {
+                if (!isDirty) {
                     showError("No hay cambios para guardar");
                     return;
                 }
@@ -59,20 +71,33 @@ const ToolBar = () => {
             },
         });
 
-    const normalize = (version?: string) =>
-        (version ?? "").replace(/\s+/g, " ").trim();
-    const isDirty = normalize(newText) !== normalize(currentDescription);
+    const canSave = editText && isDirty && !isPendingEdit;
 
-    const handlerEditPost = async () => {
+    const handlerEditPost = async (shouldCloseEditor = false) => {
+        if (!canSave) {
+            if (shouldCloseEditor) {
+                dispatch(setEditText(false));
+                dispatch(setSavePost(false));
+            }
+            return;
+        }
+
         const body = {
-            title: "",
+            title: newTitle.trim(),
             description: newText,
         };
         await updatePostMutation({ body, postId });
 
         dispatch(setEditText(false));
+        dispatch(setNewTitle(body.title));
         dispatch(setSavePost(false));
     };
+
+    React.useEffect(() => {
+        if (!savePost) return;
+
+        handlerEditPost(true);
+    }, [savePost]);
 
     const { mutateAsync: deletePostMutation } = useMutation({
         mutationFn: ({ postId }: { postId: number }) => deletePost(postId),
@@ -93,6 +118,24 @@ const ToolBar = () => {
         await deletePostMutation({ postId });
     };
 
+    const handlerCopyPost = async () => {
+        const textToCopy = editText
+            ? [newTitle, newText].filter(Boolean).join("\n\n")
+            : [currentTitle, currentDescription].filter(Boolean).join("\n\n");
+
+        if (!textToCopy.trim()) {
+            showError("No hay texto para copiar");
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            showSuccess("Texto copiado al portapapeles");
+        } catch (error) {
+            showError("No se pudo copiar el texto");
+        }
+    };
+
     const options = [
         {
             id: 0,
@@ -111,31 +154,29 @@ const ToolBar = () => {
             id: 1,
             icon: <Copy color="white" width="24" height="24" />,
             name: "Copiar",
-            color: "#f4a534",
-            action: () => console.log("Copiar"),
+            color: "#cb9441",
+            action: handlerCopyPost,
         },
         {
             id: 2,
             icon: <Save color="white" width="24" height="24" />,
             name: "Guardar",
-            color: isDirty || isPendingEdit ? "#a4a492" : "#11796f",
-            action: async () => {
-                // if (isPendingEdit || isDirty) return;
-                await handlerEditPost();
-            },
+            color: canSave ? "#11796f" : "#a4a492",
+            disabled: !canSave,
+            action: handlerEditPost,
         },
         {
             id: 3,
             icon: <Edit color="white" width="24" height="24" />,
             name: "Editar",
-            color: "#0d1e2b",
+            color: "#10434c",
             action: () => dispatch(setEditText(!editText)),
         },
         {
             id: 4,
             icon: <Plus color="white" width="24" height="24" />,
             name: "Herramientas",
-            color: "#e74828",
+            color: "#d2852e",
             action: toggle,
         },
     ];
@@ -149,8 +190,10 @@ const ToolBar = () => {
                 tools?.map((opt) => (
                     <TooltipWrapper key={opt.id} content={opt.name}>
                         <button
-                            className={styles.buttonEdit}
+                            className={`${styles.buttonEdit} ${styles.toolButton}`}
                             style={{ backgroundColor: opt.color }}
+                            data-index={opt.id}
+                            disabled={opt.disabled}
                             onClick={opt.action}
                         >
                             {opt.icon}
