@@ -3,7 +3,11 @@ import React, { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { setEditText, setSavePost } from "@/store/editSlice";
+import {
+    setEditText,
+    setNewTitle,
+    setSavePost,
+} from "@/store/editSlice";
 import { showSuccess, showError } from "../Toast/toastHelpers";
 import { deletePost, updatePost } from "@/services/post.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -24,7 +28,10 @@ const ToolBar = () => {
     const dispatch = useDispatch();
     const QueryClient = useQueryClient();
     const editText = useSelector((state: RootState) => state.edit.editText);
+    const savePost = useSelector((state: RootState) => state.edit.savePost);
+    const newTitle = useSelector((state: RootState) => state.edit.newTitle);
     const newText = useSelector((state: RootState) => state.edit.newText);
+    const currentTitle = useSelector((state: RootState) => state.edit.currentTitle);
     const currentDescription = useSelector(
         (s: RootState) => s.edit.currentDescription
     );
@@ -32,7 +39,9 @@ const ToolBar = () => {
     const toggle = () => setShowTools((p) => !p);
     const normalize = (version?: string) =>
         (version ?? "").replace(/\s+/g, " ").trim();
-    const isDirty = normalize(newText) !== normalize(currentDescription);
+    const isDirty =
+        normalize(newTitle) !== normalize(currentTitle) ||
+        normalize(newText) !== normalize(currentDescription);
 
     const { mutateAsync: updatePostMutation, isPending: isPendingEdit } =
         useMutation({
@@ -64,18 +73,31 @@ const ToolBar = () => {
 
     const canSave = editText && isDirty && !isPendingEdit;
 
-    const handlerEditPost = async () => {
-        if (!canSave) return;
+    const handlerEditPost = async (shouldCloseEditor = false) => {
+        if (!canSave) {
+            if (shouldCloseEditor) {
+                dispatch(setEditText(false));
+                dispatch(setSavePost(false));
+            }
+            return;
+        }
 
         const body = {
-            title: "",
+            title: newTitle.trim(),
             description: newText,
         };
         await updatePostMutation({ body, postId });
 
         dispatch(setEditText(false));
+        dispatch(setNewTitle(body.title));
         dispatch(setSavePost(false));
     };
+
+    React.useEffect(() => {
+        if (!savePost) return;
+
+        handlerEditPost(true);
+    }, [savePost]);
 
     const { mutateAsync: deletePostMutation } = useMutation({
         mutationFn: ({ postId }: { postId: number }) => deletePost(postId),
@@ -97,7 +119,9 @@ const ToolBar = () => {
     };
 
     const handlerCopyPost = async () => {
-        const textToCopy = editText ? newText : currentDescription;
+        const textToCopy = editText
+            ? [newTitle, newText].filter(Boolean).join("\n\n")
+            : [currentTitle, currentDescription].filter(Boolean).join("\n\n");
 
         if (!textToCopy.trim()) {
             showError("No hay texto para copiar");
