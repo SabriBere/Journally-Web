@@ -1,5 +1,17 @@
 @use "../../styles/colors" as colors;
 
+@keyframes toolReveal {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.92);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
 .containerToolBar {
     position: fixed;
     right: 10%;
@@ -20,12 +32,42 @@
         background-color: colors.$deepNavyBlue;
         color: colors.$white;
         cursor: pointer;
+        transition:
+            transform 0.2s ease,
+            filter 0.2s ease,
+            box-shadow 0.2s ease;
+
+        &:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.04);
+            filter: brightness(1.06);
+            box-shadow: 0 10px 18px rgba(0, 0, 0, 0.2);
+        }
+
+        &:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            filter: grayscale(0.25);
+            box-shadow: none;
+        }
     }
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        filter: grayscale(0.6);
-        background-color: colors.$taupeGray;
-        color: colors.$darkNavyBlue;
+
+    .toolButton {
+        animation: toolReveal 0.24s ease-out both;
+
+        &[data-index="0"] {
+            animation-delay: 0ms;
+        }
+
+        &[data-index="1"] {
+            animation-delay: 35ms;
+        }
+
+        &[data-index="2"] {
+            animation-delay: 70ms;
+        }
+
+        &[data-index="3"] {
+            animation-delay: 105ms;
+        }
     }
 }
