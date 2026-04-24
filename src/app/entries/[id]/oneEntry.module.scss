@@ -6,6 +6,7 @@
     align-content: stretch;
     width: 100%;
     min-height: 0;
+    overflow: hidden;
     padding-top: 16px;
 
     .contend {
@@ -15,6 +16,7 @@
         align-items: flex-start;
         flex: 1;
         min-height: 0;
+        overflow: hidden;
         padding: 24px 24px 40px;
     }
 }
