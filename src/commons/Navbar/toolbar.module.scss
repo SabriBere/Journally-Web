@@ -20,12 +20,12 @@
         background-color: colors.$deepNavyBlue;
         color: colors.$white;
         cursor: pointer;
-    }
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        filter: grayscale(0.6);
-        background-color: colors.$taupeGray;
-        color: colors.$darkNavyBlue;
+
+        &:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            filter: grayscale(0.25);
+            box-shadow: none;
+        }
     }
 }
