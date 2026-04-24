@@ -130,7 +130,7 @@ const ToolBar = () => {
             id: 1,
             icon: <Copy color="white" width="24" height="24" />,
             name: "Copiar",
-            color: "#f4a534",
+            color: "#cb9441",
             action: handlerCopyPost,
         },
         {
@@ -145,14 +145,14 @@ const ToolBar = () => {
             id: 3,
             icon: <Edit color="white" width="24" height="24" />,
             name: "Editar",
-            color: "#0d1e2b",
+            color: "#10434c",
             action: () => dispatch(setEditText(!editText)),
         },
         {
             id: 4,
             icon: <Plus color="white" width="24" height="24" />,
             name: "Herramientas",
-            color: "#e74828",
+            color: "#d2852e",
             action: toggle,
         },
     ];
@@ -166,8 +166,9 @@ const ToolBar = () => {
                 tools?.map((opt) => (
                     <TooltipWrapper key={opt.id} content={opt.name}>
                         <button
-                            className={styles.buttonEdit}
+                            className={`${styles.buttonEdit} ${styles.toolButton}`}
                             style={{ backgroundColor: opt.color }}
+                            data-index={opt.id}
                             disabled={opt.disabled}
                             onClick={opt.action}
                         >
