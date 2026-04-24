@@ -62,6 +62,7 @@ const Editor = () => {
                         </div>
                     ) : (
                         <textarea
+                            className={styles.editorInput}
                             placeholder="Escribir..."
                             value={newText}
                             onChange={handlerChangeText}
