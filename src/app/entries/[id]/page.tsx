@@ -1,7 +1,6 @@
 import React from "react";
 import Breadcrumbs from "@/commons/Navbar/Breadcrumbs";
 import ToolBar from "@/commons/Navbar/ToolBar";
-import Editor from "@/commons/Editor/Editor";
 import Tiptap from "@/commons/Editor/Tiptap";
 import styles from "./oneEntry.module.scss";
 
