@@ -2,7 +2,9 @@ import React from "react";
 import Breadcrumbs from "@/commons/Navbar/Breadcrumbs";
 import ToolBar from "@/commons/Navbar/ToolBar";
 import Editor from "@/commons/Editor/Editor";
+import Tiptap from "@/commons/Editor/Tiptap";
 import styles from "./oneEntry.module.scss";
+
 
 const CollectionDetail = () => {
     return (
@@ -10,7 +12,8 @@ const CollectionDetail = () => {
             <Breadcrumbs />
 
             <div className={styles.contend}>
-                <Editor />
+                {/* <Editor /> */}
+                <Tiptap />
                 <ToolBar />
                 {/* Agregar paginado */}
             </div>
