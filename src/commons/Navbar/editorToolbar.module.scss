@@ -82,3 +82,16 @@
     background: rgba(colors.$darkOrange, 0.14);
     color: colors.$darkOrange;
 }
+
+.toolbarButtonPrimary {
+    margin-left: auto;
+    border-color: rgba(colors.$deepNavyBlue, 0.78);
+    background: colors.$deepNavyBlue;
+    color: colors.$white;
+
+    &:hover {
+        border-color: colors.$deepNavyBlue;
+        background: colors.$deepNavyBlue;
+        filter: brightness(1.08);
+    }
+}
