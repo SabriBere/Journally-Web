@@ -84,7 +84,6 @@
 }
 
 .toolbarButtonPrimary {
-    margin-left: auto;
     border-color: rgba(colors.$deepNavyBlue, 0.78);
     background: colors.$deepNavyBlue;
     color: colors.$white;
@@ -93,5 +92,28 @@
         border-color: colors.$deepNavyBlue;
         background: colors.$deepNavyBlue;
         filter: brightness(1.08);
+    }
+}
+
+.toolbarButtonWarning {
+    margin-left: auto;
+    border-color: rgba(colors.$softMustard, 0.76);
+    background: rgba(colors.$softMustard, 0.14);
+
+    &:hover {
+        border-color: colors.$softMustard;
+        background: rgba(colors.$softMustard, 0.24);
+    }
+}
+
+.toolbarButtonDanger {
+    border-color: rgba(colors.$intenseCoralRed, 0.78);
+    background: colors.$intenseCoralRed;
+    color: colors.$white;
+
+    &:hover {
+        border-color: colors.$intenseCoralRed;
+        background: colors.$intenseCoralRed;
+        filter: brightness(1.06);
     }
 }
