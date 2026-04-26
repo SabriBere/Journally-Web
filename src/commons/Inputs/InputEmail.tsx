@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
 import { setInputEmail } from "@/store/userSlice";
@@ -10,13 +10,9 @@ const InputEmail = () => {
     //Mover al hook de email
     const inputEmail = useSelector((state: RootState) => state.user.email);
     const dispatch = useDispatch();
-    const [isValid, setIsValid] = useState<boolean>(false);
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     const handlerChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value: any = e.target.value;
-        dispatch(setInputEmail(value));
-        setIsValid(emailRegex.test(value));
+        dispatch(setInputEmail(e.target.value));
     };
 
     return (

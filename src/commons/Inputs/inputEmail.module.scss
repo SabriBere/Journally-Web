@@ -7,23 +7,32 @@ $clay: colors.$clayBrown;
     display: flex;
     flex-direction: column;
     width: 100%;
+    gap: clamp(0.25rem, 0.9vw, 0.4rem);
 
     label {
         color: colors.$mangoYellow;
         font-family: var(--font-caveat);
         font-weight: bolder;
-        font-size: 24px;
-        letter-spacing: 2;
+        font-size: var(--login-label-font, clamp(1.25rem, 3vw, 1.5rem));
+        line-height: 1;
+        letter-spacing: 0.5px;
     }
 
     .input {
-        padding: 12px;
-        border-radius: 8px;
+        width: 100%;
+        min-height: var(--login-control-height, clamp(2.5rem, 5vw, 3.125rem));
+        padding: 0 var(--login-control-padding-x, clamp(0.75rem, 2vw, 0.95rem));
+        border-radius: var(--login-radius, 0.5rem);
         border: 2px solid colors.$clayBrown;
+        background-color: colors.$white;
         color: colors.$clayBrown;
+        font-family: var(--font-inter);
+        font-size: var(--login-input-font, clamp(0.9rem, 1.8vw, 1rem));
+        font-weight: 500;
 
         &::placeholder {
             color: colors.$clayBrown;
+            opacity: 0.9;
         }
 
         &:focus {
