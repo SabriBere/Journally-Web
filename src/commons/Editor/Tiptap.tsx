@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+import { Extension } from "@tiptap/core";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { TextStyleKit } from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
@@ -24,6 +25,27 @@ import styles from "./editor.module.scss";
 
 const emptyEditorContent = "<p></p>";
 
+const exitEmptyListItem = Extension.create({
+  name: "exitEmptyListItem",
+
+  addKeyboardShortcuts() {
+    return {
+      Enter: () => {
+        const { $from, empty } = this.editor.state.selection;
+        const isEmptyListItem =
+          empty &&
+          this.editor.isActive("listItem") &&
+          $from.parent.type.name === "paragraph" &&
+          $from.parent.textContent.length === 0;
+
+        if (!isEmptyListItem) return false;
+
+        return this.editor.commands.liftListItem("listItem");
+      },
+    };
+  },
+});
+
 const Tiptap = () => {
   const { id } = useParams();
   const convertId = Number(id);
@@ -34,7 +56,7 @@ const Tiptap = () => {
   const editorRef = useRef<HTMLDivElement | null>(null);
 
   const editor = useEditor({
-    extensions: [StarterKit, TextStyleKit],
+    extensions: [StarterKit, TextStyleKit, exitEmptyListItem],
     content: emptyEditorContent,
     editable: editText,
     immediatelyRender: false,

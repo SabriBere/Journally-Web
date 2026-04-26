@@ -2,15 +2,16 @@
 
 import React from "react";
 import type { Editor as TiptapEditor } from "@tiptap/react";
+import { useDispatch } from "react-redux";
+import { setSavePost } from "@/store/editSlice";
 import Code from "@/styles/icons/Code";
-import HardBreak from "@/styles/icons/HardBreak";
 import HorizontalRule from "@/styles/icons/HorizontalRule";
-import InlineCode from "@/styles/icons/InlineCode";
 import List from "@/styles/icons/List";
 import ListItem from "@/styles/icons/ListItem";
 import OrderedList from "@/styles/icons/OrderedList";
 import Quote from "@/styles/icons/Quote";
 import Redo from "@/styles/icons/Redo";
+import Save from "@/styles/icons/Save";
 import Strikethrough from "@/styles/icons/Strikethrough";
 import Undo from "@/styles/icons/Undo";
 import Italic from "@/styles/icons/Italic";
@@ -25,6 +26,7 @@ type ToolbarButton = {
     label: React.ReactNode;
     title: string;
     isActive?: () => boolean;
+    isPrimary?: boolean;
     onClick: () => void;
 };
 
@@ -39,6 +41,7 @@ const getCurrentBlock = (editor: TiptapEditor) => {
 };
 
 const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
+    const dispatch = useDispatch();
     const [currentBlock, setCurrentBlock] = React.useState("p");
 
     React.useEffect(() => {
@@ -78,12 +81,6 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
             title: "Tachado",
             isActive: () => editor.isActive("strike"),
             onClick: () => editor.chain().focus().toggleStrike().run(),
-        },
-        {
-            label: <InlineCode width="24" height="24" color={iconColor} />,
-            title: "Código en línea",
-            isActive: () => editor.isActive("code"),
-            onClick: () => editor.chain().focus().toggleCode().run(),
         },
         {
             label: <List width="24" height="24" color={iconColor} />,
@@ -130,11 +127,6 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
             onClick: () => editor.chain().focus().setHorizontalRule().run(),
         },
         {
-            label: <HardBreak width="24" height="24" color={iconColor} />,
-            title: "Salto de línea",
-            onClick: () => editor.chain().focus().setHardBreak().run(),
-        },
-        {
             label: <Undo width="24" height="24" color={iconColor} />,
             title: "Deshacer",
             onClick: () => editor.chain().focus().undo().run(),
@@ -143,6 +135,12 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
             label: <Redo width="24" height="24" color={iconColor} />,
             title: "Rehacer",
             onClick: () => editor.chain().focus().redo().run(),
+        },
+        {
+            label: <Save width="24" height="24" color="#ffffff" />,
+            title: "Guardar",
+            isPrimary: true,
+            onClick: () => dispatch(setSavePost(true)),
         },
     ];
 
@@ -181,8 +179,9 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
                     <button
                         key={button.title}
                         type="button"
-                        className={`${styles.toolbarButton} ${button.isActive?.() ? styles.toolbarButtonActive : ""
-                            }`}
+                        className={`${styles.toolbarButton} ${
+                            button.isActive?.() ? styles.toolbarButtonActive : ""
+                        } ${button.isPrimary ? styles.toolbarButtonPrimary : ""}`}
                         title={button.title}
                         aria-label={button.title}
                         aria-pressed={button.isActive?.() ?? false}
