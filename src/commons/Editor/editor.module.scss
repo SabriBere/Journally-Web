@@ -11,7 +11,7 @@
     max-height: 100%;
     min-height: 0;
     gap: 20px;
-    overflow-y: auto;
+    overflow: hidden;
     box-shadow:
         0 4px 12px rgba(0, 0, 0, 0.08),
         0 1px 3px rgba(0, 0, 0, 0.04);
@@ -21,8 +21,20 @@
         color: colors.$darkOrange;
     }
 
+    .editorTop {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        display: flex;
+        flex: 0 0 auto;
+        flex-direction: column;
+        gap: 20px;
+        background: linear-gradient(180deg, #f7e8cb 0%, #f3dfb8 100%);
+    }
+
     .header {
         display: flex;
+        flex: 0 0 auto;
         flex-direction: column;
         gap: 8px;
     }
@@ -52,16 +64,20 @@
         }
     }
 
-    .text {
-        min-height: 8rem;
+    .text,
+    .tiptapText {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
         overflow-wrap: anywhere;
     }
 
-    .editorInput {
+    .editorInput,
+    .tiptapEditor {
         width: 100%;
-        min-height: 20rem;
-        flex: 1;
-        resize: vertical;
+        min-height: 0;
+        flex: 1 1 auto;
+        overflow-y: auto;
         border: 1px solid rgba(colors.$softBrown, 0.45);
         border-radius: 18px;
         padding: 18px 16px;
@@ -93,7 +109,111 @@
         }
     }
 
-    p {
+    .editorInput {
+        resize: none;
+    }
+
+    .tiptapEditor,
+    .tiptapText {
+        :global(.ProseMirror) {
+            min-height: 100%;
+            outline: none;
+            overflow-wrap: anywhere;
+        }
+
+        :global(.ProseMirror p) {
+            margin: 0 0 0.8rem;
+        }
+
+        :global(.ProseMirror p:last-child) {
+            margin-bottom: 0;
+        }
+
+        :global(.ProseMirror h1),
+        :global(.ProseMirror h2),
+        :global(.ProseMirror h3),
+        :global(.ProseMirror h4),
+        :global(.ProseMirror h5),
+        :global(.ProseMirror h6) {
+            margin: 0 0 0.75rem;
+            color: colors.$darkOrange;
+            font-family: var(--font-caveat);
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        :global(.ProseMirror h1) {
+            font-size: 2.25rem;
+        }
+
+        :global(.ProseMirror h2) {
+            font-size: 2rem;
+        }
+
+        :global(.ProseMirror h3) {
+            font-size: 1.75rem;
+        }
+
+        :global(.ProseMirror h4) {
+            font-size: 1.5rem;
+        }
+
+        :global(.ProseMirror h5) {
+            font-size: 1.3rem;
+        }
+
+        :global(.ProseMirror h6) {
+            font-size: 1.15rem;
+        }
+
+        :global(.ProseMirror ul),
+        :global(.ProseMirror ol) {
+            margin: 0 0 0.9rem;
+            padding-left: 1.6rem;
+        }
+
+        :global(.ProseMirror li) {
+            margin: 0.18rem 0;
+            padding-left: 0.15rem;
+        }
+
+        :global(.ProseMirror strong) {
+            font-weight: 700;
+        }
+
+        :global(.ProseMirror em) {
+            font-style: italic;
+        }
+
+        :global(.ProseMirror blockquote) {
+            margin: 1rem 0;
+            padding-left: 1rem;
+            border-left: 3px solid rgba(colors.$softBrown, 0.7);
+        }
+
+        :global(.ProseMirror pre) {
+            margin: 1rem 0;
+            border-radius: 12px;
+            padding: 12px 14px;
+            background: rgba(colors.$darkOrange, 0.1);
+            white-space: pre-wrap;
+        }
+
+        :global(.ProseMirror code) {
+            font-family: monospace;
+            font-size: 0.85em;
+        }
+
+        :global(.ProseMirror hr) {
+            margin: 1.2rem 0;
+            border: 0;
+            border-top: 1px dashed rgba(colors.$softBrown, 0.7);
+        }
+    }
+
+    p,
+    .tiptapText,
+    .tiptapEditor {
         font-family: var(--font-caveat);
         color: colors.$darkOrange;
         font-size: 24px;

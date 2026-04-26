@@ -1,0 +1,13 @@
+import React from "react";
+import { ColorProps } from "./Icons.types";
+
+const Undo = ({ color, width, height }: ColorProps) => (
+    <svg
+        fill={color} width={width} height={height}
+        viewBox="0 0 256 256"
+    >
+        <path d="M232 200a8 8 0 0 1-16 0 88.1 88.1 0 0 0-88-88H51.31l34.35 34.34a8 8 0 0 1-11.32 11.32l-48-48a8 8 0 0 1 0-11.32l48-48a8 8 0 0 1 11.32 11.32L51.31 96H128a104.11 104.11 0 0 1 104 104"></path>
+    </svg>
+);
+
+export default Undo;
