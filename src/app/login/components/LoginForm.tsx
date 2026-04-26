@@ -46,20 +46,22 @@ const LoginForm = () => {
 
     return (
         <div className={styles.containerLoginForm}>
-            <h1>Iniciar sesión</h1>
             <form className={styles.loginCard} onSubmit={handlerLogin}>
                 <div className={styles.voyagerBg}>
-                    <Voyager width="200%" height="200%" />
+                    <Voyager width="100%" height="100%" />
                 </div>
-                <InputEmail />
-                <InputPassword />
-                <button
-                    disabled={isDisabled || loading}
-                    className={styles.buttonSubmit}
-                    type="submit"
-                >
-                    {loading ? <Spinner /> : "Iniciar sesión"}
-                </button>
+                <div className={styles.formContent}>
+                    <h1>Iniciar sesión</h1>
+                    <InputEmail />
+                    <InputPassword />
+                    <button
+                        disabled={isDisabled || loading}
+                        className={styles.buttonSubmit}
+                        type="submit"
+                    >
+                        {loading ? <Spinner /> : "Iniciar sesión"}
+                    </button>
+                </div>
             </form>
         </div>
     );
