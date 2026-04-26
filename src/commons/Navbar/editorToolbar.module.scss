@@ -70,6 +70,11 @@
         outline: none;
         box-shadow: 0 0 0 3px rgba(colors.$softMustard, 0.2);
     }
+
+    svg {
+        display: block;
+        flex: 0 0 auto;
+    }
 }
 
 .toolbarButtonActive {

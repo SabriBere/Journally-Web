@@ -3,9 +3,18 @@
 import React from "react";
 import type { Editor as TiptapEditor } from "@tiptap/react";
 import Code from "@/styles/icons/Code";
+import HardBreak from "@/styles/icons/HardBreak";
+import HorizontalRule from "@/styles/icons/HorizontalRule";
+import InlineCode from "@/styles/icons/InlineCode";
+import List from "@/styles/icons/List";
+import ListItem from "@/styles/icons/ListItem";
+import OrderedList from "@/styles/icons/OrderedList";
 import Quote from "@/styles/icons/Quote";
 import Redo from "@/styles/icons/Redo";
+import Strikethrough from "@/styles/icons/Strikethrough";
 import Undo from "@/styles/icons/Undo";
+import Italic from "@/styles/icons/Italic";
+import Bold from "@/styles/icons/Bold";
 import styles from "./editorToolbar.module.scss";
 
 const headingLevels = [1, 2, 3, 4, 5, 6] as const;
@@ -30,47 +39,66 @@ const getCurrentBlock = (editor: TiptapEditor) => {
 };
 
 const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
+    const [currentBlock, setCurrentBlock] = React.useState("p");
+
+    React.useEffect(() => {
+        if (!editor) return;
+
+        const updateCurrentBlock = () => {
+            setCurrentBlock(getCurrentBlock(editor));
+        };
+
+        updateCurrentBlock();
+        editor.on("selectionUpdate", updateCurrentBlock);
+        editor.on("transaction", updateCurrentBlock);
+
+        return () => {
+            editor.off("selectionUpdate", updateCurrentBlock);
+            editor.off("transaction", updateCurrentBlock);
+        };
+    }, [editor]);
+
     if (!editor) return null;
 
     const buttons: ToolbarButton[] = [
         {
-            label: "B",
+            label: <Bold width="24" height="24" color={iconColor} />,
             title: "Negrita",
             isActive: () => editor.isActive("bold"),
             onClick: () => editor.chain().focus().toggleBold().run(),
         },
         {
-            label: "I",
+            label: <Italic width="24" height="24" color={iconColor} />,
             title: "Itálica",
             isActive: () => editor.isActive("italic"),
             onClick: () => editor.chain().focus().toggleItalic().run(),
         },
         {
-            label: "S",
+            label: <Strikethrough width="24" height="24" color={iconColor} />,
             title: "Tachado",
             isActive: () => editor.isActive("strike"),
             onClick: () => editor.chain().focus().toggleStrike().run(),
         },
         {
-            label: "<>",
+            label: <InlineCode width="24" height="24" color={iconColor} />,
             title: "Código en línea",
             isActive: () => editor.isActive("code"),
             onClick: () => editor.chain().focus().toggleCode().run(),
         },
         {
-            label: "UL",
+            label: <List width="24" height="24" color={iconColor} />,
             title: "Lista con viñetas",
             isActive: () => editor.isActive("bulletList"),
             onClick: () => editor.chain().focus().toggleBulletList().run(),
         },
         {
-            label: "OL",
+            label: <OrderedList width="24" height="24" color={iconColor} />,
             title: "Lista numerada",
             isActive: () => editor.isActive("orderedList"),
             onClick: () => editor.chain().focus().toggleOrderedList().run(),
         },
         {
-            label: "LI",
+            label: <ListItem width="24" height="24" color={iconColor} />,
             title: "Agregar item de lista",
             onClick: () => {
                 if (
@@ -97,12 +125,12 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
             onClick: () => editor.chain().focus().toggleCodeBlock().run(),
         },
         {
-            label: "HR",
+            label: <HorizontalRule width="24" height="24" color={iconColor} />,
             title: "Línea horizontal",
             onClick: () => editor.chain().focus().setHorizontalRule().run(),
         },
         {
-            label: "BR",
+            label: <HardBreak width="24" height="24" color={iconColor} />,
             title: "Salto de línea",
             onClick: () => editor.chain().focus().setHardBreak().run(),
         },
@@ -123,18 +151,20 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
 
         if (value === "p") {
             editor.chain().focus().setParagraph().run();
+            setCurrentBlock("p");
             return;
         }
 
         const level = Number(value.replace("h", "")) as HeadingLevel;
         editor.chain().focus().toggleHeading({ level }).run();
+        setCurrentBlock(value);
     };
 
     return (
         <div className={styles.editorToolbar} aria-label="Herramientas del editor">
             <select
                 className={styles.blockSelect}
-                value={getCurrentBlock(editor)}
+                value={currentBlock}
                 onChange={handleBlockChange}
                 aria-label="Tipo de bloque"
             >
@@ -151,9 +181,8 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
                     <button
                         key={button.title}
                         type="button"
-                        className={`${styles.toolbarButton} ${
-                            button.isActive?.() ? styles.toolbarButtonActive : ""
-                        }`}
+                        className={`${styles.toolbarButton} ${button.isActive?.() ? styles.toolbarButtonActive : ""
+                            }`}
                         title={button.title}
                         aria-label={button.title}
                         aria-pressed={button.isActive?.() ?? false}
