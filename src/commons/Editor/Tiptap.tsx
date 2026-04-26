@@ -150,34 +150,36 @@ const Tiptap = () => {
       )}
       {isSuccess && (
         <div className={styles.containerPaper} ref={editorRef}>
-          <div className={styles.header}>
-            {editText ? (
-              <input
-                className={styles.titleInput}
-                value={newTitle}
-                onChange={handleChangeTitle}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    dispatch(setSavePost(true));
-                  }
-                }}
-                placeholder="Escribir título..."
-                autoFocus={focusTitleInput}
-              />
-            ) : (
-              <button
-                type="button"
-                className={styles.titleButton}
-                onClick={handleEnableTitleEdit}
-              >
-                <h1>{entry?.title}</h1>
-              </button>
-            )}
-            <p>{`${converDate(entry?.created_at)}`}</p>
-          </div>
+          <div className={styles.editorTop}>
+            <div className={styles.header}>
+              {editText ? (
+                <input
+                  className={styles.titleInput}
+                  value={newTitle}
+                  onChange={handleChangeTitle}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      dispatch(setSavePost(true));
+                    }
+                  }}
+                  placeholder="Escribir título..."
+                  autoFocus={focusTitleInput}
+                />
+              ) : (
+                <button
+                  type="button"
+                  className={styles.titleButton}
+                  onClick={handleEnableTitleEdit}
+                >
+                  <h1>{entry?.title}</h1>
+                </button>
+              )}
+              <p>{`${converDate(entry?.created_at)}`}</p>
+            </div>
 
-          {editText && <EditorToolbar editor={editor} />}
+            {editText && <EditorToolbar editor={editor} />}
+          </div>
 
           <EditorContent
             editor={editor}
