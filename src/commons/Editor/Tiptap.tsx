@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { Extension } from "@tiptap/core";
+import { Plugin } from "@tiptap/pm/state";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { TextStyleKit } from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
@@ -24,6 +25,50 @@ import SkeletonEditor from "@/commons/Skeletons/SkeletonEditor";
 import styles from "./editor.module.scss";
 
 const emptyEditorContent = "<p></p>";
+const htmlTagPattern =
+  /<\/?(h[1-6]|p|ul|ol|li|blockquote|pre|code|strong|em|s|br|hr)\b[^>]*>/i;
+
+const decodeHtmlEntities = (value: string) =>
+  value
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, "&");
+
+const stripHtmlCodeFence = (value: string) =>
+  value.replace(/^```(?:html)?\s*/i, "").replace(/\s*```$/i, "");
+
+const unwrapCodeBlock = (value: string) => {
+  const match = value.match(
+    /^<pre><code(?:\s+class="[^"]*")?>([\s\S]*)<\/code><\/pre>$/i
+  );
+
+  return match?.[1] ?? value;
+};
+
+const unwrapHtmlCodeBlocks = (value: string) =>
+  value.replace(
+    /<pre><code(?:\s+class="[^"]*")?>([\s\S]*?)<\/code><\/pre>/gi,
+    (codeBlock, innerContent: string) => {
+      const decoded = decodeHtmlEntities(innerContent);
+
+      return htmlTagPattern.test(decoded) ? decoded : codeBlock;
+    }
+  );
+
+const normalizeEditorContent = (value?: string | null) => {
+  const raw = value?.trim() ?? "";
+
+  if (!raw) return emptyEditorContent;
+
+  const withoutFence = stripHtmlCodeFence(raw);
+  const withoutCodeBlock = unwrapCodeBlock(withoutFence);
+  const withoutHtmlCodeBlocks = unwrapHtmlCodeBlocks(withoutCodeBlock);
+  const decoded = decodeHtmlEntities(withoutHtmlCodeBlocks);
+
+  return htmlTagPattern.test(decoded) ? decoded : raw;
+};
 
 const exitEmptyListItem = Extension.create({
   name: "exitEmptyListItem",
@@ -46,6 +91,33 @@ const exitEmptyListItem = Extension.create({
   },
 });
 
+const interpretPastedHtmlText = Extension.create({
+  name: "interpretPastedHtmlText",
+
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        props: {
+          handlePaste: (_view, event) => {
+            const plainText = event.clipboardData?.getData("text/plain");
+
+            if (
+              !plainText ||
+              !htmlTagPattern.test(decodeHtmlEntities(plainText))
+            ) {
+              return false;
+            }
+
+            event.preventDefault();
+            this.editor.commands.insertContent(normalizeEditorContent(plainText));
+            return true;
+          },
+        },
+      }),
+    ];
+  },
+});
+
 const Tiptap = () => {
   const { id } = useParams();
   const convertId = Number(id);
@@ -56,7 +128,12 @@ const Tiptap = () => {
   const editorRef = useRef<HTMLDivElement | null>(null);
 
   const editor = useEditor({
-    extensions: [StarterKit, TextStyleKit, exitEmptyListItem],
+    extensions: [
+      StarterKit,
+      TextStyleKit,
+      exitEmptyListItem,
+      interpretPastedHtmlText,
+    ],
     content: emptyEditorContent,
     editable: editText,
     immediatelyRender: false,
@@ -84,7 +161,7 @@ const Tiptap = () => {
     if (!entry) return;
 
     const title = entry.title ?? "";
-    const description = entry.description ?? "";
+    const description = normalizeEditorContent(entry.description);
 
     dispatch(setCurrentTtitle(title));
     dispatch(setNewTitle(title));
@@ -96,7 +173,7 @@ const Tiptap = () => {
     if (!editor || !entry) return;
 
     editor.commands.setContent(
-      entry.description?.trim() ? entry.description : emptyEditorContent,
+      normalizeEditorContent(entry.description),
       { emitUpdate: false }
     );
   }, [editor, entry]);
@@ -134,8 +211,10 @@ const Tiptap = () => {
 
     dispatch(setCurrentTtitle(entry.title ?? ""));
     dispatch(setNewTitle(entry.title ?? ""));
-    dispatch(setCuerrentDescription(entry.description ?? ""));
-    dispatch(setNewText(entry.description ?? ""));
+    const description = normalizeEditorContent(entry.description);
+
+    dispatch(setCuerrentDescription(description));
+    dispatch(setNewText(description));
     dispatch(setEditText(true));
     setFocusTitleInput(true);
   };
