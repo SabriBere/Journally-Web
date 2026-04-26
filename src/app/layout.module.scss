@@ -1,16 +1,19 @@
 .layout {
     display: flex;
     flex-direction: column;
+    height: 100vh;
     min-height: 100vh;
+    overflow: hidden;
 
     header {
         flex-shrink: 0;
     }
 
     .mainContent {
-        flex-grow: 1;
+        flex: 1 1 auto;
         display: flex;
         min-height: 0;
+        overflow: hidden;
     }
 
     footer {
