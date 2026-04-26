@@ -2,9 +2,16 @@
 
 import React from "react";
 import type { Editor as TiptapEditor } from "@tiptap/react";
-import { useDispatch } from "react-redux";
+import { useParams, useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 import { setSavePost } from "@/store/editSlice";
+import { deletePost } from "@/services/post.service";
+import { showError, showSuccess } from "../Toast/toastHelpers";
 import Code from "@/styles/icons/Code";
+import Copy from "@/styles/icons/Copy";
+import Delete from "@/styles/icons/Delete";
 import HorizontalRule from "@/styles/icons/HorizontalRule";
 import List from "@/styles/icons/List";
 import ListItem from "@/styles/icons/ListItem";
@@ -27,6 +34,7 @@ type ToolbarButton = {
     title: string;
     isActive?: () => boolean;
     isPrimary?: boolean;
+    variant?: "danger" | "warning";
     onClick: () => void;
 };
 
@@ -41,8 +49,29 @@ const getCurrentBlock = (editor: TiptapEditor) => {
 };
 
 const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
+    const { id } = useParams<{ id: string }>();
+    const router = useRouter();
     const dispatch = useDispatch();
+    const queryClient = useQueryClient();
+    const postId = Number(id);
+    const newTitle = useSelector((state: RootState) => state.edit.newTitle);
+    const newText = useSelector((state: RootState) => state.edit.newText);
     const [currentBlock, setCurrentBlock] = React.useState("p");
+
+    const { mutateAsync: deletePostMutation } = useMutation({
+        mutationFn: ({ postId }: { postId: number }) => deletePost(postId),
+        mutationKey: ["deletePost", postId],
+        onSuccess: async () => {
+            showSuccess("Eliminado correctamente 🎉");
+            await queryClient.refetchQueries({
+                queryKey: ["getAllPost"],
+            });
+            router.push("/home");
+        },
+        onError: () => {
+            showError("Error al eliminar post");
+        },
+    });
 
     React.useEffect(() => {
         if (!editor) return;
@@ -62,6 +91,26 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
     }, [editor]);
 
     if (!editor) return null;
+
+    const handleCopyPost = async () => {
+        const textToCopy = [newTitle, newText].filter(Boolean).join("\n\n");
+
+        if (!textToCopy.trim()) {
+            showError("No hay texto para copiar");
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            showSuccess("Texto copiado al portapapeles");
+        } catch {
+            showError("No se pudo copiar el texto");
+        }
+    };
+
+    const handleDeletePost = async () => {
+        await deletePostMutation({ postId });
+    };
 
     const buttons: ToolbarButton[] = [
         {
@@ -137,6 +186,18 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
             onClick: () => editor.chain().focus().redo().run(),
         },
         {
+            label: <Copy width="24" height="24" color={iconColor} />,
+            title: "Copiar",
+            variant: "warning",
+            onClick: handleCopyPost,
+        },
+        {
+            label: <Delete width="24" height="24" color="#ffffff" />,
+            title: "Eliminar",
+            variant: "danger",
+            onClick: handleDeletePost,
+        },
+        {
             label: <Save width="24" height="24" color="#ffffff" />,
             title: "Guardar",
             isPrimary: true,
@@ -181,7 +242,15 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
                         type="button"
                         className={`${styles.toolbarButton} ${
                             button.isActive?.() ? styles.toolbarButtonActive : ""
-                        } ${button.isPrimary ? styles.toolbarButtonPrimary : ""}`}
+                        } ${button.isPrimary ? styles.toolbarButtonPrimary : ""} ${
+                            button.variant === "danger"
+                                ? styles.toolbarButtonDanger
+                                : ""
+                        } ${
+                            button.variant === "warning"
+                                ? styles.toolbarButtonWarning
+                                : ""
+                        }`}
                         title={button.title}
                         aria-label={button.title}
                         aria-pressed={button.isActive?.() ?? false}
