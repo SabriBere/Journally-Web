@@ -15,8 +15,6 @@ const InputPassword = () => {
         (state: RootState) => state.user.password
     );
     const [showPassword, setShowPassword] = useState<boolean>(false);
-    const [isValidPass, setIsValidPass] = useState<boolean>(false);
-    const passRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
     const toggleShowPassword = () => setShowPassword((prev) => !prev);
 
