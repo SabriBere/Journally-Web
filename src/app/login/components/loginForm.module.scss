@@ -1,64 +1,127 @@
+@use "../../../styles/breakpoints" as bp;
 @use "../../../styles/colors" as colors;
 
 .containerLoginForm {
+    --login-control-height: clamp(2.5rem, 5vw, 3.125rem);
+    --login-control-padding-x: clamp(0.75rem, 2vw, 0.95rem);
+    --login-input-font: clamp(0.9rem, 1.8vw, 1rem);
+    --login-label-font: clamp(1.25rem, 3vw, 1.5rem);
+    --login-radius: clamp(0.45rem, 1.3vw, 0.55rem);
+
     position: relative;
     display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: clamp(1rem, 4vw, 2rem);
+    overflow: hidden;
+}
+
+.loginCard {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    place-items: center;
+    width: min(88vw, 70vh, 38rem);
+    min-width: min(100%, 18rem);
+    aspect-ratio: 1;
+}
+
+.voyagerBg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.formContent {
+    display: flex;
+    flex-direction: column;
+    width: min(78%, 36rem);
+    gap: clamp(0.75rem, 2.5vw, 1.125rem);
+    transform: translateY(-2%);
 
     h1 {
         color: colors.$mangoYellow;
         font-family: var(--font-caveat);
-        letter-spacing: 1.4;
+        font-size: clamp(2rem, 4vw, 2.6rem);
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: 0;
         text-align: center;
-    }
-
-    .loginCard {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 30%;
-        // width: 100%;
-        height: 50%;
-        gap: 24px;
-    }
-
-    .voyagerBg {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-100%, -50%);
-        z-index: -1;
-    }
-
-    .buttonSubmit {
-        width: 100%;
-        height: 48px;
-        background-color: colors.$emeraldGreen;
-        color: colors.$white;
-        border-radius: 8px;
-        font-weight: bold;
-
-        //agregar hover y active
-        &:hover {
-            outline: none;
-            background-color: colors.$jadeGreen;
-        }
-
-        &:active {
-            outline: none;
-            background-color: colors.$jungleGreen;
-        }
-
-        &:disabled {
-            outline: none;
-            background-color: colors.$grey;
-        }
     }
 }
 
-//aplicar media querys
+.buttonSubmit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: var(--login-control-height);
+    padding: 0 var(--login-control-padding-x);
+    border-radius: var(--login-radius);
+    background-color: colors.$emeraldGreen;
+    color: colors.$white;
+    font-weight: 800;
+    font-size: var(--login-input-font);
+    line-height: 1;
+    transition:
+        background-color 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+
+    &:hover:not(:disabled) {
+        background-color: colors.$jadeGreen;
+        transform: translateY(-1px);
+        box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
+    }
+
+    &:active:not(:disabled) {
+        background-color: colors.$jungleGreen;
+        transform: translateY(0);
+        box-shadow: none;
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(colors.$jadeGreen, 0.24);
+    }
+
+    &:disabled {
+        background-color: colors.$grey;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
+}
+
+@include bp.tablet-down {
+    .loginCard {
+        width: min(92vw, 66vh, 32rem);
+    }
+
+    .formContent {
+        width: min(80%, 28rem);
+    }
+}
+
+@include bp.mobile {
+    .loginCard {
+        width: min(94vw, 74vh, 24rem);
+    }
+
+    .formContent {
+        width: min(82%, 20rem);
+    }
+}
