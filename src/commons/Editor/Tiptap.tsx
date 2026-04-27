@@ -40,27 +40,6 @@ const decodeHtmlEntities = (value: string) =>
     .replace(/&#39;/g, "'")
     .replace(/&amp;/g, "&");
 
-const stripHtmlCodeFence = (value: string) =>
-  value.replace(/^```(?:html)?\s*/i, "").replace(/\s*```$/i, "");
-
-const unwrapCodeBlock = (value: string) => {
-  const match = value.match(
-    /^<pre><code(?:\s+class="[^"]*")?>([\s\S]*)<\/code><\/pre>$/i
-  );
-
-  return match?.[1] ?? value;
-};
-
-const unwrapHtmlCodeBlocks = (value: string) =>
-  value.replace(
-    /<pre><code(?:\s+class="[^"]*")?>([\s\S]*?)<\/code><\/pre>/gi,
-    (codeBlock, innerContent: string) => {
-      const decoded = decodeHtmlEntities(innerContent);
-
-      return htmlTagPattern.test(decoded) ? decoded : codeBlock;
-    }
-  );
-
 const exitEmptyListItem = Extension.create({
   name: "exitEmptyListItem",
 
