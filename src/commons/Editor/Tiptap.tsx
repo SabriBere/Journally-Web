@@ -22,9 +22,12 @@ import {
 import Error from "@/commons/EmptyStates/Error";
 import EditorToolbar from "@/commons/Navbar/EditorToolbar";
 import SkeletonEditor from "@/commons/Skeletons/SkeletonEditor";
+import {
+  emptyEditorContent,
+  normalizeEditorContent,
+} from "@/utils/editorContent";
 import styles from "./editor.module.scss";
 
-const emptyEditorContent = "<p></p>";
 const htmlTagPattern =
   /<\/?(h[1-6]|p|ul|ol|li|blockquote|pre|code|strong|em|s|br|hr)\b[^>]*>/i;
 
@@ -56,19 +59,6 @@ const unwrapHtmlCodeBlocks = (value: string) =>
       return htmlTagPattern.test(decoded) ? decoded : codeBlock;
     }
   );
-
-const normalizeEditorContent = (value?: string | null) => {
-  const raw = value?.trim() ?? "";
-
-  if (!raw) return emptyEditorContent;
-
-  const withoutFence = stripHtmlCodeFence(raw);
-  const withoutCodeBlock = unwrapCodeBlock(withoutFence);
-  const withoutHtmlCodeBlocks = unwrapHtmlCodeBlocks(withoutCodeBlock);
-  const decoded = decodeHtmlEntities(withoutHtmlCodeBlocks);
-
-  return htmlTagPattern.test(decoded) ? decoded : raw;
-};
 
 const exitEmptyListItem = Extension.create({
   name: "exitEmptyListItem",
@@ -138,7 +128,7 @@ const Tiptap = () => {
     editable: editText,
     immediatelyRender: false,
     onUpdate: ({ editor }) => {
-      dispatch(setNewText(editor.getHTML()));
+      dispatch(setNewText(editor.getJSON()));
     },
   });
 

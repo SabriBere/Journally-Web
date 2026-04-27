@@ -16,6 +16,7 @@ import {
 } from "@/store/editSlice";
 import Error from "@/commons/EmptyStates/Error";
 import SkeletonEditor from "@/commons/Skeletons/SkeletonEditor";
+import { serializeDescription } from "@/utils/editorContent";
 import styles from "./editor.module.scss";
 
 const Editor = () => {
@@ -25,6 +26,8 @@ const Editor = () => {
     const editText = useSelector((state: RootState) => state.edit.editText);
     const newTitle = useSelector((state: RootState) => state.edit.newTitle);
     const newText = useSelector((state: RootState) => state.edit.newText);
+    const textValue =
+        typeof newText === "string" ? newText : serializeDescription(newText);
     const [focusTitleInput, setFocusTitleInput] = useState(false);
     const editorRef = useRef<HTMLDivElement | null>(null);
 
@@ -139,7 +142,7 @@ const Editor = () => {
                         <textarea
                             className={styles.editorInput}
                             placeholder="Escribir..."
-                            value={newText}
+                            value={textValue}
                             onChange={handlerChangeText}
                             cols={30}
                             rows={15}
