@@ -108,13 +108,13 @@
 }
 
 .toolbarButtonPrimary {
-    border-color: rgba(colors.$deepNavyBlue, 0.78);
-    background: colors.$deepNavyBlue;
+    border-color: rgba(colors.$darkTurquoise, 0.88);
+    background: colors.$darkTurquoise;
     color: colors.$white;
 
     &:hover {
-        border-color: colors.$deepNavyBlue;
-        background: colors.$deepNavyBlue;
+        border-color: colors.$darkTurquoise;
+        background: colors.$darkTurquoise;
         filter: brightness(1.08);
     }
 }
