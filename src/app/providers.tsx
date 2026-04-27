@@ -5,6 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
 import Toast from "@/commons/Toast/Toast";
+import { SocketProvider } from "@/contexts/SocketContext";
 
 interface Props{
     children: React.ReactNode,
@@ -17,8 +18,10 @@ const Providers = ({ children, session }: Props) => {
         <SessionProvider session={session}>
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
-                    {children}
-                    <Toast />
+                    <SocketProvider>
+                        {children}
+                        <Toast />
+                    </SocketProvider>
                 </Provider>
                 <ReactQueryDevtools buttonPosition="bottom-right" />
             </QueryClientProvider>

@@ -9,6 +9,7 @@ interface EditState {
     currentDescription: PostDescription | null;
     savePost: boolean;
     deletePost: boolean;
+    autoSaveEnabled: boolean;
 }
 
 const initialState: EditState = {
@@ -19,6 +20,7 @@ const initialState: EditState = {
     currentDescription: null,
     savePost: false,
     deletePost: false,
+    autoSaveEnabled: false,
 };
 
 const editSlice = createSlice({
@@ -49,6 +51,9 @@ const editSlice = createSlice({
         setDeletePost: (state, actions) => {
             state.deletePost = actions.payload;
         },
+        setAutoSaveEnabled: (state, actions) => {
+            state.autoSaveEnabled = actions.payload;
+        },
     },
 });
 
@@ -61,5 +66,6 @@ export const {
     setCleanText,
     setSavePost,
     setDeletePost,
+    setAutoSaveEnabled,
 } = editSlice.actions;
 export default editSlice.reducer;
