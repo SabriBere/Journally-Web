@@ -2,15 +2,13 @@ import axiosInstance from "@/config/axiosInterceptor.server";
 import type { PostDescription } from "@/types/editor";
 
 //Crear un post sin colección
-export async function createPost(
-    body: { title: string; description: PostDescription },
-) {
+export async function createPost(body: {
+    title: string;
+    description: PostDescription;
+}) {
     try {
         //pasar body y parametros x query
-        const res = await axiosInstance.post(
-            `/post/createOne`,
-            body
-        );
+        const res = await axiosInstance.post(`/post/createOne`, body);
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
@@ -74,7 +72,8 @@ export async function updatePost(
         title?: string | undefined;
         description: PostDescription;
     },
-    postId: string | number
+    postId: string | number,
+    userId?: number | string | undefined
 ) {
     try {
         const params = new URLSearchParams();
@@ -82,8 +81,13 @@ export async function updatePost(
         if (postId !== undefined) {
             params.append("postId", postId.toString());
         }
+
+        if (userId !== undefined) {
+            params.append("userId", userId.toString());
+        }
+        
         const res = await axiosInstance.put(
-            `/post/updatePost/?${params.toString()}`,
+            `/post/autosave/?${params.toString()}`,
             body
         );
         return res.data.data;
