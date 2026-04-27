@@ -1,8 +1,13 @@
 import Link from "next/link";
+import { getServerSession } from "next-auth";
 import NotFoundIllustration from "@/commons/Ilustrations/NotFound";
 import styles from "./notFound.module.scss";
 
-const NotFound = () => {
+const NotFound = async () => {
+    const session = await getServerSession();
+    const actionHref = session ? "/home" : "/login";
+    const actionLabel = session ? "Volver al inicio" : "Iniciar sesion";
+
     return (
         <main className={styles.page}>
             <section className={styles.hero} aria-labelledby="not-found-title">
@@ -19,8 +24,8 @@ const NotFound = () => {
                     </p>
 
                     <div className={styles.actions}>
-                        <Link href="/home" className={styles.primaryAction}>
-                            Volver al inicio
+                        <Link href={actionHref} className={styles.primaryAction}>
+                            {actionLabel}
                         </Link>
                     </div>
                 </div>
