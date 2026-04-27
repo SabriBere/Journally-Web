@@ -10,6 +10,7 @@ import TooltipWrapper from "../Tooltip/Tooltip";
 import Close from "@/styles/icons/Close";
 import Check from "@/styles/icons/Check";
 import Edit from "@/styles/icons/Edit";
+import type { PostDescription } from "@/types/editor";
 import styles from "./modalEditName.module.scss";
 
 interface ModalProps {
@@ -70,7 +71,7 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
                 body,
                 postId,
             }: {
-                body: { title?: string; description: string };
+                body: { title?: string; description: PostDescription };
                 postId: string | number;
             }) =>
                 updatePost(

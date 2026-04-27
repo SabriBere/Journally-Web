@@ -55,7 +55,6 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
     const queryClient = useQueryClient();
     const postId = Number(id);
     const newTitle = useSelector((state: RootState) => state.edit.newTitle);
-    const newText = useSelector((state: RootState) => state.edit.newText);
     const [currentBlock, setCurrentBlock] = React.useState("p");
 
     const { mutateAsync: deletePostMutation } = useMutation({
@@ -93,7 +92,7 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
     if (!editor) return null;
 
     const handleCopyPost = async () => {
-        const textToCopy = [newTitle, newText].filter(Boolean).join("\n\n");
+        const textToCopy = [newTitle, editor.getText()].filter(Boolean).join("\n\n");
 
         if (!textToCopy.trim()) {
             showError("No hay texto para copiar");
