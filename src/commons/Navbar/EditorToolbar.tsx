@@ -49,6 +49,41 @@ const getCurrentBlock = (editor: TiptapEditor) => {
     return activeHeading ? `h${activeHeading}` : "p";
 };
 
+const setCurrentTextBlock = (
+    editor: TiptapEditor,
+    typeName: "paragraph" | "heading",
+    attrs?: Record<string, unknown>
+) =>
+    editor
+        .chain()
+        .focus()
+        .command(({ state, tr, dispatch }) => {
+            const { $head } = state.selection;
+            const nodeType = state.schema.nodes[typeName];
+
+            if (!nodeType) return false;
+
+            for (let depth = $head.depth; depth > 0; depth -= 1) {
+                const node = $head.node(depth);
+
+                if (!node.isTextblock) continue;
+
+                const parent = $head.node(depth - 1);
+                const index = $head.index(depth - 1);
+
+                if (!parent.canReplaceWith(index, index + 1, nodeType)) {
+                    return false;
+                }
+
+                tr.setNodeMarkup($head.before(depth), nodeType, attrs);
+                dispatch?.(tr.scrollIntoView());
+                return true;
+            }
+
+            return false;
+        })
+        .run();
+
 const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
     const { id } = useParams<{ id: string }>();
     const router = useRouter();
@@ -255,13 +290,13 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
         const value = e.target.value;
 
         if (value === "p") {
-            editor.chain().focus().setParagraph().run();
+            setCurrentTextBlock(editor, "paragraph");
             setCurrentBlock("p");
             return;
         }
 
         const level = Number(value.replace("h", "")) as HeadingLevel;
-        editor.chain().focus().toggleHeading({ level }).run();
+        setCurrentTextBlock(editor, "heading", { level });
         setCurrentBlock(value);
     };
 
