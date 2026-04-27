@@ -2,6 +2,7 @@
 
 import React from "react";
 import type { Editor as TiptapEditor } from "@tiptap/react";
+import { TextSelection } from "@tiptap/pm/state";
 import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
@@ -41,16 +42,31 @@ type ToolbarButton = {
 
 const iconColor = "#9e6b3e";
 
-const getCurrentBlock = (editor: TiptapEditor) => {
-    const activeHeading = headingLevels.find((level) =>
-        editor.isActive("heading", { level })
+const getCurrentBlockAtPosition = (editor: TiptapEditor, position: number) => {
+    const resolvedPosition = Math.min(
+        Math.max(position, 1),
+        editor.state.doc.content.size
     );
+    const $position = editor.state.doc.resolve(resolvedPosition);
 
-    return activeHeading ? `h${activeHeading}` : "p";
+    for (let depth = $position.depth; depth > 0; depth -= 1) {
+        const node = $position.node(depth);
+
+        if (!node.isTextblock) continue;
+
+        if (node.type.name === "heading") {
+            return `h${node.attrs.level}`;
+        }
+
+        return "p";
+    }
+
+    return "p";
 };
 
-const setCurrentTextBlock = (
+const setCurrentTextBlockAtPosition = (
     editor: TiptapEditor,
+    position: number,
     typeName: "paragraph" | "heading",
     attrs?: Record<string, unknown>
 ) =>
@@ -58,24 +74,36 @@ const setCurrentTextBlock = (
         .chain()
         .focus()
         .command(({ state, tr, dispatch }) => {
-            const { $head } = state.selection;
             const nodeType = state.schema.nodes[typeName];
 
             if (!nodeType) return false;
 
-            for (let depth = $head.depth; depth > 0; depth -= 1) {
-                const node = $head.node(depth);
+            const resolvedPosition = Math.min(
+                Math.max(position, 1),
+                state.doc.content.size
+            );
+            const $position = state.doc.resolve(resolvedPosition);
+
+            for (let depth = $position.depth; depth > 0; depth -= 1) {
+                const node = $position.node(depth);
 
                 if (!node.isTextblock) continue;
 
-                const parent = $head.node(depth - 1);
-                const index = $head.index(depth - 1);
+                const parent = $position.node(depth - 1);
+                const index = $position.index(depth - 1);
 
                 if (!parent.canReplaceWith(index, index + 1, nodeType)) {
                     return false;
                 }
 
-                tr.setNodeMarkup($head.before(depth), nodeType, attrs);
+                tr.setNodeMarkup($position.before(depth), nodeType, attrs);
+                tr.setSelection(
+                    TextSelection.near(
+                        tr.doc.resolve(
+                            Math.min(resolvedPosition, tr.doc.content.size)
+                        )
+                    )
+                );
                 dispatch?.(tr.scrollIntoView());
                 return true;
             }
@@ -96,6 +124,7 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
     );
     const [currentBlock, setCurrentBlock] = React.useState("p");
     const [confirmDelete, setConfirmDelete] = React.useState(false);
+    const lastCursorPositionRef = React.useRef<number | null>(null);
 
     const { mutateAsync: deletePostMutation } = useMutation({
         mutationFn: ({ postId }: { postId: number }) => deletePost(postId),
@@ -116,7 +145,10 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
         if (!editor) return;
 
         const updateCurrentBlock = () => {
-            setCurrentBlock(getCurrentBlock(editor));
+            const position = editor.state.selection.$head.pos;
+
+            lastCursorPositionRef.current = position;
+            setCurrentBlock(getCurrentBlockAtPosition(editor, position));
         };
 
         updateCurrentBlock();
@@ -291,15 +323,17 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
 
     const handleBlockChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
+        const cursorPosition =
+            lastCursorPositionRef.current ?? editor.state.selection.$head.pos;
 
         if (value === "p") {
-            setCurrentTextBlock(editor, "paragraph");
+            setCurrentTextBlockAtPosition(editor, cursorPosition, "paragraph");
             setCurrentBlock("p");
             return;
         }
 
         const level = Number(value.replace("h", "")) as HeadingLevel;
-        setCurrentTextBlock(editor, "heading", { level });
+        setCurrentTextBlockAtPosition(editor, cursorPosition, "heading", { level });
         setCurrentBlock(value);
     };
 

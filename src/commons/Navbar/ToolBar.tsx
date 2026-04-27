@@ -19,12 +19,15 @@ import {
     serializeDescription,
 } from "@/utils/editorContent";
 import styles from "./toolbar.module.scss";
+import { useSession } from "next-auth/react";
 
 type PostBody = { title: string; description: PostDescription };
 
 const ToolBar = () => {
-    const { id: userId } = useParams<{ id: string }>();
-    const postId = Number(userId);
+    const { data: session }:any = useSession();
+    const userId = session?.user?.id
+    const { id } = useParams<{ id: string }>();
+    const postId = Number(id);
     const dispatch = useDispatch();
     const QueryClient = useQueryClient();
     const editText = useSelector((state: RootState) => state.edit.editText);
@@ -39,6 +42,7 @@ const ToolBar = () => {
         normalize(newTitle) !== normalize(currentTitle) ||
         serializeDescription(newText) !== serializeDescription(currentDescription);
 
+    //guardado manual
     const { mutateAsync: updatePostMutation, isPending: isPendingEdit } =
         useMutation({
             mutationFn: ({
