@@ -10,7 +10,6 @@ const CollectionDetail = () => {
             <Breadcrumbs />
 
             <div className={styles.contend}>
-                {/* <Editor /> */}
                 <Tiptap />
                 {/* Agregar paginado */}
             </div>
