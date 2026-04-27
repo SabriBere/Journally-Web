@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { PostDescription } from "@/types/editor";
 
 interface EditState {
     editText: boolean;
     newTitle: string;
-    newText: string;
+    newText: PostDescription | null;
     currentTitle: string;
-    currentDescription: string;
+    currentDescription: PostDescription | null;
     savePost: boolean;
     deletePost: boolean;
 }
@@ -13,9 +14,9 @@ interface EditState {
 const initialState: EditState = {
     editText: false,
     newTitle: "",
-    newText: "",
+    newText: null,
     currentTitle: "",
-    currentDescription: "",
+    currentDescription: null,
     savePost: false,
     deletePost: false,
 };
@@ -40,7 +41,7 @@ const editSlice = createSlice({
             state.currentDescription = actions.payload;
         },
         setCleanText: (state) => {
-            state.newText = "";
+            state.newText = null;
         },
         setSavePost: (state, actions) => {
             state.savePost = actions.payload;
