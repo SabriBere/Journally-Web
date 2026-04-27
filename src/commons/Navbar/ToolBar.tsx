@@ -13,9 +13,14 @@ import { updatePost } from "@/services/post.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import TooltipWrapper from "../Tooltip/Tooltip";
 import Edit from "@/styles/icons/Edit";
+import type { PostDescription } from "@/types/editor";
+import {
+    emptyEditorContent,
+    serializeDescription,
+} from "@/utils/editorContent";
 import styles from "./toolbar.module.scss";
 
-type PostBody = { title: string; description: string };
+type PostBody = { title: string; description: PostDescription };
 
 const ToolBar = () => {
     const { id } = useParams<{ id: string }>();
@@ -32,7 +37,7 @@ const ToolBar = () => {
         (version ?? "").replace(/\s+/g, " ").trim();
     const isDirty =
         normalize(newTitle) !== normalize(currentTitle) ||
-        normalize(newText) !== normalize(currentDescription);
+        serializeDescription(newText) !== serializeDescription(currentDescription);
 
     const { mutateAsync: updatePostMutation, isPending: isPendingEdit } =
         useMutation({
@@ -75,7 +80,7 @@ const ToolBar = () => {
 
         const body = {
             title: newTitle.trim(),
-            description: newText,
+            description: newText ?? emptyEditorContent,
         };
         await updatePostMutation({ body, postId });
 

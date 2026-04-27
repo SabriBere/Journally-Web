@@ -34,6 +34,7 @@ type ToolbarButton = {
     title: string;
     isActive?: () => boolean;
     isPrimary?: boolean;
+    isPendingDanger?: boolean;
     variant?: "danger" | "warning";
     onClick: () => void;
 };
@@ -55,8 +56,8 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
     const queryClient = useQueryClient();
     const postId = Number(id);
     const newTitle = useSelector((state: RootState) => state.edit.newTitle);
-    const newText = useSelector((state: RootState) => state.edit.newText);
     const [currentBlock, setCurrentBlock] = React.useState("p");
+    const [confirmDelete, setConfirmDelete] = React.useState(false);
 
     const { mutateAsync: deletePostMutation } = useMutation({
         mutationFn: ({ postId }: { postId: number }) => deletePost(postId),
@@ -90,10 +91,22 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
         };
     }, [editor]);
 
+    React.useEffect(() => {
+        if (!confirmDelete) return;
+
+        const timer = window.setTimeout(() => {
+            setConfirmDelete(false);
+        }, 4000);
+
+        return () => {
+            window.clearTimeout(timer);
+        };
+    }, [confirmDelete]);
+
     if (!editor) return null;
 
     const handleCopyPost = async () => {
-        const textToCopy = [newTitle, newText].filter(Boolean).join("\n\n");
+        const textToCopy = [newTitle, editor.getText()].filter(Boolean).join("\n\n");
 
         if (!textToCopy.trim()) {
             showError("No hay texto para copiar");
@@ -109,10 +122,15 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
     };
 
     const handleDeletePost = async () => {
+        if (!confirmDelete) {
+            setConfirmDelete(true);
+            return;
+        }
+
         await deletePostMutation({ postId });
     };
 
-    const buttons: ToolbarButton[] = [
+    const formatButtons: ToolbarButton[] = [
         {
             label: <Bold width="24" height="24" color={iconColor} />,
             title: "Negrita",
@@ -185,6 +203,9 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
             title: "Rehacer",
             onClick: () => editor.chain().focus().redo().run(),
         },
+    ];
+
+    const utilityButtons: ToolbarButton[] = [
         {
             label: <Copy width="24" height="24" color={iconColor} />,
             title: "Copiar",
@@ -193,8 +214,9 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
         },
         {
             label: <Delete width="24" height="24" color="#ffffff" />,
-            title: "Eliminar",
+            title: confirmDelete ? "Confirmar eliminación" : "Eliminar",
             variant: "danger",
+            isPendingDanger: confirmDelete,
             onClick: handleDeletePost,
         },
         {
@@ -204,6 +226,30 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
             onClick: () => dispatch(setSavePost(true)),
         },
     ];
+
+    const renderButton = (button: ToolbarButton) => (
+        <button
+            key={button.title}
+            type="button"
+            className={`${styles.toolbarButton} ${
+                button.isActive?.() ? styles.toolbarButtonActive : ""
+            } ${button.isPrimary ? styles.toolbarButtonPrimary : ""} ${
+                button.variant === "danger" ? styles.toolbarButtonDanger : ""
+            } ${button.variant === "warning" ? styles.toolbarButtonWarning : ""} ${
+                button.isPendingDanger ? styles.toolbarButtonDangerPending : ""
+            }`}
+            title={button.title}
+            aria-label={button.title}
+            aria-pressed={button.isActive?.() ?? false}
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={button.onClick}
+        >
+            {button.label}
+            {button.isPendingDanger && (
+                <span className={styles.confirmDeleteLabel}>Confirmar</span>
+            )}
+        </button>
+    );
 
     const handleBlockChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
@@ -236,30 +282,23 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
             </select>
 
             <div className={styles.toolbarActions}>
-                {buttons.map((button) => (
-                    <button
-                        key={button.title}
-                        type="button"
-                        className={`${styles.toolbarButton} ${
-                            button.isActive?.() ? styles.toolbarButtonActive : ""
-                        } ${button.isPrimary ? styles.toolbarButtonPrimary : ""} ${
-                            button.variant === "danger"
-                                ? styles.toolbarButtonDanger
-                                : ""
-                        } ${
-                            button.variant === "warning"
-                                ? styles.toolbarButtonWarning
-                                : ""
-                        }`}
-                        title={button.title}
-                        aria-label={button.title}
-                        aria-pressed={button.isActive?.() ?? false}
-                        onMouseDown={(e) => e.preventDefault()}
-                        onClick={button.onClick}
-                    >
-                        {button.label}
-                    </button>
-                ))}
+                <div className={styles.toolbarSection}>
+                    {formatButtons.map(renderButton)}
+                </div>
+
+                <div className={styles.toolbarDivider} aria-hidden="true" />
+
+                <div className={styles.toolbarSection}>
+                    {utilityButtons
+                        .filter((button) => button.variant !== "danger")
+                        .map(renderButton)}
+                </div>
+
+                <div className={styles.toolbarDangerZone}>
+                    {utilityButtons
+                        .filter((button) => button.variant === "danger")
+                        .map(renderButton)}
+                </div>
             </div>
         </div>
     );

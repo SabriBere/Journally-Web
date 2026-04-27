@@ -21,10 +21,14 @@ import {
 } from "@/store/editSlice";
 import Error from "@/commons/EmptyStates/Error";
 import EditorToolbar from "@/commons/Navbar/EditorToolbar";
+import ToolBar from "@/commons/Navbar/ToolBar";
 import SkeletonEditor from "@/commons/Skeletons/SkeletonEditor";
+import {
+  emptyEditorContent,
+  normalizeEditorContent,
+} from "@/utils/editorContent";
 import styles from "./editor.module.scss";
 
-const emptyEditorContent = "<p></p>";
 const htmlTagPattern =
   /<\/?(h[1-6]|p|ul|ol|li|blockquote|pre|code|strong|em|s|br|hr)\b[^>]*>/i;
 
@@ -56,19 +60,6 @@ const unwrapHtmlCodeBlocks = (value: string) =>
       return htmlTagPattern.test(decoded) ? decoded : codeBlock;
     }
   );
-
-const normalizeEditorContent = (value?: string | null) => {
-  const raw = value?.trim() ?? "";
-
-  if (!raw) return emptyEditorContent;
-
-  const withoutFence = stripHtmlCodeFence(raw);
-  const withoutCodeBlock = unwrapCodeBlock(withoutFence);
-  const withoutHtmlCodeBlocks = unwrapHtmlCodeBlocks(withoutCodeBlock);
-  const decoded = decodeHtmlEntities(withoutHtmlCodeBlocks);
-
-  return htmlTagPattern.test(decoded) ? decoded : raw;
-};
 
 const exitEmptyListItem = Extension.create({
   name: "exitEmptyListItem",
@@ -138,7 +129,7 @@ const Tiptap = () => {
     editable: editText,
     immediatelyRender: false,
     onUpdate: ({ editor }) => {
-      dispatch(setNewText(editor.getHTML()));
+      dispatch(setNewText(editor.getJSON()));
     },
   });
 
@@ -231,30 +222,36 @@ const Tiptap = () => {
         <div className={styles.containerPaper} ref={editorRef}>
           <div className={styles.editorTop}>
             <div className={styles.header}>
-              {editText ? (
-                <input
-                  className={styles.titleInput}
-                  value={newTitle}
-                  onChange={handleChangeTitle}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      dispatch(setSavePost(true));
-                    }
-                  }}
-                  placeholder="Escribir título..."
-                  autoFocus={focusTitleInput}
-                />
-              ) : (
-                <button
-                  type="button"
-                  className={styles.titleButton}
-                  onClick={handleEnableTitleEdit}
-                >
-                  <h1>{entry?.title}</h1>
-                </button>
-              )}
-              <p>{`${converDate(entry?.created_at)}`}</p>
+              <div className={styles.headerMain}>
+                <div className={styles.headerContent}>
+                  {editText ? (
+                    <input
+                      className={styles.titleInput}
+                      value={newTitle}
+                      onChange={handleChangeTitle}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          dispatch(setSavePost(true));
+                        }
+                      }}
+                      placeholder="Escribir título..."
+                      autoFocus={focusTitleInput}
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      className={styles.titleButton}
+                      onClick={handleEnableTitleEdit}
+                    >
+                      <h1>{entry?.title}</h1>
+                    </button>
+                  )}
+                  <p>{`${converDate(entry?.created_at)}`}</p>
+                </div>
+
+                <ToolBar />
+              </div>
             </div>
 
             {editText && <EditorToolbar editor={editor} />}
