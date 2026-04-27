@@ -178,18 +178,21 @@ const Tiptap = () => {
     );
   }, [editor, entry]);
 
+  //guardado automatico
   useEffect(() => {
     const isDirty =
       normalizeTitle(newTitle) !== normalizeTitle(currentTitle) ||
       serializeDescription(newText) !== serializeDescription(currentDescription);
 
-    if (
-      !editText ||
-      !autoSaveEnabled ||
-      !isDirty ||
-      socketStatus !== "open" ||
-      !convertId
-    ) {
+    const blockedReason =
+      (!editText && "editor cerrado") ||
+      (!autoSaveEnabled && "autoguardado apagado") ||
+      (!isDirty && "sin cambios") ||
+      (socketStatus !== "open" && `socket ${socketStatus}`) ||
+      (!convertId && "postId invalido");
+
+    if (blockedReason) {
+      console.info("Autoguardado no enviado:", blockedReason);
       return;
     }
 
@@ -198,13 +201,23 @@ const Tiptap = () => {
         title: newTitle.trim(),
         description: newText ?? emptyEditorContent,
       };
+      const clientRequestId = `${convertId}-${Date.now()}`;
 
-      sendJson({
-        type: "autosave",
-        payload: {
-          postId: convertId,
-          ...body,
-        },
+      const wasSent = sendJson({
+        type: "entry:autosave",
+        postId: convertId,
+        ...body,
+        clientRequestId,
+      });
+
+      if (!wasSent) {
+        console.warn("No se pudo enviar el autoguardado por socket");
+        return;
+      }
+
+      console.info("Autoguardado enviado por socket", {
+        postId: convertId,
+        clientRequestId,
       });
     }, 700);
 

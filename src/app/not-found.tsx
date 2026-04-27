@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import NotFoundIllustration from "@/commons/Ilustrations/NotFound";
+import { authOptions } from "./api/provider/Credentials";
 import styles from "./notFound.module.scss";
 
 const NotFound = async () => {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     const actionHref = session ? "/home" : "/login";
     const actionLabel = session ? "Volver al inicio" : "Iniciar sesion";
 
