@@ -33,10 +33,33 @@
 .toolbarActions {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 10px;
     flex: 1;
     flex-wrap: wrap;
     min-width: 12rem;
+}
+
+.toolbarSection {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.toolbarDivider {
+    width: 1px;
+    align-self: stretch;
+    min-height: 34px;
+    background: rgba(colors.$softBrown, 0.22);
+}
+
+.toolbarDangerZone {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    padding-left: 10px;
+    border-left: 1px solid rgba(colors.$intenseCoralRed, 0.18);
 }
 
 .toolbarButton {
@@ -48,6 +71,7 @@
     border: 1px solid rgba(colors.$softBrown, 0.42);
     border-radius: 10px;
     padding: 0 10px;
+    gap: 8px;
     background: rgba(colors.$paperWhite, 0.56);
     color: colors.$darkOrange;
     font-family: var(--font-caveat);
@@ -84,19 +108,18 @@
 }
 
 .toolbarButtonPrimary {
-    border-color: rgba(colors.$deepNavyBlue, 0.78);
-    background: colors.$deepNavyBlue;
+    border-color: rgba(colors.$darkTurquoise, 0.88);
+    background: colors.$darkTurquoise;
     color: colors.$white;
 
     &:hover {
-        border-color: colors.$deepNavyBlue;
-        background: colors.$deepNavyBlue;
+        border-color: colors.$darkTurquoise;
+        background: colors.$darkTurquoise;
         filter: brightness(1.08);
     }
 }
 
 .toolbarButtonWarning {
-    margin-left: auto;
     border-color: rgba(colors.$softMustard, 0.76);
     background: rgba(colors.$softMustard, 0.14);
 
@@ -107,13 +130,32 @@
 }
 
 .toolbarButtonDanger {
-    border-color: rgba(colors.$intenseCoralRed, 0.78);
+    border-color: rgba(colors.$intenseCoralRed, 0.42);
+    background: rgba(colors.$intenseCoralRed, 0.42);
+    color: colors.$intenseCoralRed;
+
+    &:hover {
+        border-color: colors.$intenseCoralRed;
+        background: rgba(colors.$intenseCoralRed, 0.52);
+    }
+}
+
+.toolbarButtonDangerPending {
+    min-width: 126px;
+    padding: 0 14px;
+    border-color: rgba(colors.$intenseCoralRed, 0.84);
     background: colors.$intenseCoralRed;
     color: colors.$white;
 
     &:hover {
         border-color: colors.$intenseCoralRed;
         background: colors.$intenseCoralRed;
-        filter: brightness(1.06);
+        filter: brightness(1.05);
     }
+}
+
+.confirmDeleteLabel {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
 }

@@ -7,6 +7,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { showError, showSuccess } from "../Toast/toastHelpers";
 import SpinnerDots from "../Spinner/SipnnerDots";
 import Close from "@/styles/icons/Close";
+import type { PostDescription } from "@/types/editor";
+import { createDocumentFromText } from "@/utils/editorContent";
 import styles from "./modalCreate.module.scss";
 
 const ModalCreatePost = () => {
@@ -14,11 +16,11 @@ const ModalCreatePost = () => {
     const QueryClient = useQueryClient();
     const [namePost, setNamePost] = useState<string>("");
     const [description, setDescription] = useState<string>("");
-    const isDisabled = !namePost.trim() && !description.trim();
+    const isDisabled = !namePost.trim() || !description.trim();
 
     //escribir mutación y consulta al end point
     const { mutateAsync: createPostMutation, isPending } = useMutation({
-        mutationFn: (body: { title: string; description: string }) =>
+        mutationFn: (body: { title: string; description: PostDescription }) =>
             createPost(body),
         mutationKey: ["createPost"],
         onSuccess: async () => {
@@ -39,7 +41,7 @@ const ModalCreatePost = () => {
             e.preventDefault();
             const body = {
                 title: namePost.trim(),
-                description: description,
+                description: createDocumentFromText(description),
             };
             await createPostMutation(body);
         } catch (error) {

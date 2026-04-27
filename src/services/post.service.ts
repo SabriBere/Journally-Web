@@ -1,8 +1,9 @@
 import axiosInstance from "@/config/axiosInterceptor.server";
+import type { PostDescription } from "@/types/editor";
 
 //Crear un post sin colección
 export async function createPost(
-    body: { title: string; description: string },
+    body: { title: string; description: PostDescription },
 ) {
     try {
         //pasar body y parametros x query
@@ -71,7 +72,7 @@ export async function getPostById(postId: number | string | undefined) {
 export async function updatePost(
     body: {
         title?: string | undefined;
-        description: string;
+        description: PostDescription;
     },
     postId: string | number
 ) {
