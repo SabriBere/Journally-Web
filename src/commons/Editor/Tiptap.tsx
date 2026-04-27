@@ -21,6 +21,7 @@ import {
 } from "@/store/editSlice";
 import Error from "@/commons/EmptyStates/Error";
 import EditorToolbar from "@/commons/Navbar/EditorToolbar";
+import ToolBar from "@/commons/Navbar/ToolBar";
 import SkeletonEditor from "@/commons/Skeletons/SkeletonEditor";
 import {
   emptyEditorContent,
@@ -221,30 +222,36 @@ const Tiptap = () => {
         <div className={styles.containerPaper} ref={editorRef}>
           <div className={styles.editorTop}>
             <div className={styles.header}>
-              {editText ? (
-                <input
-                  className={styles.titleInput}
-                  value={newTitle}
-                  onChange={handleChangeTitle}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      dispatch(setSavePost(true));
-                    }
-                  }}
-                  placeholder="Escribir título..."
-                  autoFocus={focusTitleInput}
-                />
-              ) : (
-                <button
-                  type="button"
-                  className={styles.titleButton}
-                  onClick={handleEnableTitleEdit}
-                >
-                  <h1>{entry?.title}</h1>
-                </button>
-              )}
-              <p>{`${converDate(entry?.created_at)}`}</p>
+              <div className={styles.headerMain}>
+                <div className={styles.headerContent}>
+                  {editText ? (
+                    <input
+                      className={styles.titleInput}
+                      value={newTitle}
+                      onChange={handleChangeTitle}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          dispatch(setSavePost(true));
+                        }
+                      }}
+                      placeholder="Escribir título..."
+                      autoFocus={focusTitleInput}
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      className={styles.titleButton}
+                      onClick={handleEnableTitleEdit}
+                    >
+                      <h1>{entry?.title}</h1>
+                    </button>
+                  )}
+                  <p>{`${converDate(entry?.created_at)}`}</p>
+                </div>
+
+                <ToolBar />
+              </div>
             </div>
 
             {editText && <EditorToolbar editor={editor} />}
