@@ -9,6 +9,7 @@ import React, {
     useRef,
     useState,
 } from "react";
+import { useSession } from "next-auth/react";
 
 type SocketStatus = "idle" | "connecting" | "open" | "closed" | "error";
 
@@ -20,55 +21,108 @@ type SocketContextValue = {
     sendJson: (payload: unknown) => boolean;
 };
 
+type SessionWithSocketToken = {
+    user?: {
+        id?: string | number | null;
+        accessToken?: string | null;
+    } | null;
+};
+
 const SocketContext = createContext<SocketContextValue | null>(null);
 
+const buildSocketUrl = (baseUrl: string, token: string) => {
+    const url = new URL(baseUrl);
+    url.searchParams.set("token", token);
+    return url.toString();
+};
+
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
+    const { data: session, status: sessionStatus } = useSession();
+    const accessToken = (session as SessionWithSocketToken | null)?.user
+        ?.accessToken;
     const socketRef = useRef<WebSocket | null>(null);
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [status, setStatus] = useState<SocketStatus>("idle");
 
     useEffect(() => {
         const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL;
+        let shouldReconnect = true;
+        let reconnectTimer: number | null = null;
 
         if (!socketUrl) {
             console.warn("NEXT_PUBLIC_SOCKET_URL no esta configurada");
             return;
         }
 
-        setStatus("connecting");
+        if (sessionStatus !== "authenticated" || !accessToken) {
+            setStatus("idle");
+            return;
+        }
 
-        const nextSocket = new WebSocket(socketUrl);
-        socketRef.current = nextSocket;
-        setSocket(nextSocket);
+        const connect = () => {
+            setStatus("connecting");
 
-        nextSocket.addEventListener("open", () => {
-            setStatus("open");
-            console.info("Socket conectado");
-        });
+            const nextSocket = new WebSocket(buildSocketUrl(socketUrl, accessToken));
+            socketRef.current = nextSocket;
+            setSocket(nextSocket);
 
-        nextSocket.addEventListener("error", () => {
-            setStatus("error");
-            console.error("No se pudo conectar al socket");
-        });
+            nextSocket.addEventListener("open", () => {
+                if (socketRef.current !== nextSocket) return;
 
-        nextSocket.addEventListener("close", () => {
-            setStatus("closed");
+                setStatus("open");
+                console.info("Socket conectado");
+            });
 
-            if (socketRef.current === nextSocket) {
+            nextSocket.addEventListener("error", () => {
+                if (socketRef.current !== nextSocket) return;
+
+                setStatus("error");
+                console.error("No se pudo conectar al socket");
+            });
+
+            nextSocket.addEventListener("message", (event) => {
+                console.info("Socket mensaje recibido", event.data);
+            });
+
+            nextSocket.addEventListener("close", (event) => {
+                if (socketRef.current !== nextSocket) return;
+
                 socketRef.current = null;
                 setSocket(null);
-            }
-        });
+
+                if (event.code === 1008) {
+                    shouldReconnect = false;
+                    setStatus("closed");
+                    console.error("Socket cerrado por autenticacion:", event.reason);
+                    return;
+                }
+
+                if (!shouldReconnect) {
+                    setStatus("closed");
+                    return;
+                }
+
+                setStatus("connecting");
+                reconnectTimer = window.setTimeout(connect, 1000);
+            });
+        };
+
+        connect();
 
         return () => {
-            nextSocket.close();
+            shouldReconnect = false;
 
-            if (socketRef.current === nextSocket) {
-                socketRef.current = null;
-                setSocket(null);
+            if (reconnectTimer) {
+                window.clearTimeout(reconnectTimer);
             }
+
+            const currentSocket = socketRef.current;
+            socketRef.current = null;
+            setSocket(null);
+
+            currentSocket?.close();
         };
-    }, []);
+    }, [sessionStatus, accessToken]);
 
     const sendMessage = useCallback((message: Parameters<WebSocket["send"]>[0]) => {
         const currentSocket = socketRef.current;
