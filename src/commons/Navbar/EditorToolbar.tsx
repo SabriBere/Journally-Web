@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { setSavePost } from "@/store/editSlice";
+import { setAutoSaveEnabled, setSavePost } from "@/store/editSlice";
 import { deletePost } from "@/services/post.service";
 import { showError, showSuccess } from "../Toast/toastHelpers";
 import Code from "@/styles/icons/Code";
@@ -91,6 +91,9 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
     const queryClient = useQueryClient();
     const postId = Number(id);
     const newTitle = useSelector((state: RootState) => state.edit.newTitle);
+    const autoSaveEnabled = useSelector(
+        (state: RootState) => state.edit.autoSaveEnabled
+    );
     const [currentBlock, setCurrentBlock] = React.useState("p");
     const [confirmDelete, setConfirmDelete] = React.useState(false);
 
@@ -324,6 +327,17 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
                 <div className={styles.toolbarDivider} aria-hidden="true" />
 
                 <div className={styles.toolbarSection}>
+                    <label className={styles.autoSaveToggle}>
+                        <input
+                            type="checkbox"
+                            checked={autoSaveEnabled}
+                            onChange={(event) =>
+                                dispatch(setAutoSaveEnabled(event.target.checked))
+                            }
+                        />
+                        <span>Autoguardado</span>
+                    </label>
+
                     {utilityButtons
                         .filter((button) => button.variant !== "danger")
                         .map(renderButton)}

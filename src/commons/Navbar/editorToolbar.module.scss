@@ -46,6 +46,30 @@
     flex-wrap: wrap;
 }
 
+.autoSaveToggle {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    gap: 8px;
+    border: 1px solid rgba(colors.$softBrown, 0.42);
+    border-radius: 10px;
+    padding: 0 10px;
+    background: rgba(colors.$paperWhite, 0.56);
+    color: colors.$darkOrange;
+    font-family: var(--font-caveat);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+
+    input {
+        width: 16px;
+        height: 16px;
+        accent-color: colors.$darkTurquoise;
+        cursor: pointer;
+    }
+}
+
 .toolbarDivider {
     width: 1px;
     align-self: stretch;

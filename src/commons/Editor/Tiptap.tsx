@@ -26,7 +26,9 @@ import SkeletonEditor from "@/commons/Skeletons/SkeletonEditor";
 import {
   emptyEditorContent,
   normalizeEditorContent,
+  serializeDescription,
 } from "@/utils/editorContent";
+import { useSocket } from "@/contexts/SocketContext";
 import styles from "./editor.module.scss";
 
 const htmlTagPattern =
@@ -108,10 +110,21 @@ const Tiptap = () => {
   const { id } = useParams();
   const convertId = Number(id);
   const dispatch = useDispatch();
+  const { status: socketStatus, sendJson } = useSocket();
   const editText = useSelector((state: RootState) => state.edit.editText);
+  const autoSaveEnabled = useSelector(
+    (state: RootState) => state.edit.autoSaveEnabled
+  );
   const newTitle = useSelector((state: RootState) => state.edit.newTitle);
+  const newText = useSelector((state: RootState) => state.edit.newText);
+  const currentTitle = useSelector((state: RootState) => state.edit.currentTitle);
+  const currentDescription = useSelector(
+    (state: RootState) => state.edit.currentDescription
+  );
   const [focusTitleInput, setFocusTitleInput] = useState(false);
   const editorRef = useRef<HTMLDivElement | null>(null);
+  const normalizeTitle = (title?: string) =>
+    (title ?? "").replace(/\s+/g, " ").trim();
 
   const editor = useEditor({
     extensions: [
@@ -164,6 +177,51 @@ const Tiptap = () => {
       { emitUpdate: false }
     );
   }, [editor, entry]);
+
+  useEffect(() => {
+    const isDirty =
+      normalizeTitle(newTitle) !== normalizeTitle(currentTitle) ||
+      serializeDescription(newText) !== serializeDescription(currentDescription);
+
+    if (
+      !editText ||
+      !autoSaveEnabled ||
+      !isDirty ||
+      socketStatus !== "open" ||
+      !convertId
+    ) {
+      return;
+    }
+
+    const autosaveTimer = window.setTimeout(() => {
+      const body = {
+        title: newTitle.trim(),
+        description: newText ?? emptyEditorContent,
+      };
+
+      sendJson({
+        type: "autosave",
+        payload: {
+          postId: convertId,
+          ...body,
+        },
+      });
+    }, 700);
+
+    return () => {
+      window.clearTimeout(autosaveTimer);
+    };
+  }, [
+    editText,
+    autoSaveEnabled,
+    newTitle,
+    newText,
+    currentTitle,
+    currentDescription,
+    socketStatus,
+    convertId,
+    sendJson,
+  ]);
 
   useEffect(() => {
     editor?.setEditable(editText);
