@@ -88,6 +88,22 @@ const interpretPastedHtmlText = Extension.create({
   },
 });
 
+const exitHeadingOnEnter = Extension.create({
+  name: "exitHeadingOnEnter",
+
+  addKeyboardShortcuts() {
+    return {
+      Enter: () => {
+        const { empty, $from } = this.editor.state.selection;
+
+        if (!empty || $from.parent.type.name !== "heading") return false;
+
+        return this.editor.chain().splitBlock().setParagraph().run();
+      },
+    };
+  },
+});
+
 const Tiptap = () => {
   const { id } = useParams();
   const convertId = Number(id);
@@ -103,6 +119,7 @@ const Tiptap = () => {
       TextStyleKit,
       exitEmptyListItem,
       interpretPastedHtmlText,
+      exitHeadingOnEnter,
     ],
     content: emptyEditorContent,
     editable: editText,
