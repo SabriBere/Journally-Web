@@ -23,8 +23,8 @@ import styles from "./toolbar.module.scss";
 type PostBody = { title: string; description: PostDescription };
 
 const ToolBar = () => {
-    const { id } = useParams<{ id: string }>();
-    const postId = Number(id);
+    const { id: userId } = useParams<{ id: string }>();
+    const postId = Number(userId);
     const dispatch = useDispatch();
     const QueryClient = useQueryClient();
     const editText = useSelector((state: RootState) => state.edit.editText);
@@ -44,11 +44,13 @@ const ToolBar = () => {
             mutationFn: ({
                 body,
                 postId,
+                userId
             }: {
                 body: PostBody;
                 postId: number;
-            }) => updatePost(body, postId),
-            mutationKey: ["editPost", postId],
+                userId: string
+            }) => updatePost(body, postId, userId),
+            mutationKey: ["editPost", postId, userId],
             onSuccess: async () => {
                 showSuccess("Guardado correctamente 🎉");
                 await QueryClient.refetchQueries({
@@ -82,7 +84,7 @@ const ToolBar = () => {
             title: newTitle.trim(),
             description: newText ?? emptyEditorContent,
         };
-        await updatePostMutation({ body, postId });
+        await updatePostMutation({ body, postId, userId });
 
         dispatch(setEditText(false));
         dispatch(setNewTitle(body.title));
