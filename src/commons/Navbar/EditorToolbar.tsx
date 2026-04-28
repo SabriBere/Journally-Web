@@ -1,14 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import type { Editor as TiptapEditor } from "@tiptap/react";
+import { TextSelection } from "@tiptap/pm/state";
 import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { setSavePost } from "@/store/editSlice";
+import { setAutoSaveEnabled, setSavePost } from "@/store/editSlice";
 import { deletePost } from "@/services/post.service";
 import { showError, showSuccess } from "../Toast/toastHelpers";
+import Switch from "@/commons/Switch";
 import Code from "@/styles/icons/Code";
 import Copy from "@/styles/icons/Copy";
 import Delete from "@/styles/icons/Delete";
@@ -39,25 +41,113 @@ type ToolbarButton = {
     onClick: () => void;
 };
 
+type AutosaveStatus = "idle" | "saving" | "saved" | "error";
+
 const iconColor = "#9e6b3e";
 
-const getCurrentBlock = (editor: TiptapEditor) => {
-    const activeHeading = headingLevels.find((level) =>
-        editor.isActive("heading", { level })
+const getCurrentBlockAtPosition = (editor: TiptapEditor, position: number) => {
+    const resolvedPosition = Math.min(
+        Math.max(position, 1),
+        editor.state.doc.content.size
     );
+    const $position = editor.state.doc.resolve(resolvedPosition);
 
-    return activeHeading ? `h${activeHeading}` : "p";
+    for (let depth = $position.depth; depth > 0; depth -= 1) {
+        const node = $position.node(depth);
+
+        if (!node.isTextblock) continue;
+
+        if (node.type.name === "heading") {
+            return `h${node.attrs.level}`;
+        }
+
+        return "p";
+    }
+
+    return "p";
 };
 
-const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
+const setCurrentTextBlockAtPosition = (
+    editor: TiptapEditor,
+    position: number,
+    typeName: "paragraph" | "heading",
+    attrs?: Record<string, unknown>
+) =>
+    editor
+        .chain()
+        .focus()
+        .command(({ state, tr, dispatch }) => {
+            const nodeType = state.schema.nodes[typeName];
+
+            if (!nodeType) return false;
+
+            const resolvedPosition = Math.min(
+                Math.max(position, 1),
+                state.doc.content.size
+            );
+            const $position = state.doc.resolve(resolvedPosition);
+
+            for (let depth = $position.depth; depth > 0; depth -= 1) {
+                const node = $position.node(depth);
+
+                if (!node.isTextblock) continue;
+
+                const parent = $position.node(depth - 1);
+                const index = $position.index(depth - 1);
+
+                if (!parent.canReplaceWith(index, index + 1, nodeType)) {
+                    return false;
+                }
+
+                tr.setNodeMarkup($position.before(depth), nodeType, attrs);
+                tr.setSelection(
+                    TextSelection.near(
+                        tr.doc.resolve(
+                            Math.min(resolvedPosition, tr.doc.content.size)
+                        )
+                    )
+                );
+                dispatch?.(tr.scrollIntoView());
+                return true;
+            }
+
+            return false;
+        })
+        .run();
+
+const autosaveStatusLabel: Record<AutosaveStatus, string> = {
+    idle: "",
+    saving: "",
+    saved: "Guardado",
+    error: "No se pudo guardar",
+};
+
+const autosaveStatusClass: Record<AutosaveStatus, string> = {
+    idle: "",
+    saving: styles.autosaveStatusSaving,
+    saved: styles.autosaveStatusSaved,
+    error: styles.autosaveStatusError,
+};
+
+const EditorToolbar = ({
+    editor,
+    autosaveStatus,
+}: {
+    editor: TiptapEditor | null;
+    autosaveStatus: AutosaveStatus;
+}) => {
     const { id } = useParams<{ id: string }>();
     const router = useRouter();
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
     const postId = Number(id);
     const newTitle = useSelector((state: RootState) => state.edit.newTitle);
-    const [currentBlock, setCurrentBlock] = React.useState("p");
-    const [confirmDelete, setConfirmDelete] = React.useState(false);
+    const autoSaveEnabled = useSelector(
+        (state: RootState) => state.edit.autoSaveEnabled
+    );
+    const [currentBlock, setCurrentBlock] = useState("p");
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const lastCursorPositionRef = useRef<number | null>(null);
 
     const { mutateAsync: deletePostMutation } = useMutation({
         mutationFn: ({ postId }: { postId: number }) => deletePost(postId),
@@ -74,11 +164,14 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
         },
     });
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!editor) return;
 
         const updateCurrentBlock = () => {
-            setCurrentBlock(getCurrentBlock(editor));
+            const position = editor.state.selection.$head.pos;
+
+            lastCursorPositionRef.current = position;
+            setCurrentBlock(getCurrentBlockAtPosition(editor, position));
         };
 
         updateCurrentBlock();
@@ -91,7 +184,7 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
         };
     }, [editor]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!confirmDelete) return;
 
         const timer = window.setTimeout(() => {
@@ -251,54 +344,75 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
         </button>
     );
 
-    const handleBlockChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleBlockChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
+        const cursorPosition =
+            lastCursorPositionRef.current ?? editor.state.selection.$head.pos;
 
         if (value === "p") {
-            editor.chain().focus().setParagraph().run();
+            setCurrentTextBlockAtPosition(editor, cursorPosition, "paragraph");
             setCurrentBlock("p");
             return;
         }
 
         const level = Number(value.replace("h", "")) as HeadingLevel;
-        editor.chain().focus().toggleHeading({ level }).run();
+        setCurrentTextBlockAtPosition(editor, cursorPosition, "heading", { level });
         setCurrentBlock(value);
     };
 
     return (
         <div className={styles.editorToolbar} aria-label="Herramientas del editor">
-            <select
-                className={styles.blockSelect}
-                value={currentBlock}
-                onChange={handleBlockChange}
-                aria-label="Tipo de bloque"
-            >
-                <option value="p">Párrafo</option>
-                {headingLevels.map((level) => (
-                    <option key={level} value={`h${level}`}>
-                        H{level}
-                    </option>
-                ))}
-            </select>
+            <div className={styles.toolbarBlockGroup}>
+                <select
+                    className={styles.blockSelect}
+                    value={currentBlock}
+                    onChange={handleBlockChange}
+                    aria-label="Tipo de bloque"
+                >
+                    <option value="p">Párrafo</option>
+                    {headingLevels.map((level) => (
+                        <option key={level} value={`h${level}`}>
+                            H{level}
+                        </option>
+                    ))}
+                </select>
+            </div>
 
-            <div className={styles.toolbarActions}>
-                <div className={styles.toolbarSection}>
-                    {formatButtons.map(renderButton)}
-                </div>
+            <div className={`${styles.toolbarSection} ${styles.toolbarFormatSection}`}>
+                {formatButtons.map(renderButton)}
+            </div>
 
-                <div className={styles.toolbarDivider} aria-hidden="true" />
+            <div className={styles.toolbarDangerZone}>
+                {utilityButtons
+                    .filter((button) => button.variant === "danger")
+                    .map(renderButton)}
+            </div>
 
-                <div className={styles.toolbarSection}>
-                    {utilityButtons
-                        .filter((button) => button.variant !== "danger")
-                        .map(renderButton)}
-                </div>
+            <div className={`${styles.toolbarSection} ${styles.toolbarUtilitySection}`}>
+                <Switch
+                    checked={autoSaveEnabled}
+                    isLoading={autoSaveEnabled && autosaveStatus === "saving"}
+                    label="Autoguardado"
+                    name="autosave"
+                    onChange={(checked) => dispatch(setAutoSaveEnabled(checked))}
+                />
 
-                <div className={styles.toolbarDangerZone}>
-                    {utilityButtons
-                        .filter((button) => button.variant === "danger")
-                        .map(renderButton)}
-                </div>
+                {autoSaveEnabled &&
+                    autosaveStatus !== "idle" &&
+                    autosaveStatus !== "saving" && (
+                        <span
+                            className={`${styles.autosaveStatus} ${
+                                autosaveStatusClass[autosaveStatus]
+                            }`}
+                            aria-live="polite"
+                        >
+                            {autosaveStatusLabel[autosaveStatus]}
+                        </span>
+                    )}
+
+                {utilityButtons
+                    .filter((button) => button.variant !== "danger")
+                    .map(renderButton)}
             </div>
         </div>
     );

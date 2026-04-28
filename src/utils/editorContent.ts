@@ -6,10 +6,10 @@ export const emptyEditorContent: JSONContent = {
     content: [{ type: "paragraph" }],
 };
 
-const htmlTagPattern =
+export const htmlTagPattern =
     /<\/?(h[1-6]|p|ul|ol|li|blockquote|pre|code|strong|em|s|br|hr)\b[^>]*>/i;
 
-const decodeHtmlEntities = (value: string) =>
+export const decodeHtmlEntities = (value: string) =>
     value
         .replace(/&lt;/g, "<")
         .replace(/&gt;/g, ">")
