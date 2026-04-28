@@ -16,6 +16,7 @@ type SocketStatus = "idle" | "connecting" | "open" | "closed" | "error";
 type SocketContextValue = {
     socket: WebSocket | null;
     status: SocketStatus;
+    lastJsonMessage: unknown;
     sendMessage: WebSocket["send"];
     // eslint-disable-next-line no-unused-vars
     sendJson: (payload: unknown) => boolean;
@@ -43,6 +44,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     const socketRef = useRef<WebSocket | null>(null);
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [status, setStatus] = useState<SocketStatus>("idle");
+    const [lastJsonMessage, setLastJsonMessage] = useState<unknown>(null);
 
     useEffect(() => {
         const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL;
@@ -70,18 +72,24 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
                 if (socketRef.current !== nextSocket) return;
 
                 setStatus("open");
-                console.info("Socket conectado");
+                // console.info("Socket conectado");
             });
 
             nextSocket.addEventListener("error", () => {
                 if (socketRef.current !== nextSocket) return;
 
                 setStatus("error");
-                console.error("No se pudo conectar al socket");
+                // console.error("No se pudo conectar al socket");
             });
 
             nextSocket.addEventListener("message", (event) => {
-                console.info("Socket mensaje recibido", event.data);
+                try {
+                    setLastJsonMessage(JSON.parse(event.data));
+                } catch {
+                    setLastJsonMessage(event.data);
+                }
+
+                // console.info("Socket mensaje recibido");
             });
 
             nextSocket.addEventListener("close", (event) => {
@@ -93,7 +101,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
                 if (event.code === 1008) {
                     shouldReconnect = false;
                     setStatus("closed");
-                    console.error("Socket cerrado por autenticacion:", event.reason);
+                    // console.error("Socket cerrado por autenticacion:", event.reason);
                     return;
                 }
 
@@ -148,8 +156,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
             status,
             sendMessage,
             sendJson,
+            lastJsonMessage,
         }),
-        [socket, status, sendMessage, sendJson]
+        [socket, status, sendMessage, sendJson, lastJsonMessage]
     );
 
     return (

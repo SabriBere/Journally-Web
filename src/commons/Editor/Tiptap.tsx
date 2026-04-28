@@ -1,10 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { Extension } from "@tiptap/core";
-import { Plugin } from "@tiptap/pm/state";
 import { EditorContent, useEditor } from "@tiptap/react";
-import { TextStyleKit } from "@tiptap/extension-text-style";
-import StarterKit from "@tiptap/starter-kit";
 import { RootState } from "@/store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "next/navigation";
@@ -26,91 +22,24 @@ import SkeletonEditor from "@/commons/Skeletons/SkeletonEditor";
 import {
   emptyEditorContent,
   normalizeEditorContent,
-  serializeDescription,
 } from "@/utils/editorContent";
 import { useSocket } from "@/contexts/SocketContext";
+import { editorExtensions } from "./editorConfig";
 import styles from "./editor.module.scss";
 
-const htmlTagPattern =
-  /<\/?(h[1-6]|p|ul|ol|li|blockquote|pre|code|strong|em|s|br|hr)\b[^>]*>/i;
+type AutosaveSocketMessage = {
+  type?: string;
+  error?: boolean;
+  clientRequestId?: string;
+};
 
-const decodeHtmlEntities = (value: string) =>
-  value
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&amp;/g, "&");
-
-const exitEmptyListItem = Extension.create({
-  name: "exitEmptyListItem",
-
-  addKeyboardShortcuts() {
-    return {
-      Enter: () => {
-        const { $from, empty } = this.editor.state.selection;
-        const isEmptyListItem =
-          empty &&
-          this.editor.isActive("listItem") &&
-          $from.parent.type.name === "paragraph" &&
-          $from.parent.textContent.length === 0;
-
-        if (!isEmptyListItem) return false;
-
-        return this.editor.commands.liftListItem("listItem");
-      },
-    };
-  },
-});
-
-const interpretPastedHtmlText = Extension.create({
-  name: "interpretPastedHtmlText",
-
-  addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        props: {
-          handlePaste: (_view, event) => {
-            const plainText = event.clipboardData?.getData("text/plain");
-
-            if (
-              !plainText ||
-              !htmlTagPattern.test(decodeHtmlEntities(plainText))
-            ) {
-              return false;
-            }
-
-            event.preventDefault();
-            this.editor.commands.insertContent(normalizeEditorContent(plainText));
-            return true;
-          },
-        },
-      }),
-    ];
-  },
-});
-
-const exitHeadingOnEnter = Extension.create({
-  name: "exitHeadingOnEnter",
-
-  addKeyboardShortcuts() {
-    return {
-      Enter: () => {
-        const { empty, $from } = this.editor.state.selection;
-
-        if (!empty || $from.parent.type.name !== "heading") return false;
-
-        return this.editor.chain().splitBlock().setParagraph().run();
-      },
-    };
-  },
-});
+type AutosaveStatus = "idle" | "saving" | "saved" | "error";
 
 const Tiptap = () => {
   const { id } = useParams();
   const convertId = Number(id);
   const dispatch = useDispatch();
-  const { status: socketStatus, sendJson } = useSocket();
+  const { status: socketStatus, sendJson, lastJsonMessage } = useSocket();
   const editText = useSelector((state: RootState) => state.edit.editText);
   const autoSaveEnabled = useSelector(
     (state: RootState) => state.edit.autoSaveEnabled
@@ -122,18 +51,13 @@ const Tiptap = () => {
     (state: RootState) => state.edit.currentDescription
   );
   const [focusTitleInput, setFocusTitleInput] = useState(false);
+  const [autosaveStatus, setAutosaveStatus] =
+    useState<AutosaveStatus>("idle");
   const editorRef = useRef<HTMLDivElement | null>(null);
-  const normalizeTitle = (title?: string) =>
-    (title ?? "").replace(/\s+/g, " ").trim();
+  const pendingAutosaveRequestIdRef = useRef<string | null>(null);
 
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      TextStyleKit,
-      exitEmptyListItem,
-      interpretPastedHtmlText,
-      exitHeadingOnEnter,
-    ],
+    extensions: editorExtensions,
     content: emptyEditorContent,
     editable: editText,
     immediatelyRender: false,
@@ -180,22 +104,6 @@ const Tiptap = () => {
 
   //guardado automatico
   useEffect(() => {
-    const isDirty =
-      normalizeTitle(newTitle) !== normalizeTitle(currentTitle) ||
-      serializeDescription(newText) !== serializeDescription(currentDescription);
-
-    const blockedReason =
-      (!editText && "editor cerrado") ||
-      (!autoSaveEnabled && "autoguardado apagado") ||
-      (!isDirty && "sin cambios") ||
-      (socketStatus !== "open" && `socket ${socketStatus}`) ||
-      (!convertId && "postId invalido");
-
-    if (blockedReason) {
-      console.info("Autoguardado no enviado:", blockedReason);
-      return;
-    }
-
     const autosaveTimer = window.setTimeout(() => {
       const body = {
         title: newTitle.trim(),
@@ -211,14 +119,18 @@ const Tiptap = () => {
       });
 
       if (!wasSent) {
-        console.warn("No se pudo enviar el autoguardado por socket");
+        setAutosaveStatus("error");
+        // console.warn("No se pudo enviar el autoguardado por socket");
         return;
       }
 
-      console.info("Autoguardado enviado por socket", {
-        postId: convertId,
-        clientRequestId,
-      });
+      pendingAutosaveRequestIdRef.current = clientRequestId;
+      setAutosaveStatus("saving");
+
+      // console.info("Autoguardado enviado por socket", {
+      //   postId: convertId,
+      //   clientRequestId,
+      // });
     }, 700);
 
     return () => {
@@ -235,6 +147,35 @@ const Tiptap = () => {
     convertId,
     sendJson,
   ]);
+
+  useEffect(() => {
+    const message = lastJsonMessage as AutosaveSocketMessage | null;
+
+    if (
+      !message ||
+      !message.clientRequestId ||
+      message.clientRequestId !== pendingAutosaveRequestIdRef.current
+    ) {
+      return;
+    }
+
+    if (message.type === "entry:saved") {
+      setAutosaveStatus("saved");
+      pendingAutosaveRequestIdRef.current = null;
+      return;
+    }
+
+    if (message.type === "entry:error" || message.error) {
+      setAutosaveStatus("error");
+      pendingAutosaveRequestIdRef.current = null;
+    }
+  }, [lastJsonMessage]);
+
+  useEffect(() => {
+    if (!autoSaveEnabled || !editText) {
+      setAutosaveStatus("idle");
+    }
+  }, [autoSaveEnabled, editText]);
 
   useEffect(() => {
     editor?.setEditable(editText);
@@ -321,7 +262,9 @@ const Tiptap = () => {
               </div>
             </div>
 
-            {editText && <EditorToolbar editor={editor} />}
+            {editText && (
+              <EditorToolbar editor={editor} autosaveStatus={autosaveStatus} />
+            )}
           </div>
 
           <EditorContent
