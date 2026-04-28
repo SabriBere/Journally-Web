@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import type { Editor as TiptapEditor } from "@tiptap/react";
 import { TextSelection } from "@tiptap/pm/state";
 import { useParams, useRouter } from "next/navigation";
@@ -145,9 +145,9 @@ const EditorToolbar = ({
     const autoSaveEnabled = useSelector(
         (state: RootState) => state.edit.autoSaveEnabled
     );
-    const [currentBlock, setCurrentBlock] = React.useState("p");
-    const [confirmDelete, setConfirmDelete] = React.useState(false);
-    const lastCursorPositionRef = React.useRef<number | null>(null);
+    const [currentBlock, setCurrentBlock] = useState("p");
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const lastCursorPositionRef = useRef<number | null>(null);
 
     const { mutateAsync: deletePostMutation } = useMutation({
         mutationFn: ({ postId }: { postId: number }) => deletePost(postId),
@@ -164,7 +164,7 @@ const EditorToolbar = ({
         },
     });
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!editor) return;
 
         const updateCurrentBlock = () => {
@@ -184,7 +184,7 @@ const EditorToolbar = ({
         };
     }, [editor]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!confirmDelete) return;
 
         const timer = window.setTimeout(() => {
@@ -344,7 +344,7 @@ const EditorToolbar = ({
         </button>
     );
 
-    const handleBlockChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleBlockChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
         const cursorPosition =
             lastCursorPositionRef.current ?? editor.state.selection.$head.pos;
