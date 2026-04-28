@@ -6,13 +6,21 @@ import styles from "./switch.module.scss";
 type SwitchProps = {
     checked: boolean;
     label: string;
+    isLoading?: boolean;
     name?: string;
     disabled?: boolean;
     // eslint-disable-next-line no-unused-vars
     onChange: (checked: boolean) => void;
 };
 
-const Switch = ({ checked, label, name, disabled, onChange }: SwitchProps) => {
+const Switch = ({
+    checked,
+    label,
+    isLoading,
+    name,
+    disabled,
+    onChange,
+}: SwitchProps) => {
     const switchId = React.useId();
 
     return (
@@ -29,7 +37,16 @@ const Switch = ({ checked, label, name, disabled, onChange }: SwitchProps) => {
             <span className={styles.switchTrack} aria-hidden="true">
                 <span className={styles.switchThumb} />
             </span>
-            <span className={styles.switchLabel}>{label}</span>
+            <span className={styles.switchLabel}>
+                {label}
+                {isLoading && (
+                    <span className={styles.switchLoadingDots} aria-hidden="true">
+                        <span />
+                        <span />
+                        <span />
+                    </span>
+                )}
+            </span>
         </label>
     );
 };
