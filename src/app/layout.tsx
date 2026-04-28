@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import Providers from "./providers";
 import Navbar from "@/commons/Navbar/Navbar";
 import Footer from "@/commons/Footer/Footer";
+import { authOptions } from "./api/provider/Credentials";
 import styles from "./layout.module.scss";
 import "./globals.scss";
 
@@ -28,7 +29,7 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     return (
         <html lang="en" className={`${caveat.variable} ${inter.variable}`}>
             <body className={styles.layout}>

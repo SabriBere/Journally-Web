@@ -1,10 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { Extension } from "@tiptap/core";
-import { Plugin } from "@tiptap/pm/state";
 import { EditorContent, useEditor } from "@tiptap/react";
-import { TextStyleKit } from "@tiptap/extension-text-style";
-import StarterKit from "@tiptap/starter-kit";
 import { RootState } from "@/store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "next/navigation";
@@ -27,104 +23,41 @@ import {
   emptyEditorContent,
   normalizeEditorContent,
 } from "@/utils/editorContent";
+import { useSocket } from "@/contexts/SocketContext";
+import { editorExtensions } from "./editorConfig";
 import styles from "./editor.module.scss";
 
-const htmlTagPattern =
-  /<\/?(h[1-6]|p|ul|ol|li|blockquote|pre|code|strong|em|s|br|hr)\b[^>]*>/i;
-
-const decodeHtmlEntities = (value: string) =>
-  value
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&amp;/g, "&");
-
-const stripHtmlCodeFence = (value: string) =>
-  value.replace(/^```(?:html)?\s*/i, "").replace(/\s*```$/i, "");
-
-const unwrapCodeBlock = (value: string) => {
-  const match = value.match(
-    /^<pre><code(?:\s+class="[^"]*")?>([\s\S]*)<\/code><\/pre>$/i
-  );
-
-  return match?.[1] ?? value;
+type AutosaveSocketMessage = {
+  type?: string;
+  error?: boolean;
+  clientRequestId?: string;
 };
 
-const unwrapHtmlCodeBlocks = (value: string) =>
-  value.replace(
-    /<pre><code(?:\s+class="[^"]*")?>([\s\S]*?)<\/code><\/pre>/gi,
-    (codeBlock, innerContent: string) => {
-      const decoded = decodeHtmlEntities(innerContent);
-
-      return htmlTagPattern.test(decoded) ? decoded : codeBlock;
-    }
-  );
-
-const exitEmptyListItem = Extension.create({
-  name: "exitEmptyListItem",
-
-  addKeyboardShortcuts() {
-    return {
-      Enter: () => {
-        const { $from, empty } = this.editor.state.selection;
-        const isEmptyListItem =
-          empty &&
-          this.editor.isActive("listItem") &&
-          $from.parent.type.name === "paragraph" &&
-          $from.parent.textContent.length === 0;
-
-        if (!isEmptyListItem) return false;
-
-        return this.editor.commands.liftListItem("listItem");
-      },
-    };
-  },
-});
-
-const interpretPastedHtmlText = Extension.create({
-  name: "interpretPastedHtmlText",
-
-  addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        props: {
-          handlePaste: (_view, event) => {
-            const plainText = event.clipboardData?.getData("text/plain");
-
-            if (
-              !plainText ||
-              !htmlTagPattern.test(decodeHtmlEntities(plainText))
-            ) {
-              return false;
-            }
-
-            event.preventDefault();
-            this.editor.commands.insertContent(normalizeEditorContent(plainText));
-            return true;
-          },
-        },
-      }),
-    ];
-  },
-});
+type AutosaveStatus = "idle" | "saving" | "saved" | "error";
 
 const Tiptap = () => {
   const { id } = useParams();
   const convertId = Number(id);
   const dispatch = useDispatch();
+  const { status: socketStatus, sendJson, lastJsonMessage } = useSocket();
   const editText = useSelector((state: RootState) => state.edit.editText);
+  const autoSaveEnabled = useSelector(
+    (state: RootState) => state.edit.autoSaveEnabled
+  );
   const newTitle = useSelector((state: RootState) => state.edit.newTitle);
+  const newText = useSelector((state: RootState) => state.edit.newText);
+  const currentTitle = useSelector((state: RootState) => state.edit.currentTitle);
+  const currentDescription = useSelector(
+    (state: RootState) => state.edit.currentDescription
+  );
   const [focusTitleInput, setFocusTitleInput] = useState(false);
+  const [autosaveStatus, setAutosaveStatus] =
+    useState<AutosaveStatus>("idle");
   const editorRef = useRef<HTMLDivElement | null>(null);
+  const pendingAutosaveRequestIdRef = useRef<string | null>(null);
 
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      TextStyleKit,
-      exitEmptyListItem,
-      interpretPastedHtmlText,
-    ],
+    extensions: editorExtensions,
     content: emptyEditorContent,
     editable: editText,
     immediatelyRender: false,
@@ -168,6 +101,81 @@ const Tiptap = () => {
       { emitUpdate: false }
     );
   }, [editor, entry]);
+
+  //guardado automatico
+  useEffect(() => {
+    const autosaveTimer = window.setTimeout(() => {
+      const body = {
+        title: newTitle.trim(),
+        description: newText ?? emptyEditorContent,
+      };
+      const clientRequestId = `${convertId}-${Date.now()}`;
+
+      const wasSent = sendJson({
+        type: "entry:autosave",
+        postId: convertId,
+        ...body,
+        clientRequestId,
+      });
+
+      if (!wasSent) {
+        setAutosaveStatus("error");
+        // console.warn("No se pudo enviar el autoguardado por socket");
+        return;
+      }
+
+      pendingAutosaveRequestIdRef.current = clientRequestId;
+      setAutosaveStatus("saving");
+
+      // console.info("Autoguardado enviado por socket", {
+      //   postId: convertId,
+      //   clientRequestId,
+      // });
+    }, 700);
+
+    return () => {
+      window.clearTimeout(autosaveTimer);
+    };
+  }, [
+    editText,
+    autoSaveEnabled,
+    newTitle,
+    newText,
+    currentTitle,
+    currentDescription,
+    socketStatus,
+    convertId,
+    sendJson,
+  ]);
+
+  useEffect(() => {
+    const message = lastJsonMessage as AutosaveSocketMessage | null;
+
+    if (
+      !message ||
+      !message.clientRequestId ||
+      message.clientRequestId !== pendingAutosaveRequestIdRef.current
+    ) {
+      return;
+    }
+
+    if (message.type === "entry:saved") {
+      setAutosaveStatus("saved");
+      pendingAutosaveRequestIdRef.current = null;
+      return;
+    }
+
+    if (message.type === "entry:error" || message.error) {
+      setAutosaveStatus("error");
+      pendingAutosaveRequestIdRef.current = null;
+    }
+  }, [lastJsonMessage]);
+
+  useEffect(() => {
+    if (!autoSaveEnabled || !editText) {
+      setAutosaveStatus("idle");
+    }
+  }, [autoSaveEnabled, editText]);
 
   useEffect(() => {
     editor?.setEditable(editText);
@@ -254,7 +262,9 @@ const Tiptap = () => {
               </div>
             </div>
 
-            {editText && <EditorToolbar editor={editor} />}
+            {editText && (
+              <EditorToolbar editor={editor} autosaveStatus={autosaveStatus} />
+            )}
           </div>
 
           <EditorContent
