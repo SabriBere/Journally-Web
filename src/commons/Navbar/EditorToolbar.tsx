@@ -10,6 +10,7 @@ import { RootState } from "@/store/store";
 import { setAutoSaveEnabled, setSavePost } from "@/store/editSlice";
 import { deletePost } from "@/services/post.service";
 import { showError, showSuccess } from "../Toast/toastHelpers";
+import Switch from "@/commons/Switch";
 import Code from "@/styles/icons/Code";
 import Copy from "@/styles/icons/Copy";
 import Delete from "@/styles/icons/Delete";
@@ -39,6 +40,8 @@ type ToolbarButton = {
     variant?: "danger" | "warning";
     onClick: () => void;
 };
+
+type AutosaveStatus = "idle" | "saving" | "saved" | "error";
 
 const iconColor = "#9e6b3e";
 
@@ -112,7 +115,27 @@ const setCurrentTextBlockAtPosition = (
         })
         .run();
 
-const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
+const autosaveStatusLabel: Record<AutosaveStatus, string> = {
+    idle: "",
+    saving: "Guardando...",
+    saved: "Guardado",
+    error: "No se pudo guardar",
+};
+
+const autosaveStatusClass: Record<AutosaveStatus, string> = {
+    idle: "",
+    saving: styles.autosaveStatusSaving,
+    saved: styles.autosaveStatusSaved,
+    error: styles.autosaveStatusError,
+};
+
+const EditorToolbar = ({
+    editor,
+    autosaveStatus,
+}: {
+    editor: TiptapEditor | null;
+    autosaveStatus: AutosaveStatus;
+}) => {
     const { id } = useParams<{ id: string }>();
     const router = useRouter();
     const dispatch = useDispatch();
@@ -339,49 +362,60 @@ const EditorToolbar = ({ editor }: { editor: TiptapEditor | null }) => {
 
     return (
         <div className={styles.editorToolbar} aria-label="Herramientas del editor">
-            <select
-                className={styles.blockSelect}
-                value={currentBlock}
-                onChange={handleBlockChange}
-                aria-label="Tipo de bloque"
-            >
-                <option value="p">Párrafo</option>
-                {headingLevels.map((level) => (
-                    <option key={level} value={`h${level}`}>
-                        H{level}
-                    </option>
-                ))}
-            </select>
+            <div className={styles.toolbarBlockGroup}>
+                <select
+                    className={styles.blockSelect}
+                    value={currentBlock}
+                    onChange={handleBlockChange}
+                    aria-label="Tipo de bloque"
+                >
+                    <option value="p">Párrafo</option>
+                    {headingLevels.map((level) => (
+                        <option key={level} value={`h${level}`}>
+                            H{level}
+                        </option>
+                    ))}
+                </select>
+            </div>
 
-            <div className={styles.toolbarActions}>
-                <div className={styles.toolbarSection}>
+            <div className={styles.toolbarMain}>
+                <div
+                    className={`${styles.toolbarSection} ${styles.toolbarFormatSection}`}
+                >
                     {formatButtons.map(renderButton)}
                 </div>
 
-                <div className={styles.toolbarDivider} aria-hidden="true" />
+                <div
+                    className={`${styles.toolbarSection} ${styles.toolbarUtilitySection}`}
+                >
+                    <Switch
+                        checked={autoSaveEnabled}
+                        label="Autoguardado"
+                        name="autosave"
+                        onChange={(checked) => dispatch(setAutoSaveEnabled(checked))}
+                    />
 
-                <div className={styles.toolbarSection}>
-                    <label className={styles.autoSaveToggle}>
-                        <input
-                            type="checkbox"
-                            checked={autoSaveEnabled}
-                            onChange={(event) =>
-                                dispatch(setAutoSaveEnabled(event.target.checked))
-                            }
-                        />
-                        <span>Autoguardado</span>
-                    </label>
+                    {autoSaveEnabled && autosaveStatus !== "idle" && (
+                        <span
+                            className={`${styles.autosaveStatus} ${
+                                autosaveStatusClass[autosaveStatus]
+                            }`}
+                            aria-live="polite"
+                        >
+                            {autosaveStatusLabel[autosaveStatus]}
+                        </span>
+                    )}
 
                     {utilityButtons
                         .filter((button) => button.variant !== "danger")
                         .map(renderButton)}
                 </div>
+            </div>
 
-                <div className={styles.toolbarDangerZone}>
-                    {utilityButtons
-                        .filter((button) => button.variant === "danger")
-                        .map(renderButton)}
-                </div>
+            <div className={styles.toolbarDangerZone}>
+                {utilityButtons
+                    .filter((button) => button.variant === "danger")
+                    .map(renderButton)}
             </div>
         </div>
     );

@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,15 +12,15 @@ import {
 import { showSuccess, showError } from "../Toast/toastHelpers";
 import { updatePost } from "@/services/post.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import TooltipWrapper from "../Tooltip/Tooltip";
-import Edit from "@/styles/icons/Edit";
 import type { PostDescription } from "@/types/editor";
 import {
     emptyEditorContent,
     serializeDescription,
 } from "@/utils/editorContent";
+import TooltipWrapper from "../Tooltip/Tooltip";
+import Edit from "@/styles/icons/Edit";
 import styles from "./toolbar.module.scss";
-import { useSession } from "next-auth/react";
+
 
 type PostBody = { title: string; description: PostDescription };
 
