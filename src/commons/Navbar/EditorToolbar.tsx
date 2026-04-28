@@ -117,7 +117,7 @@ const setCurrentTextBlockAtPosition = (
 
 const autosaveStatusLabel: Record<AutosaveStatus, string> = {
     idle: "",
-    saving: "Guardando...",
+    saving: "",
     saved: "Guardado",
     error: "No se pudo guardar",
 };
@@ -378,24 +378,28 @@ const EditorToolbar = ({
                 </select>
             </div>
 
-            <div className={styles.toolbarMain}>
-                <div
-                    className={`${styles.toolbarSection} ${styles.toolbarFormatSection}`}
-                >
-                    {formatButtons.map(renderButton)}
-                </div>
+            <div className={`${styles.toolbarSection} ${styles.toolbarFormatSection}`}>
+                {formatButtons.map(renderButton)}
+            </div>
 
-                <div
-                    className={`${styles.toolbarSection} ${styles.toolbarUtilitySection}`}
-                >
-                    <Switch
-                        checked={autoSaveEnabled}
-                        label="Autoguardado"
-                        name="autosave"
-                        onChange={(checked) => dispatch(setAutoSaveEnabled(checked))}
-                    />
+            <div className={styles.toolbarDangerZone}>
+                {utilityButtons
+                    .filter((button) => button.variant === "danger")
+                    .map(renderButton)}
+            </div>
 
-                    {autoSaveEnabled && autosaveStatus !== "idle" && (
+            <div className={`${styles.toolbarSection} ${styles.toolbarUtilitySection}`}>
+                <Switch
+                    checked={autoSaveEnabled}
+                    isLoading={autoSaveEnabled && autosaveStatus === "saving"}
+                    label="Autoguardado"
+                    name="autosave"
+                    onChange={(checked) => dispatch(setAutoSaveEnabled(checked))}
+                />
+
+                {autoSaveEnabled &&
+                    autosaveStatus !== "idle" &&
+                    autosaveStatus !== "saving" && (
                         <span
                             className={`${styles.autosaveStatus} ${
                                 autosaveStatusClass[autosaveStatus]
@@ -406,15 +410,8 @@ const EditorToolbar = ({
                         </span>
                     )}
 
-                    {utilityButtons
-                        .filter((button) => button.variant !== "danger")
-                        .map(renderButton)}
-                </div>
-            </div>
-
-            <div className={styles.toolbarDangerZone}>
                 {utilityButtons
-                    .filter((button) => button.variant === "danger")
+                    .filter((button) => button.variant !== "danger")
                     .map(renderButton)}
             </div>
         </div>
