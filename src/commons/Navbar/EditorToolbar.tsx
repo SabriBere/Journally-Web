@@ -37,6 +37,7 @@ type ToolbarButton = {
     isActive?: () => boolean;
     isPrimary?: boolean;
     isPendingDanger?: boolean;
+    disabled?: boolean;
     variant?: "danger" | "warning";
     onClick: () => void;
 };
@@ -314,8 +315,11 @@ const EditorToolbar = ({
         },
         {
             label: <Save width="24" height="24" color="#ffffff" />,
-            title: "Guardar",
+            title: autoSaveEnabled
+                ? "Autoguardado activado"
+                : "Guardar",
             isPrimary: true,
+            disabled: autoSaveEnabled,
             onClick: () => dispatch(setSavePost(true)),
         },
     ];
@@ -334,6 +338,7 @@ const EditorToolbar = ({
             title={button.title}
             aria-label={button.title}
             aria-pressed={button.isActive?.() ?? false}
+            disabled={button.disabled}
             onMouseDown={(e) => e.preventDefault()}
             onClick={button.onClick}
         >
@@ -398,7 +403,7 @@ const EditorToolbar = ({
                     onChange={(checked) => dispatch(setAutoSaveEnabled(checked))}
                 />
 
-                {autoSaveEnabled &&
+                {/* {autoSaveEnabled &&
                     autosaveStatus !== "idle" &&
                     autosaveStatus !== "saving" && (
                         <span
@@ -409,7 +414,7 @@ const EditorToolbar = ({
                         >
                             {autosaveStatusLabel[autosaveStatus]}
                         </span>
-                    )}
+                    )} */}
 
                 {utilityButtons
                     .filter((button) => button.variant !== "danger")
