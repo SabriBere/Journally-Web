@@ -22,6 +22,7 @@ import Quote from "@/styles/icons/Quote";
 import Redo from "@/styles/icons/Redo";
 import Save from "@/styles/icons/Save";
 import Strikethrough from "@/styles/icons/Strikethrough";
+import Sync from "@/styles/icons/Sync";
 import Undo from "@/styles/icons/Undo";
 import Italic from "@/styles/icons/Italic";
 import Bold from "@/styles/icons/Bold";
@@ -148,7 +149,9 @@ const EditorToolbar = ({
     );
     const [currentBlock, setCurrentBlock] = useState("p");
     const [confirmDelete, setConfirmDelete] = useState(false);
+    const [showAutosaveSaving, setShowAutosaveSaving] = useState(false);
     const lastCursorPositionRef = useRef<number | null>(null);
+    const autosaveSavingTimerRef = useRef<number | null>(null);
 
     const { mutateAsync: deletePostMutation } = useMutation({
         mutationFn: ({ postId }: { postId: number }) => deletePost(postId),
@@ -196,6 +199,44 @@ const EditorToolbar = ({
             window.clearTimeout(timer);
         };
     }, [confirmDelete]);
+
+    useEffect(() => {
+        if (!autoSaveEnabled) {
+            setShowAutosaveSaving(false);
+
+            if (autosaveSavingTimerRef.current) {
+                window.clearTimeout(autosaveSavingTimerRef.current);
+                autosaveSavingTimerRef.current = null;
+            }
+
+            return;
+        }
+
+        if (autosaveStatus === "saving") {
+            setShowAutosaveSaving(true);
+
+            if (autosaveSavingTimerRef.current) {
+                window.clearTimeout(autosaveSavingTimerRef.current);
+                autosaveSavingTimerRef.current = null;
+            }
+
+            return;
+        }
+
+        if (!showAutosaveSaving || autosaveSavingTimerRef.current) return;
+
+        autosaveSavingTimerRef.current = window.setTimeout(() => {
+            setShowAutosaveSaving(false);
+            autosaveSavingTimerRef.current = null;
+        }, 2000);
+
+        return () => {
+            if (autosaveSavingTimerRef.current) {
+                window.clearTimeout(autosaveSavingTimerRef.current);
+                autosaveSavingTimerRef.current = null;
+            }
+        };
+    }, [autoSaveEnabled, autosaveStatus, showAutosaveSaving]);
 
     if (!editor) return null;
 
@@ -314,10 +355,20 @@ const EditorToolbar = ({
             onClick: handleDeletePost,
         },
         {
-            label: <Save width="24" height="24" color="#ffffff" />,
-            title: autoSaveEnabled
-                ? "Autoguardado activado"
-                : "Guardar",
+            label:
+                autoSaveEnabled && showAutosaveSaving ? (
+                    <span className={styles.toolbarButtonSpinner}>
+                        <Sync width="24" height="24" color="#ffffff" />
+                    </span>
+                ) : (
+                    <Save width="24" height="24" color="#ffffff" />
+                ),
+            title:
+                autoSaveEnabled && showAutosaveSaving
+                    ? "Guardando cambios"
+                    : autoSaveEnabled
+                      ? "Autoguardado activado"
+                      : "Guardar",
             isPrimary: true,
             disabled: autoSaveEnabled,
             onClick: () => dispatch(setSavePost(true)),
@@ -396,7 +447,6 @@ const EditorToolbar = ({
             <div className={`${styles.toolbarSection} ${styles.toolbarUtilitySection}`}>
                 <Switch
                     checked={autoSaveEnabled}
-                    isLoading={autoSaveEnabled && autosaveStatus === "saving"}
                     label=""
                     name="autosave"
                     title="Autoguardado"
