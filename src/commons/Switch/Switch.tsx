@@ -6,6 +6,7 @@ import styles from "./switch.module.scss";
 type SwitchProps = {
     checked: boolean;
     label: string;
+    title?: string;
     isLoading?: boolean;
     name?: string;
     disabled?: boolean;
@@ -16,6 +17,7 @@ type SwitchProps = {
 const Switch = ({
     checked,
     label,
+    title,
     isLoading,
     name,
     disabled,
@@ -24,7 +26,7 @@ const Switch = ({
     const switchId = React.useId();
 
     return (
-        <label className={styles.switchWrapper} htmlFor={switchId}>
+        <label className={styles.switchWrapper} htmlFor={switchId} title={title}>
             <input
                 id={switchId}
                 className={styles.switchInput}
@@ -32,6 +34,7 @@ const Switch = ({
                 name={name}
                 checked={checked}
                 disabled={disabled}
+                aria-label={title || label}
                 onChange={(event) => onChange(event.target.checked)}
             />
             <span className={styles.switchTrack} aria-hidden="true">

@@ -7,7 +7,11 @@ import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { setAutoSaveEnabled, setSavePost } from "@/store/editSlice";
+import {
+    setAutoSaveEnabled,
+    setSavePost,
+    setSavePostShouldCloseEditor,
+} from "@/store/editSlice";
 import { deletePost } from "@/services/post.service";
 import { showError, showSuccess } from "../Toast/toastHelpers";
 import Switch from "@/commons/Switch";
@@ -22,12 +26,26 @@ import Quote from "@/styles/icons/Quote";
 import Redo from "@/styles/icons/Redo";
 import Save from "@/styles/icons/Save";
 import Strikethrough from "@/styles/icons/Strikethrough";
+import Sync from "@/styles/icons/Sync";
 import Undo from "@/styles/icons/Undo";
 import Italic from "@/styles/icons/Italic";
 import Bold from "@/styles/icons/Bold";
 import styles from "./editorToolbar.module.scss";
 
 const headingLevels = [1, 2, 3, 4, 5, 6] as const;
+const defaultFontSize = "16px";
+const fontSizeOptions = [
+    "8px",
+    "10px",
+    "12px",
+    "14px",
+    "16px",
+    "18px",
+    "20px",
+    "24px",
+    "28px",
+    "32px",
+];
 
 type HeadingLevel = (typeof headingLevels)[number];
 
@@ -37,6 +55,7 @@ type ToolbarButton = {
     isActive?: () => boolean;
     isPrimary?: boolean;
     isPendingDanger?: boolean;
+    disabled?: boolean;
     variant?: "danger" | "warning";
     onClick: () => void;
 };
@@ -65,6 +84,12 @@ const getCurrentBlockAtPosition = (editor: TiptapEditor, position: number) => {
     }
 
     return "p";
+};
+
+const getCurrentFontSize = (editor: TiptapEditor) => {
+    const fontSize = editor.getAttributes("textStyle").fontSize;
+
+    return typeof fontSize === "string" ? fontSize : defaultFontSize;
 };
 
 const setCurrentTextBlockAtPosition = (
@@ -146,8 +171,11 @@ const EditorToolbar = ({
         (state: RootState) => state.edit.autoSaveEnabled
     );
     const [currentBlock, setCurrentBlock] = useState("p");
+    const [currentFontSize, setCurrentFontSize] = useState(defaultFontSize);
     const [confirmDelete, setConfirmDelete] = useState(false);
+    const [showAutosaveSaving, setShowAutosaveSaving] = useState(false);
     const lastCursorPositionRef = useRef<number | null>(null);
+    const autosaveSavingTimerRef = useRef<number | null>(null);
 
     const { mutateAsync: deletePostMutation } = useMutation({
         mutationFn: ({ postId }: { postId: number }) => deletePost(postId),
@@ -172,6 +200,7 @@ const EditorToolbar = ({
 
             lastCursorPositionRef.current = position;
             setCurrentBlock(getCurrentBlockAtPosition(editor, position));
+            setCurrentFontSize(getCurrentFontSize(editor));
         };
 
         updateCurrentBlock();
@@ -195,6 +224,44 @@ const EditorToolbar = ({
             window.clearTimeout(timer);
         };
     }, [confirmDelete]);
+
+    useEffect(() => {
+        if (!autoSaveEnabled) {
+            setShowAutosaveSaving(false);
+
+            if (autosaveSavingTimerRef.current) {
+                window.clearTimeout(autosaveSavingTimerRef.current);
+                autosaveSavingTimerRef.current = null;
+            }
+
+            return;
+        }
+
+        if (autosaveStatus === "saving") {
+            setShowAutosaveSaving(true);
+
+            if (autosaveSavingTimerRef.current) {
+                window.clearTimeout(autosaveSavingTimerRef.current);
+                autosaveSavingTimerRef.current = null;
+            }
+
+            return;
+        }
+
+        if (!showAutosaveSaving || autosaveSavingTimerRef.current) return;
+
+        autosaveSavingTimerRef.current = window.setTimeout(() => {
+            setShowAutosaveSaving(false);
+            autosaveSavingTimerRef.current = null;
+        }, 2000);
+
+        return () => {
+            if (autosaveSavingTimerRef.current) {
+                window.clearTimeout(autosaveSavingTimerRef.current);
+                autosaveSavingTimerRef.current = null;
+            }
+        };
+    }, [autoSaveEnabled, autosaveStatus, showAutosaveSaving]);
 
     if (!editor) return null;
 
@@ -313,10 +380,26 @@ const EditorToolbar = ({
             onClick: handleDeletePost,
         },
         {
-            label: <Save width="24" height="24" color="#ffffff" />,
-            title: "Guardar",
+            label:
+                autoSaveEnabled && showAutosaveSaving ? (
+                    <span className={styles.toolbarButtonSpinner}>
+                        <Sync width="24" height="24" color="#ffffff" />
+                    </span>
+                ) : (
+                    <Save width="24" height="24" color="#ffffff" />
+                ),
+            title:
+                autoSaveEnabled && showAutosaveSaving
+                    ? "Guardando cambios"
+                    : autoSaveEnabled
+                      ? "Autoguardado activado"
+                      : "Guardar",
             isPrimary: true,
-            onClick: () => dispatch(setSavePost(true)),
+            disabled: autoSaveEnabled,
+            onClick: () => {
+                dispatch(setSavePostShouldCloseEditor(false));
+                dispatch(setSavePost(true));
+            },
         },
     ];
 
@@ -334,6 +417,7 @@ const EditorToolbar = ({
             title={button.title}
             aria-label={button.title}
             aria-pressed={button.isActive?.() ?? false}
+            disabled={button.disabled}
             onMouseDown={(e) => e.preventDefault()}
             onClick={button.onClick}
         >
@@ -360,11 +444,23 @@ const EditorToolbar = ({
         setCurrentBlock(value);
     };
 
+    const handleFontSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        const fontSize = e.target.value;
+
+        setCurrentFontSize(fontSize);
+
+        editor
+            .chain()
+            .focus()
+            .setMark("textStyle", { fontSize: fontSize || null })
+            .run();
+    };
+
     return (
         <div className={styles.editorToolbar} aria-label="Herramientas del editor">
             <div className={styles.toolbarBlockGroup}>
                 <select
-                    className={styles.blockSelect}
+                    className={`${styles.blockSelect} ${styles.textBlockSelect}`}
                     value={currentBlock}
                     onChange={handleBlockChange}
                     aria-label="Tipo de bloque"
@@ -373,6 +469,20 @@ const EditorToolbar = ({
                     {headingLevels.map((level) => (
                         <option key={level} value={`h${level}`}>
                             H{level}
+                        </option>
+                    ))}
+                </select>
+
+                <select
+                    className={`${styles.blockSelect} ${styles.fontSizeSelect}`}
+                    value={currentFontSize}
+                    onChange={handleFontSizeChange}
+                    aria-label="Tamaño de letra"
+                    title="Tamaño de letra"
+                >
+                    {fontSizeOptions.map((fontSize) => (
+                        <option key={fontSize} value={fontSize}>
+                            {fontSize}
                         </option>
                     ))}
                 </select>
@@ -391,13 +501,13 @@ const EditorToolbar = ({
             <div className={`${styles.toolbarSection} ${styles.toolbarUtilitySection}`}>
                 <Switch
                     checked={autoSaveEnabled}
-                    isLoading={autoSaveEnabled && autosaveStatus === "saving"}
-                    label="Autoguardado"
+                    label=""
                     name="autosave"
+                    title="Autoguardado"
                     onChange={(checked) => dispatch(setAutoSaveEnabled(checked))}
                 />
 
-                {autoSaveEnabled &&
+                {/* {autoSaveEnabled &&
                     autosaveStatus !== "idle" &&
                     autosaveStatus !== "saving" && (
                         <span
@@ -408,7 +518,7 @@ const EditorToolbar = ({
                         >
                             {autosaveStatusLabel[autosaveStatus]}
                         </span>
-                    )}
+                    )} */}
 
                 {utilityButtons
                     .filter((button) => button.variant !== "danger")
