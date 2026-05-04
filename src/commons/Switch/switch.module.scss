@@ -56,9 +56,9 @@
     width: 42px;
     height: 22px;
     flex: 0 0 42px;
-    border: 3px solid colors.$deepNavyBlue;
+    border: 3px solid colors.$intenseCoralRed;
     border-radius: 999px;
-    background: colors.$warmWhite;
+    background: rgba(colors.$intenseCoralRed, 0.12);
     transition:
         background 0.18s ease,
         border-color 0.18s ease;
@@ -69,9 +69,9 @@
     left: 3px;
     width: 12px;
     height: 12px;
-    border: 3px solid colors.$deepNavyBlue;
+    border: 3px solid colors.$intenseCoralRed;
     border-radius: 50%;
-    background: colors.$warmWhite;
+    background: colors.$intenseCoralRed;
     transition:
         left 0.18s ease,
         background 0.18s ease,
