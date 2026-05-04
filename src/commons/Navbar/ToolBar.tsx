@@ -8,6 +8,7 @@ import {
     setEditText,
     setNewTitle,
     setSavePost,
+    setSavePostShouldCloseEditor,
 } from "@/store/editSlice";
 import { showSuccess, showError } from "../Toast/toastHelpers";
 import { updatePost } from "@/services/post.service";
@@ -33,6 +34,9 @@ const ToolBar = () => {
     const QueryClient = useQueryClient();
     const editText = useSelector((state: RootState) => state.edit.editText);
     const savePost = useSelector((state: RootState) => state.edit.savePost);
+    const savePostShouldCloseEditor = useSelector(
+        (state: RootState) => state.edit.savePostShouldCloseEditor
+    );
     const newTitle = useSelector((state: RootState) => state.edit.newTitle);
     const newText = useSelector((state: RootState) => state.edit.newText);
     const currentTitle = useSelector((state: RootState) => state.edit.currentTitle);
@@ -80,8 +84,9 @@ const ToolBar = () => {
         if (!canSave) {
             if (shouldCloseEditor) {
                 dispatch(setEditText(false));
-                dispatch(setSavePost(false));
             }
+            dispatch(setSavePost(false));
+            dispatch(setSavePostShouldCloseEditor(true));
             return;
         }
 
@@ -89,18 +94,26 @@ const ToolBar = () => {
             title: newTitle.trim(),
             description: newText ?? emptyEditorContent,
         };
-        await updatePostMutation({ body, postId, userId });
 
-        dispatch(setEditText(false));
-        dispatch(setNewTitle(body.title));
-        dispatch(setSavePost(false));
+        try {
+            await updatePostMutation({ body, postId, userId });
+
+            if (shouldCloseEditor) {
+                dispatch(setEditText(false));
+            }
+
+            dispatch(setNewTitle(body.title));
+        } finally {
+            dispatch(setSavePost(false));
+            dispatch(setSavePostShouldCloseEditor(true));
+        }
     };
 
     React.useEffect(() => {
         if (!savePost) return;
 
-        handlerEditPost(true);
-    }, [savePost]);
+        handlerEditPost(savePostShouldCloseEditor);
+    }, [savePost, savePostShouldCloseEditor]);
 
     return (
         <div className={styles.containerToolBar}>
