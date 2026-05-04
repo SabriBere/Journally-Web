@@ -7,7 +7,11 @@ import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { setAutoSaveEnabled, setSavePost } from "@/store/editSlice";
+import {
+    setAutoSaveEnabled,
+    setSavePost,
+    setSavePostShouldCloseEditor,
+} from "@/store/editSlice";
 import { deletePost } from "@/services/post.service";
 import { showError, showSuccess } from "../Toast/toastHelpers";
 import Switch from "@/commons/Switch";
@@ -371,7 +375,10 @@ const EditorToolbar = ({
                       : "Guardar",
             isPrimary: true,
             disabled: autoSaveEnabled,
-            onClick: () => dispatch(setSavePost(true)),
+            onClick: () => {
+                dispatch(setSavePostShouldCloseEditor(false));
+                dispatch(setSavePost(true));
+            },
         },
     ];
 
