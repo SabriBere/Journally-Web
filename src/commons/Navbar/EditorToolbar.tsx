@@ -392,8 +392,9 @@ const EditorToolbar = ({
                 <Switch
                     checked={autoSaveEnabled}
                     isLoading={autoSaveEnabled && autosaveStatus === "saving"}
-                    label="Autoguardado"
+                    label=""
                     name="autosave"
+                    title="Autoguardado"
                     onChange={(checked) => dispatch(setAutoSaveEnabled(checked))}
                 />
 
