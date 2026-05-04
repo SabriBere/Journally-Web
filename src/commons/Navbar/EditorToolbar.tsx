@@ -33,6 +33,19 @@ import Bold from "@/styles/icons/Bold";
 import styles from "./editorToolbar.module.scss";
 
 const headingLevels = [1, 2, 3, 4, 5, 6] as const;
+const defaultFontSize = "16px";
+const fontSizeOptions = [
+    "8px",
+    "10px",
+    "12px",
+    "14px",
+    "16px",
+    "18px",
+    "20px",
+    "24px",
+    "28px",
+    "32px",
+];
 
 type HeadingLevel = (typeof headingLevels)[number];
 
@@ -71,6 +84,12 @@ const getCurrentBlockAtPosition = (editor: TiptapEditor, position: number) => {
     }
 
     return "p";
+};
+
+const getCurrentFontSize = (editor: TiptapEditor) => {
+    const fontSize = editor.getAttributes("textStyle").fontSize;
+
+    return typeof fontSize === "string" ? fontSize : defaultFontSize;
 };
 
 const setCurrentTextBlockAtPosition = (
@@ -152,6 +171,7 @@ const EditorToolbar = ({
         (state: RootState) => state.edit.autoSaveEnabled
     );
     const [currentBlock, setCurrentBlock] = useState("p");
+    const [currentFontSize, setCurrentFontSize] = useState(defaultFontSize);
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [showAutosaveSaving, setShowAutosaveSaving] = useState(false);
     const lastCursorPositionRef = useRef<number | null>(null);
@@ -180,6 +200,7 @@ const EditorToolbar = ({
 
             lastCursorPositionRef.current = position;
             setCurrentBlock(getCurrentBlockAtPosition(editor, position));
+            setCurrentFontSize(getCurrentFontSize(editor));
         };
 
         updateCurrentBlock();
@@ -423,11 +444,23 @@ const EditorToolbar = ({
         setCurrentBlock(value);
     };
 
+    const handleFontSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        const fontSize = e.target.value;
+
+        setCurrentFontSize(fontSize);
+
+        editor
+            .chain()
+            .focus()
+            .setMark("textStyle", { fontSize: fontSize || null })
+            .run();
+    };
+
     return (
         <div className={styles.editorToolbar} aria-label="Herramientas del editor">
             <div className={styles.toolbarBlockGroup}>
                 <select
-                    className={styles.blockSelect}
+                    className={`${styles.blockSelect} ${styles.textBlockSelect}`}
                     value={currentBlock}
                     onChange={handleBlockChange}
                     aria-label="Tipo de bloque"
@@ -436,6 +469,20 @@ const EditorToolbar = ({
                     {headingLevels.map((level) => (
                         <option key={level} value={`h${level}`}>
                             H{level}
+                        </option>
+                    ))}
+                </select>
+
+                <select
+                    className={`${styles.blockSelect} ${styles.fontSizeSelect}`}
+                    value={currentFontSize}
+                    onChange={handleFontSizeChange}
+                    aria-label="Tamaño de letra"
+                    title="Tamaño de letra"
+                >
+                    {fontSizeOptions.map((fontSize) => (
+                        <option key={fontSize} value={fontSize}>
+                            {fontSize}
                         </option>
                     ))}
                 </select>
