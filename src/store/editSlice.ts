@@ -8,6 +8,7 @@ interface EditState {
     currentTitle: string;
     currentDescription: PostDescription | null;
     savePost: boolean;
+    savePostShouldCloseEditor: boolean;
     deletePost: boolean;
     autoSaveEnabled: boolean;
 }
@@ -19,6 +20,7 @@ const initialState: EditState = {
     currentTitle: "",
     currentDescription: null,
     savePost: false,
+    savePostShouldCloseEditor: true,
     deletePost: false,
     autoSaveEnabled: false,
 };
@@ -48,6 +50,9 @@ const editSlice = createSlice({
         setSavePost: (state, actions) => {
             state.savePost = actions.payload;
         },
+        setSavePostShouldCloseEditor: (state, actions) => {
+            state.savePostShouldCloseEditor = actions.payload;
+        },
         setDeletePost: (state, actions) => {
             state.deletePost = actions.payload;
         },
@@ -65,6 +70,7 @@ export const {
     setCuerrentDescription,
     setCleanText,
     setSavePost,
+    setSavePostShouldCloseEditor,
     setDeletePost,
     setAutoSaveEnabled,
 } = editSlice.actions;
