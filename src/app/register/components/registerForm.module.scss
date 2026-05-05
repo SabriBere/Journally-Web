@@ -1,12 +1,15 @@
+@use "sass:color";
 @use "../../../styles/breakpoints" as bp;
 @use "../../../styles/colors" as colors;
 
-.containerLoginForm {
-    --login-control-height: clamp(2.5rem, 5vw, 3.125rem);
-    --login-control-padding-x: clamp(0.75rem, 2vw, 0.95rem);
-    --login-input-font: clamp(0.9rem, 1.8vw, 1rem);
-    --login-label-font: clamp(1.25rem, 3vw, 1.5rem);
-    --login-radius: clamp(0.45rem, 1.3vw, 0.55rem);
+$clay: colors.$clayBrown;
+
+.containerRegisterForm {
+    --register-control-height: clamp(2.5rem, 5vw, 3.125rem);
+    --register-control-padding-x: clamp(0.75rem, 2vw, 0.95rem);
+    --register-input-font: clamp(0.9rem, 1.8vw, 1rem);
+    --register-label-font: clamp(1.25rem, 3vw, 1.5rem);
+    --register-radius: clamp(0.45rem, 1.3vw, 0.55rem);
 
     position: relative;
     display: flex;
@@ -19,7 +22,7 @@
     overflow: hidden;
 }
 
-.loginCard {
+.registerCard {
     position: relative;
     isolation: isolate;
     display: grid;
@@ -51,9 +54,9 @@
     display: flex;
     flex-direction: column;
     width: min(78%, 36rem);
-    gap: clamp(0.75rem, 2.5vw, 1.125rem);
+    gap: clamp(0.55rem, 1.8vw, 0.8rem);
     padding: clamp(0.7rem, 2vw, 1rem);
-    transform: translateY(-2%);
+    transform: translateY(-1%);
 
     &::before {
         position: absolute;
@@ -81,6 +84,48 @@
         text-align: center;
         text-shadow: 0 2px 8px rgba(0, 0, 0, 0.36);
     }
+
+    label {
+        display: flex;
+        flex-direction: column;
+        gap: clamp(0.25rem, 0.9vw, 0.4rem);
+        color: colors.$mangoYellow;
+        font-family: var(--font-caveat);
+        font-weight: bolder;
+        font-size: var(--register-label-font);
+        line-height: 1;
+        letter-spacing: 0.5px;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+    }
+
+    input {
+        width: 100%;
+        min-height: var(--register-control-height);
+        padding: 0 var(--register-control-padding-x);
+        border: 2px solid colors.$clayBrown;
+        border-radius: var(--register-radius);
+        background-color: colors.$white;
+        color: colors.$clayBrown;
+        font-family: var(--font-inter);
+        font-size: var(--register-input-font);
+        font-weight: 500;
+
+        &::placeholder {
+            color: colors.$clayBrown;
+            opacity: 0.9;
+        }
+
+        &:focus {
+            border-color: colors.$jadeGreen;
+            background-color: colors.$paperBeige;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(colors.$jadeGreen, 0.22);
+        }
+
+        &:hover:not(:focus) {
+            border-color: color.scale($clay, $lightness: 15%);
+        }
+    }
 }
 
 .buttonSubmit {
@@ -88,13 +133,13 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: var(--login-control-height);
-    padding: 0 var(--login-control-padding-x);
-    border-radius: var(--login-radius);
+    min-height: var(--register-control-height);
+    padding: 0 var(--register-control-padding-x);
+    border-radius: var(--register-radius);
     background-color: colors.$emeraldGreen;
     color: colors.$white;
     font-weight: 800;
-    font-size: var(--login-input-font);
+    font-size: var(--register-input-font);
     line-height: 1;
     transition:
         background-color 0.18s ease,
@@ -128,7 +173,7 @@
 
 .authSwitch {
     color: colors.$warmWhite;
-    font-size: clamp(0.85rem, 1.6vw, 0.95rem);
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
     font-weight: 700;
     line-height: 1.3;
     text-align: center;
@@ -153,7 +198,7 @@
 }
 
 @include bp.tablet-down {
-    .loginCard {
+    .registerCard {
         width: min(96vw, 76vh, 38rem);
     }
 
@@ -163,7 +208,7 @@
 }
 
 @include bp.mobile {
-    .loginCard {
+    .registerCard {
         width: min(98vw, 80vh, 28rem);
     }
 
