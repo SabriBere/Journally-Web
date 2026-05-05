@@ -1,11 +1,14 @@
+@use "sass:color";
 @use "../../../styles/breakpoints" as bp;
 @use "../../../styles/colors" as colors;
 
+$clay: colors.$clayBrown;
+
 .containerRegisterForm {
-    --register-control-height: clamp(2.35rem, 4.5vw, 2.85rem);
+    --register-control-height: clamp(2.5rem, 5vw, 3.125rem);
     --register-control-padding-x: clamp(0.75rem, 2vw, 0.95rem);
-    --register-input-font: clamp(0.85rem, 1.6vw, 0.95rem);
-    --register-label-font: clamp(0.9rem, 1.8vw, 1rem);
+    --register-input-font: clamp(0.9rem, 1.8vw, 1rem);
+    --register-label-font: clamp(1.25rem, 3vw, 1.5rem);
     --register-radius: clamp(0.45rem, 1.3vw, 0.55rem);
 
     position: relative;
@@ -24,7 +27,7 @@
     isolation: isolate;
     display: grid;
     place-items: center;
-    width: min(88vw, 70vh, 38rem);
+    width: min(94vw, 82vh, 44rem);
     min-width: min(100%, 18rem);
     aspect-ratio: 1;
 }
@@ -46,44 +49,81 @@
 }
 
 .formContent {
+    position: relative;
+    isolation: isolate;
     display: flex;
     flex-direction: column;
     width: min(78%, 36rem);
     gap: clamp(0.55rem, 1.8vw, 0.8rem);
+    padding: clamp(0.7rem, 2vw, 1rem);
     transform: translateY(-1%);
+
+    &::before {
+        position: absolute;
+        inset: clamp(-0.35rem, -0.9vw, -0.2rem) clamp(-0.8rem, -1.8vw, -0.45rem);
+        z-index: -1;
+        border: 1px solid rgba(colors.$lightAqua, 0.14);
+        border-radius: 18% 22% 20% 20% / 12% 14% 12% 14%;
+        background:
+            radial-gradient(
+                ellipse at center,
+                rgba(colors.$darkForestGreen, 0.58),
+                rgba(colors.$deepNavyBlue, 0.7)
+            );
+        box-shadow: 0 18px 34px rgba(0, 0, 0, 0.22);
+        content: "";
+    }
 
     h1 {
         color: colors.$mangoYellow;
         font-family: var(--font-caveat);
-        font-size: clamp(1.8rem, 3.6vw, 2.4rem);
+        font-size: clamp(2rem, 4vw, 2.6rem);
         font-weight: 700;
         line-height: 1;
         letter-spacing: 0;
         text-align: center;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.36);
     }
 
     label {
         display: flex;
         flex-direction: column;
-        gap: 0.25rem;
-        color: colors.$deepNavyBlue;
-        font-weight: 700;
+        gap: clamp(0.25rem, 0.9vw, 0.4rem);
+        color: colors.$mangoYellow;
+        font-family: var(--font-caveat);
+        font-weight: bolder;
         font-size: var(--register-label-font);
+        line-height: 1;
+        letter-spacing: 0.5px;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
     }
 
     input {
         width: 100%;
         min-height: var(--register-control-height);
         padding: 0 var(--register-control-padding-x);
-        border: 1px solid colors.$grey;
+        border: 2px solid colors.$clayBrown;
         border-radius: var(--register-radius);
-        color: colors.$deepNavyBlue;
+        background-color: colors.$white;
+        color: colors.$clayBrown;
+        font-family: var(--font-inter);
         font-size: var(--register-input-font);
+        font-weight: 500;
+
+        &::placeholder {
+            color: colors.$clayBrown;
+            opacity: 0.9;
+        }
 
         &:focus {
             border-color: colors.$jadeGreen;
+            background-color: colors.$paperBeige;
             outline: none;
-            box-shadow: 0 0 0 4px rgba(colors.$jadeGreen, 0.18);
+            box-shadow: 0 0 0 4px rgba(colors.$jadeGreen, 0.22);
+        }
+
+        &:hover:not(:focus) {
+            border-color: color.scale($clay, $lightness: 15%);
         }
     }
 }
@@ -132,11 +172,12 @@
 }
 
 .authSwitch {
-    color: colors.$white;
+    color: colors.$warmWhite;
     font-size: clamp(0.8rem, 1.5vw, 0.9rem);
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1.3;
     text-align: center;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
 
     a {
         color: colors.$mangoYellow;
@@ -145,7 +186,7 @@
         text-underline-offset: 0.18em;
 
         &:hover {
-            color: colors.$white;
+            color: colors.$lightAqua;
         }
 
         &:focus-visible {
@@ -158,7 +199,7 @@
 
 @include bp.tablet-down {
     .registerCard {
-        width: min(92vw, 66vh, 32rem);
+        width: min(96vw, 76vh, 38rem);
     }
 
     .formContent {
@@ -168,7 +209,7 @@
 
 @include bp.mobile {
     .registerCard {
-        width: min(94vw, 74vh, 24rem);
+        width: min(98vw, 80vh, 28rem);
     }
 
     .formContent {
