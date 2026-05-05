@@ -12,7 +12,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "lint": "next lint"
+    "test:ci": "jest --runInBand --watchman=false",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.44.1",
