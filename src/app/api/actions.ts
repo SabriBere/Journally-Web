@@ -1,6 +1,5 @@
 "use server";
 import axios from "axios";
-import jwt from "jsonwebtoken";
 
 const axiosPublic = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -36,6 +35,25 @@ export async function userLoging({
     }
 
     return null;
+}
+
+export async function userRegister({
+    email,
+    password,
+    userName,
+}: {
+    email: string;
+    password: string;
+    userName?: string;
+}) {
+    const body = {
+        email,
+        password,
+        ...(userName ? { user_name: userName } : {}),
+    };
+    const response = await axiosPublic.post("/users/register", body);
+
+    return response.status === 200 ? response.data?.data : null;
 }
 
 // export async function refreshAccessToken(token: any) {

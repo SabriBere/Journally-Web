@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { showError } from "@/commons/Toast/toastHelpers";
 import InputEmail from "@/commons/Inputs/InputEmail";
@@ -32,7 +33,7 @@ const LoginForm = () => {
             //agregar un spinner o pantalla de carga
             if (!res?.ok) {
                 showError("Credenciales invalidas");
-                return null
+                return null;
             }
 
             return router.push(`/home`);
@@ -61,6 +62,10 @@ const LoginForm = () => {
                     >
                         {loading ? <Spinner /> : "Iniciar sesión"}
                     </button>
+                    <p className={styles.authSwitch}>
+                        ¿No tenés cuenta?{" "}
+                        <Link href="/register">Registrate</Link>
+                    </p>
                 </div>
             </form>
         </div>
