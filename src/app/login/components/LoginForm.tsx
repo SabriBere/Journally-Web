@@ -12,7 +12,11 @@ import Voyager from "@/commons/Ilustrations/Voyager";
 import styles from "./loginForm.module.scss";
 import Spinner from "@/commons/Spinner/Spinner";
 
-const LoginForm = () => {
+type LoginFormProps = {
+    appVersion: string;
+};
+
+const LoginForm = ({ appVersion }: LoginFormProps) => {
     const router = useRouter();
     const inputEmail = useSelector((state: RootState) => state.user.email);
     const inputPass = useSelector((state: RootState) => state.user.password);
@@ -66,6 +70,7 @@ const LoginForm = () => {
                         ¿No tenés cuenta?{" "}
                         <Link href="/register">Registrate</Link>
                     </p>
+                    <p className={styles.appVersion}>v{appVersion}</p>
                 </div>
             </form>
         </div>
