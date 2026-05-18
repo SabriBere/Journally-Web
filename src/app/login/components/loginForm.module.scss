@@ -152,6 +152,16 @@
     }
 }
 
+.appVersion {
+    margin-top: clamp(-0.4rem, -0.8vw, -0.2rem);
+    color: rgba(colors.$warmWhite, 0.74);
+    font-size: clamp(0.72rem, 1.2vw, 0.8rem);
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
 @include bp.tablet-down {
     .loginCard {
         width: min(96vw, 76vh, 38rem);
