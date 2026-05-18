@@ -1,66 +1,66 @@
 # 🪐 Journally WEB
 
-Aplicación web para gestionar un **diario personal digital**, con colecciones y entradas diseñadas para acompañar al usuario en su proceso de escritura, organización y reflexión diaria.
+Web application for managing a **personal digital journal**, with collections and entries designed to support users in their daily writing, organization, and reflection process.
 
-Diseñada con una estética suave, ilustrada y minimalista pensada para sentirse como un pequeño universo personal.
+Designed with a soft, illustrated, and minimalist aesthetic intended to feel like a small personal universe.
 
-## Índice
+## Table of contents
 
-- [Introducción](#introducción)
-    - [Funcionalidades](#funcionalidades)
-- [Clonar el repositorio](#clonar-el-repositorio)
-- [Instalación](#instalación)
-- [Stack del proyecto](#stack-del-proyecto)
-- [Entornos e Integración](#entornos-e-integración)
-    - [Variables de entorno](#variables-de-entorno)
-    - [Scripts disponibles](#scripts-disponibles)
-- [Despliegue](#despliegue)
-- [Arquitectura](#arquitectura)
-- [Configuraciones de formato](#configuraciones-de-formato)
+- [Introduction](#introduction)
+    - [Features](#features)
+- [Clone the repository](#clone-the-repository)
+- [Installation](#installation)
+- [Project stack](#project-stack)
+- [Environments and integration](#environments-and-integration)
+    - [Environment variables](#environment-variables)
+    - [Available scripts](#available-scripts)
+- [Deployment](#deployment)
+- [Architecture](#architecture)
+- [Formatting configuration](#formatting-configuration)
     - [Prettier](#prettier)
     - [ESLint](#eslint)
 - [Testing](#testing)
-- [Capturas](#capturas)
+- [Screenshots](#screenshots)
 
 ---
 
-## 📝 Introducción
+## 📝 Introduction
 
-**Journally WEB** es una aplicación enfocada en la práctica del journaling personal. El objetivo es ofrecer al usuario una herramienta amigable, simple y estética para registrar su día a día y organizar sus pensamientos a través de colecciones y entradas.
+**Journally WEB** is an application focused on personal journaling. Its goal is to provide users with a friendly, simple, and aesthetic tool to record their day-to-day life and organize their thoughts through collections and entries.
 
-### Funcionalidades
+### Features
 
-✔️ Crear colecciones
+✔️ Create collections
 
-✔️ Crear entradas dentro de una colección
+✔️ Create entries within a collection
 
-✔️ Editar nombres de colecciones y entradas
+✔️ Edit collection and entry names
 
-✔️ Eliminar elementos
+✔️ Delete items
 
-✔️ Navegación clara entre secciones
+✔️ Clear navigation between sections
 
-✔️ UI intuitiva con tooltips, modales y feedback visual
+✔️ Intuitive UI with tooltips, modals, and visual feedback
 
-### Diseño
+### Design
 
-La aplicación utiliza un estilo:
+The application uses a style that is:
 
-- Cálido y suave
+- Warm and soft
 
-- Tipografía manuscrita
+- Handwritten typography
 
-- Ilustraciones espaciales personalizadas
+- Custom space-themed illustrations
 
-- Interfaz amigable y centrada en la experiencia del usuario
+- Friendly interface focused on user experience
 
-- Componentes redondeados, tonos pasteles y colores vibrantes para estados de acción
+- Rounded components, pastel tones, and vibrant colors for action states
 
-**_(Inspirado en un pequeño universo personal ✨)_**
+**_(Inspired by a small personal universe ✨)_**
 
 ---
 
-## 📦 Clonar el repositorio
+## 📦 Clone the repository
 
 ```bash
 git clone https://github.com/<tu-usuario>/<repo>.git
@@ -69,23 +69,23 @@ cd journally-web
 
 ---
 
-## 🛠 Instalación
+## 🛠 Installation
 
-1. Instalar dependencias
+1. Install dependencies
 
 ```bash
 npm install
 ```
 
-2. Crear un archivo `.env.dev` a partir de `.env.example`.
+2. Create a `.env.dev` file from `.env.example`.
 
 ```bash
 cp .env.example .env.dev
 ```
 
-3. Completar las variables necesarias para tu entorno local.
+3. Fill in the required variables for your local environment.
 
-4. Ejecutar el servidor
+4. Run the server
 
 ```bash
 npm run dev
@@ -93,7 +93,7 @@ npm run dev
 
 ---
 
-## Stack del proyecto
+## Project stack
 
 - Next.js v.15
 - Typescript
@@ -105,30 +105,30 @@ npm run dev
 
 ---
 
-## 🔧 Entornos e integración
+## 🔧 Environments and integration
 
-### Variables de entorno
+### Environment variables
 
-El repositorio incluye `.env.example` como plantilla segura para documentar las variables requeridas sin exponer credenciales reales.
+The repository includes `.env.example` as a safe template for documenting the required variables without exposing real credentials.
 
-- `.env.dev` se usa para desarrollo local.
-- `.env.prod` se usa para builds locales de producción.
-- Los archivos con valores reales no deben subirse al repositorio.
+- `.env.dev` is used for local development.
+- `.env.prod` is used for local production builds.
+- Files with real values must not be committed to the repository.
 
-Variables esperadas:
+Expected variables:
 
-| Variable | Uso |
+| Variable | Purpose |
 | --- | --- |
-| `APP_ENV` | Entorno lógico de la aplicación, por ejemplo `development` o `production`. |
-| `NEXT_PUBLIC_APP_URL` | URL pública del frontend. |
-| `NEXT_PUBLIC_API_URL` | URL pública de la API consumida por el frontend. |
-| `NEXTAUTH_URL` | URL base usada por NextAuth. |
-| `NEXTAUTH_SECRET` | Secreto usado por NextAuth. Debe definirse con un valor seguro fuera del repositorio. |
-| `NEXT_PUBLIC_APP_VERSION` | Versión pública de la aplicación. |
+| `APP_ENV` | Logical application environment, for example `development` or `production`. |
+| `NEXT_PUBLIC_APP_URL` | Public frontend URL. |
+| `NEXT_PUBLIC_API_URL` | Public URL of the API consumed by the frontend. |
+| `NEXTAUTH_URL` | Base URL used by NextAuth. |
+| `NEXTAUTH_SECRET` | Secret used by NextAuth. It must be defined with a secure value outside the repository. |
+| `NEXT_PUBLIC_APP_VERSION` | Public application version. |
 
-> Las variables con prefijo `NEXT_PUBLIC_` pueden quedar expuestas al navegador. No deben contener secretos.
+> Variables prefixed with `NEXT_PUBLIC_` may be exposed to the browser. They must not contain secrets.
 
-### Scripts disponibles
+### Available scripts
 
 ```json
 "scripts": {
@@ -145,27 +145,27 @@ Variables esperadas:
 
 ---
 
-## 🚀 Despliegue
+## 🚀 Deployment
 
-El frontend puede desplegarse en Vercel conectando el repositorio al proyecto correspondiente.
+The frontend can be deployed to Vercel by connecting the repository to the corresponding project.
 
-- Vercel debe tomar las variables de entorno desde la configuración del proyecto, no desde archivos `.env` versionados.
-- Los valores sensibles, como `NEXTAUTH_SECRET`, deben cargarse directamente en el proveedor de despliegue.
-- El build de producción usa el comando estándar:
+- Vercel must read environment variables from the project configuration, not from versioned `.env` files.
+- Sensitive values, such as `NEXTAUTH_SECRET`, must be configured directly in the deployment provider.
+- The production build uses the standard command:
 
 ```bash
 next build
 ```
 
-Para mantener el repositorio apto para publicación:
+To keep the repository ready for publication:
 
-- conserva únicamente `.env.example` bajo control de versiones;
-- no publiques tokens, secretos ni IDs de proveedor;
-- documenta solo los nombres de las variables necesarias, no sus valores reales.
+- keep only `.env.example` under version control;
+- do not publish tokens, secrets, or provider IDs;
+- document only the names of the required variables, not their real values.
 
 ---
 
-## 🧱 Arquitectura
+## 🧱 Architecture
 
 ```bash
 src/
@@ -213,11 +213,11 @@ src/
 
 ---
 
-## 🧹 Configuraciones de formato
+## 🧹 Formatting configuration
 
 ### Prettier
 
-Archivo `.prettierrc` sugerido:
+Suggested `.prettierrc` file:
 
 ```json
 {
@@ -246,27 +246,27 @@ Archivo `.prettierrc` sugerido:
 
 ## 🧪 Testing
 
-El proyecto usa Jest para pruebas automatizadas.
+The project uses Jest for automated testing.
 
 ```bash
 npm test
 npm run test:coverage
 ```
 
-## 📸 Capturas
+## 📸 Screenshots
 
-- 🔐 Página de inicio de sesión  
-  ![Inicio de sesión](./captions/caption1.png)
+- 🔐 Login page  
+  ![Login page](./captions/caption1.png)
 
-- 🗂 Vista general de colecciones  
-  ![Colecciones](./captions/caption2.png)
+- 🗂 Collections overview  
+  ![Collections](./captions/caption2.png)
 
-- ✏️ Edición de nombre en colección
+- ✏️ Collection name editing
 
-- 📝 Detalle de entrada  
-  ![Entradas](./captions/Capture7.png)
+- 📝 Entry detail  
+  ![Entries](./captions/Capture7.png)
 
-- 🗃 Modales y herramientas  
+- 🗃 Modals and tools  
   ![Tools](./captions/capture3.png)
   ![Tools](./captions/capture4.png)
   ![Tools](./captions/capture5.png)
