@@ -2,7 +2,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { setOpenModalCollection } from "@/store/userSlice";
+import { setOpenModalCollection } from "@/store/homeSlice";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { showError, showSuccess } from "../Toast/toastHelpers";
 import { createCollection } from "@/services/collection.service";
@@ -16,7 +16,7 @@ const ModalCreateCollection = () => {
     const [nameCollection, setNameCollection] = useState<string>("");
     const isDisabled = !nameCollection.trim();
     const openModalCollection = useSelector(
-        (state: RootState) => state.user.openModalCollection
+        (state: RootState) => state.home.openModalCollection
     );
 
     const { mutateAsync: createCollectionMutation, isPending } = useMutation({
