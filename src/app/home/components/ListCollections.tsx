@@ -17,7 +17,7 @@ import styles from "./listCollection.module.scss";
 const ListCollections = () => {
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
     const searchTextCollection = useSelector(
-        (state: RootState) => state.user.searchTextCollection
+        (state: RootState) => state.home.searchTextCollection
     );
 
     // console.log(searchTextCollection);

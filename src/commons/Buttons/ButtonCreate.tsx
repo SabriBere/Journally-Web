@@ -2,7 +2,7 @@
 import React from "react";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { setOpenModalCollection, setOpenModalPost } from "@/store/userSlice";
+import { setOpenModalCollection, setOpenModalPost } from "@/store/homeSlice";
 import { useQuery } from "@tanstack/react-query";
 import { getAllPost } from "@/services/post.service";
 import { allCollection } from "@/services/collection.service";
@@ -16,10 +16,10 @@ const ButtonCreate = () => {
     const dispatch = useDispatch();
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
     const openModalCollection = useSelector(
-        (state: RootState) => state.user.openModalCollection
+        (state: RootState) => state.home.openModalCollection
     );
     const openModalPost = useSelector(
-        (state: RootState) => state.user.openModalPost
+        (state: RootState) => state.home.openModalPost
     );
 
     const collectionsCall = useQuery({

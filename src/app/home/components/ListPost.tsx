@@ -18,7 +18,7 @@ const ListPost = () => {
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
 
     const searchTextPost = useSelector(
-        (state: RootState) => state.user.searchTextPost
+        (state: RootState) => state.home.searchTextPost
     );
 
     const { data, isLoading, isError, isSuccess, fetchNextPage } =
