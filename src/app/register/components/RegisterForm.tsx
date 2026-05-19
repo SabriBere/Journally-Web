@@ -1,19 +1,27 @@
 "use client";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { userRegister } from "@/app/api/actions";
 import { showError, showSuccess } from "@/commons/Toast/toastHelpers";
+import { cleanAuthInputs } from "@/store/userSlice";
 import Voyager from "@/commons/Ilustrations/Voyager";
 import Spinner from "@/commons/Spinner/Spinner";
 import styles from "./registerForm.module.scss";
+import InputEmail from "@/commons/Inputs/InputEmail";
+import InputPassword from "@/commons/Inputs/InputPassword";
+
+
 
 const RegisterForm = () => {
     const router = useRouter();
+    const dispatch = useDispatch();
     const [userName, setUserName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const email = useSelector((state: RootState) => state.user.email);
+    const password = useSelector((state: RootState) => state.user.password);
     const [loading, setLoading] = useState(false);
     const isDisabled = !email || password.length < 8 || loading;
 
@@ -36,6 +44,7 @@ const RegisterForm = () => {
 
             if (!res?.ok) {
                 showSuccess("Cuenta creada. Ya podés iniciar sesión.");
+                dispatch(cleanAuthInputs());
                 router.push("/login");
                 return;
             }
@@ -59,14 +68,17 @@ const RegisterForm = () => {
                     <label>
                         Nombre
                         <input
+                            className={styles.inputName}
                             type="text"
-                            placeholder="Tu nombre"
+                            placeholder="Ingresar alias"
                             value={userName}
                             onChange={(event) => setUserName(event.target.value)}
                             autoFocus
                         />
                     </label>
-                    <label>
+                    <InputEmail />
+                    <InputPassword />
+                    {/* <label>
                         Email
                         <input
                             type="email"
@@ -74,8 +86,8 @@ const RegisterForm = () => {
                             value={email}
                             onChange={(event) => setEmail(event.target.value)}
                         />
-                    </label>
-                    <label>
+                    </label> */}
+                    {/* <label>
                         Contraseña
                         <input
                             type="password"
@@ -83,7 +95,7 @@ const RegisterForm = () => {
                             value={password}
                             onChange={(event) => setPassword(event.target.value)}
                         />
-                    </label>
+                    </label> */}
                     <button
                         disabled={isDisabled}
                         className={styles.buttonSubmit}
