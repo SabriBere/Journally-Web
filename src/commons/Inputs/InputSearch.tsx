@@ -2,7 +2,7 @@
 import React, { ChangeEvent } from "react";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { setSearchTextCollection, setSearchTextPost } from "@/store/userSlice";
+import { setSearchTextCollection, setSearchTextPost } from "@/store/homeSlice";
 import Close from "@/styles/icons/Close";
 import Search from "@/styles/icons/Search";
 import styles from "./inputSearch.module.scss";
@@ -14,10 +14,10 @@ const InputSearch = () => {
 
     //capturar el valor del input y enviar a los listados para filtrar
     const searchTextPost = useSelector(
-        (state: RootState) => state.user.searchTextPost
+        (state: RootState) => state.home.searchTextPost
     );
     const searchTextCollection = useSelector(
-        (state: RootState) => state.user.searchTextCollection
+        (state: RootState) => state.home.searchTextCollection
     );
 
     const isCollections = tabs === "collections";
@@ -28,16 +28,22 @@ const InputSearch = () => {
 
     const handlerInputSearch = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        // console.log(value);
-        tabs === "collections"
-            ? dispatch(setSearchTextCollection(value))
-            : dispatch(setSearchTextPost(value));
+
+        if (tabs === "collections") {
+            dispatch(setSearchTextCollection(value));
+            return;
+        }
+
+        dispatch(setSearchTextPost(value));
     };
 
     const clearInput = () => {
-        tabs === "collections"
-            ? dispatch(setSearchTextCollection(""))
-            : dispatch(setSearchTextPost(""));
+        if (tabs === "collections") {
+            dispatch(setSearchTextCollection(""));
+            return;
+        }
+
+        dispatch(setSearchTextPost(""));
     };
 
     return (

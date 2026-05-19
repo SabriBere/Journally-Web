@@ -1,44 +1,28 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
     email: string;
     password: string;
-    searchTextPost: string;
-    searchTextCollection: string;
-    openModalPost: boolean;
-    openModalCollection: boolean;
 }
 
 const initialState: UserState = {
     email: "",
     password: "",
-    searchTextPost: "",
-    searchTextCollection: "",
-    openModalPost: false,
-    openModalCollection: false,
 };
 
 const userSlice = createSlice({
     name: "userLogin",
     initialState,
     reducers: {
-        setInputEmail: (state, action) => {
+        setInputEmail: (state, action: PayloadAction<string>) => {
             state.email = action.payload;
         },
-        setInputPass: (state, action) => {
+        setInputPass: (state, action: PayloadAction<string>) => {
             state.password = action.payload;
         },
-        setSearchTextPost: (state, action) => {
-            state.searchTextPost = action.payload;
-        },
-        setSearchTextCollection: (state, action) => {
-            state.searchTextCollection = action.payload;
-        },
-        setOpenModalPost: (state, action) => {
-            state.openModalPost = action.payload;
-        },
-        setOpenModalCollection: (state, action) => {
-            state.openModalCollection = action.payload;
+        cleanAuthInputs: (state) => {
+            state.email = "";
+            state.password = "";
         },
     },
 });
@@ -46,9 +30,6 @@ const userSlice = createSlice({
 export const {
     setInputEmail,
     setInputPass,
-    setSearchTextPost,
-    setSearchTextCollection,
-    setOpenModalPost,
-    setOpenModalCollection,
+    cleanAuthInputs,
 } = userSlice.actions;
 export default userSlice.reducer;
