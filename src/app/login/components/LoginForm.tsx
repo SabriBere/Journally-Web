@@ -1,11 +1,12 @@
 "use client";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { showError } from "@/commons/Toast/toastHelpers";
+import { cleanAuthInputs } from "@/store/userSlice";
 import InputEmail from "@/commons/Inputs/InputEmail";
 import InputPassword from "@/commons/Inputs/InputPassword";
 import Voyager from "@/commons/Ilustrations/Voyager";
@@ -18,6 +19,7 @@ type LoginFormProps = {
 
 const LoginForm = ({ appVersion }: LoginFormProps) => {
     const router = useRouter();
+    const dispatch = useDispatch();
     const inputEmail = useSelector((state: RootState) => state.user.email);
     const inputPass = useSelector((state: RootState) => state.user.password);
     const [loading, setLoading] = useState<boolean>(false);
@@ -40,6 +42,7 @@ const LoginForm = ({ appVersion }: LoginFormProps) => {
                 return null;
             }
 
+            dispatch(cleanAuthInputs());
             return router.push(`/home`);
         } catch (error) {
             console.error("Error no capturado", error);
