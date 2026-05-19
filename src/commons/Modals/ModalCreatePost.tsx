@@ -2,7 +2,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { createPost } from "@/services/post.service";
 import { useDispatch } from "react-redux";
-import { setOpenModalPost } from "@/store/userSlice";
+import { setOpenModalPost } from "@/store/homeSlice";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { showError, showSuccess } from "../Toast/toastHelpers";
 import SpinnerDots from "../Spinner/SipnnerDots";
