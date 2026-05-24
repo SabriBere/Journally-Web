@@ -63,8 +63,8 @@ The application uses a style that is:
 ## 📦 Clone the repository
 
 ```bash
-git clone https://github.com/<tu-usuario>/<repo>.git
-cd journally-web
+git clone https://github.com/<your-user>/<your-repository>.git
+cd <your-repository>
 ```
 
 ---
@@ -96,7 +96,8 @@ npm run dev
 ## Project stack
 
 - Next.js v.15
-- Typescript
+- TypeScript
+- React 19
 - Redux Toolkit
 - React Query (TanStack Query)
 - Sass / SCSS Modules
@@ -147,9 +148,9 @@ Expected variables:
 
 ## 🚀 Deployment
 
-The frontend can be deployed to Vercel by connecting the repository to the corresponding project.
+The frontend can be deployed to a platform such as Vercel by connecting the repository to the corresponding project.
 
-- Vercel must read environment variables from the project configuration, not from versioned `.env` files.
+- The deployment provider must read environment variables from its project configuration, not from versioned `.env` files.
 - Sensitive values, such as `NEXTAUTH_SECRET`, must be configured directly in the deployment provider.
 - The production build uses the standard command:
 
@@ -180,12 +181,13 @@ src/
 │   │   └── [id]
 │   ├── home
 │   │   └── components
-│   └── login
+│   ├── login
+│   │   └── components
+│   └── register
 │       └── components
 ├── commons
 │   ├── Buttons
 │   ├── Cards
-│   ├── Dropdowns
 │   ├── Editor
 │   ├── EmptyStates
 │   ├── Footer
@@ -198,16 +200,19 @@ src/
 │   ├── Sidebar
 │   ├── Skeletons
 │   ├── Spinner
+│   ├── Switch
 │   ├── Tabs
 │   ├── Title
 │   ├── Toast
 │   └── Tooltip
 ├── config
+├── contexts
 ├── hooks
 ├── services
 ├── store
 ├── styles
 │   └── icons
+├── types
 └── utils
 ```
 
@@ -221,11 +226,12 @@ Suggested `.prettierrc` file:
 
 ```json
 {
-    "singleQuote": true,
     "semi": true,
-    "tabWidth": 2,
-    "printWidth": 100,
-    "trailingComma": "es5"
+    "trailingComma": "es5",
+    "singleQuote": false,
+    "printWidth": 80,
+    "tabWidth": 4,
+    "endOfLine": "lf"
 }
 ```
 
@@ -233,16 +239,13 @@ Suggested `.prettierrc` file:
 
 ### ESLint
 
-```json
-{
-    "extends": [
-        "next/core-web-vitals",
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "prettier"
-    ]
-}
-```
+The project uses ESLint flat config through `eslint.config.mjs`, extending:
+
+- `next/core-web-vitals`
+- `next/typescript`
+- `prettier`
+
+It also includes rules for imports, React hooks, TanStack Query, Testing Library, and Jest.
 
 ## 🧪 Testing
 
@@ -250,6 +253,7 @@ The project uses Jest for automated testing.
 
 ```bash
 npm test
+npm run test:ci
 npm run test:coverage
 ```
 
