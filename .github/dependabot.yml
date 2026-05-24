@@ -6,9 +6,48 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    groups:
+      next-react:
+        patterns:
+          - "next"
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      testing:
+        patterns:
+          - "jest"
+          - "jest-*"
+          - "@types/jest"
+          - "@testing-library/*"
+          - "msw"
+          - "jsdom"
+      linting-formatting:
+        patterns:
+          - "eslint"
+          - "eslint-*"
+          - "@eslint/*"
+          - "@tanstack/eslint-plugin-query"
+          - "prettier"
+      editor:
+        patterns:
+          - "@tiptap/*"
+      app-dependencies:
+        patterns:
+          - "@reduxjs/toolkit"
+          - "@tanstack/react-query"
+          - "@tanstack/react-query-devtools"
+          - "axios"
+          - "next-auth"
+          - "jsonwebtoken"
+          - "@types/jsonwebtoken"
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
     open-pull-requests-limit: 3
+    groups:
+      github-actions:
+        patterns:
+          - "*"
