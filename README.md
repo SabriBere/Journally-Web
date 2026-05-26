@@ -152,6 +152,8 @@ The project uses `develop` as the integration branch and `master` as the product
 
 - `feature/*` branches must be opened as pull requests into `develop`.
 - `bugFix/*` branches must be opened as pull requests into `develop`.
+- `hotfix/*` branches can be opened as pull requests into `master` for urgent production fixes.
+- After a `hotfix/*` branch is merged into `master`, the fix must be merged back into `develop`.
 - `develop` is merged into `master` for production releases.
 
 ---
