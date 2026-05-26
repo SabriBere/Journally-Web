@@ -28,14 +28,18 @@ jobs:
 
     steps:
       - name: Require develop as source branch
-        if: github.event.pull_request.head.ref != 'develop'
+        if: >
+          github.event.pull_request.head.ref != 'develop' &&
+          !startsWith(github.event.pull_request.head.ref, 'hotfix/')
         run: |
-          echo "Only pull requests from develop can target master."
+          echo "Only pull requests from develop or hotfix/* can target master."
           exit 1
 
       - name: Source branch allowed
-        if: github.event.pull_request.head.ref == 'develop'
-        run: echo "Source branch is develop."
+        if: >
+          github.event.pull_request.head.ref == 'develop' ||
+          startsWith(github.event.pull_request.head.ref, 'hotfix/')
+        run: echo "Source branch is allowed."
 
   checks:
     name: Checks
