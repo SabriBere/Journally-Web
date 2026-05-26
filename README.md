@@ -14,6 +14,7 @@ Designed with a soft, illustrated, and minimalist aesthetic intended to feel lik
 - [Environments and integration](#environments-and-integration)
     - [Environment variables](#environment-variables)
     - [Available scripts](#available-scripts)
+- [Branch modeling](#branch-modeling)
 - [Deployment](#deployment)
 - [Architecture](#architecture)
 - [Formatting configuration](#formatting-configuration)
@@ -142,6 +143,16 @@ Expected variables:
   "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\""
 }
 ```
+
+---
+
+## Branch modeling
+
+The project uses `develop` as the integration branch and `master` as the production branch.
+
+- `feature/*` branches must be opened as pull requests into `develop`.
+- `bugFix/*` branches must be opened as pull requests into `develop`.
+- `develop` is merged into `master` for production releases.
 
 ---
 
