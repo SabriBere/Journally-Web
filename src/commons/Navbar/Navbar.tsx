@@ -63,7 +63,11 @@ const Navbar = () => {
                     {showTabs && (
                         <Tabs stacked onSelect={() => setIsMenuOpen(false)} />
                     )}
-                    <ButtonLogOut className={styles.mobileLogout} />
+                    <ButtonLogOut
+                        stacked
+                        className={styles.mobileLogout}
+                        onSelect={() => setIsMenuOpen(false)}
+                    />
                 </div>
             )}
         </div>
