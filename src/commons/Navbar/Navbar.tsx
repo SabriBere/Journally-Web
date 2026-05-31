@@ -7,6 +7,7 @@ import ButtonLogOut from "../Buttons/ButtonLogOut";
 import styles from "./navbar.module.scss";
 import Tabs from "../Tabs/Tabs";
 import { usePathname } from "next/navigation";
+import HamburgerButton from "./HamburgerButton";
 
 const Navbar = () => {
     const { status } = useSession();
@@ -44,17 +45,10 @@ const Navbar = () => {
                 </div>
 
                 {showAuthenticatedActions && (
-                    <button
-                        type="button"
-                        className={styles.menuButton}
-                        aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
-                        aria-expanded={isMenuOpen}
+                    <HamburgerButton
+                        isOpen={isMenuOpen}
                         onClick={() => setIsMenuOpen((prev) => !prev)}
-                    >
-                        <span />
-                        <span />
-                        <span />
-                    </button>
+                    />
                 )}
             </div>
 
