@@ -1,12 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { showError } from "@/commons/Toast/toastHelpers";
 import { cleanAuthInputs } from "@/store/userSlice";
+import Link from "next/link";
 import InputEmail from "@/commons/Inputs/InputEmail";
 import InputPassword from "@/commons/Inputs/InputPassword";
 import Voyager from "@/commons/Ilustrations/Voyager";
@@ -19,11 +19,19 @@ type LoginFormProps = {
 
 const LoginForm = ({ appVersion }: LoginFormProps) => {
     const router = useRouter();
+    const { status } = useSession();
     const dispatch = useDispatch();
     const inputEmail = useSelector((state: RootState) => state.user.email);
     const inputPass = useSelector((state: RootState) => state.user.password);
     const [loading, setLoading] = useState<boolean>(false);
     const isDisabled = !inputEmail || !inputPass;
+
+    useEffect(() => {
+        if (status === "authenticated") {
+            router.replace("/home");
+            router.refresh();
+        }
+    }, [router, status]);
 
     const handlerLogin = async (e: React.SyntheticEvent) => {
         e.preventDefault();
