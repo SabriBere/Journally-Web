@@ -7,9 +7,10 @@ import ButtonLogOut from "../Buttons/ButtonLogOut";
 import styles from "./navbar.module.scss";
 import Tabs from "../Tabs/Tabs";
 import { usePathname } from "next/navigation";
+import HamburgerButton from "./HamburgerButton";
 
 const Navbar = () => {
-    const { data: session, status } = useSession();
+    const { status } = useSession();
     const pathSegment = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -17,7 +18,10 @@ const Navbar = () => {
         setIsMenuOpen(false);
     }, [pathSegment]);
 
-    const showTabs = status === "authenticated" && pathSegment === `/home`;
+    const isAuthPage = pathSegment === "/login" || pathSegment === "/register";
+    const showAuthenticatedActions =
+        status === "authenticated" && !isAuthPage;
+    const showTabs = showAuthenticatedActions && pathSegment === `/home`;
 
     return (
         <div className={styles.navbarShell}>
@@ -37,30 +41,27 @@ const Navbar = () => {
                 )}
 
                 <div className={styles.desktopActions}>
-                    {status === "authenticated" && <ButtonLogOut />}
+                    {showAuthenticatedActions && <ButtonLogOut />}
                 </div>
 
-                {status === "authenticated" && (
-                    <button
-                        type="button"
-                        className={styles.menuButton}
-                        aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
-                        aria-expanded={isMenuOpen}
+                {showAuthenticatedActions && (
+                    <HamburgerButton
+                        isOpen={isMenuOpen}
                         onClick={() => setIsMenuOpen((prev) => !prev)}
-                    >
-                        <span />
-                        <span />
-                        <span />
-                    </button>
+                    />
                 )}
             </div>
 
-            {status === "authenticated" && isMenuOpen && (
+            {showAuthenticatedActions && isMenuOpen && (
                 <div className={styles.mobileMenu}>
                     {showTabs && (
                         <Tabs stacked onSelect={() => setIsMenuOpen(false)} />
                     )}
-                    <ButtonLogOut className={styles.mobileLogout} />
+                    <ButtonLogOut
+                        stacked
+                        className={styles.mobileLogout}
+                        onSelect={() => setIsMenuOpen(false)}
+                    />
                 </div>
             )}
         </div>
