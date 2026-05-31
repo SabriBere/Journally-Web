@@ -1,23 +1,35 @@
-"use client"
+"use client";
 import React from "react";
 import { signOut } from "next-auth/react";
-import styles from "./buttonLogin.module.scss";
+import styles from "./buttonLogOut.module.scss";
 
 interface ButtonLogOutProps {
     className?: string;
+    stacked?: boolean;
+    onSelect?: () => void;
 }
 
-const ButtonLogOut = ({ className = "" }: ButtonLogOutProps) => {
+const ButtonLogOut = ({
+    className = "",
+    stacked = false,
+    onSelect,
+}: ButtonLogOutProps) => {
+    const buttonClassName = [
+        styles.buttonLogOut,
+        stacked ? styles.stacked : "",
+        className,
+    ]
+        .filter(Boolean)
+        .join(" ");
+
     const logOut = async () => {
-        await signOut({ redirect: true });
+        onSelect?.();
+        await signOut({ callbackUrl: "/login", redirect: true });
     };
 
     return (
-        <button
-            className={[styles.buttonLogOut, className].filter(Boolean).join(" ")}
-            onClick={logOut}
-        >
-            <p>Cerrar sesión</p>
+        <button className={buttonClassName} type="button" onClick={logOut}>
+            Cerrar sesión
         </button>
     );
 };
