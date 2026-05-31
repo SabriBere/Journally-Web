@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Caveat, Inter } from "next/font/google";
 import { getServerSession } from "next-auth";
+import { authOptions } from "./api/provider/Credentials";
 import Providers from "./providers";
 import Navbar from "@/commons/Navbar/Navbar";
 import Footer from "@/commons/Footer/Footer";
-import { authOptions } from "./api/provider/Credentials";
 import styles from "./layout.module.scss";
 import "./globals.scss";
 
