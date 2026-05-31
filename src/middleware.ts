@@ -1,28 +1,37 @@
-// Configuración de next-auth
-import { NextResponse } from "next/server";
-import { withAuth, NextRequestWithAuth } from "next-auth/middleware";
+import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-export default withAuth(async function middleware(req: NextRequestWithAuth) {
+const authRoutes = ["/login", "/register"];
+
+export default async function middleware(req: NextRequest) {
+    const { pathname } = req.nextUrl;
     const authToken = await getToken({
         req,
         secret: process.env.NEXTAUTH_SECRET,
     });
 
-    if (!authToken && !req.nextUrl.pathname.startsWith("/login")) {
-        return NextResponse.redirect(new URL("/login", req.url));
-    }
-
-    if (authToken && req.nextUrl.pathname.startsWith("login")) {
+    if (authToken && authRoutes.includes(pathname)) {
         return NextResponse.redirect(new URL("/home", req.url));
     }
 
-    if (authToken && req.nextUrl.pathname === "/") {
-        return NextResponse.redirect(new URL("home", req.url));
+    if (!authToken && !authRoutes.includes(pathname)) {
+        return NextResponse.redirect(new URL("/login", req.url));
     }
-});
 
-// agregar regex dentro del matcher
+    if (authToken && pathname === "/") {
+        return NextResponse.redirect(new URL("/home", req.url));
+    }
+
+    return NextResponse.next();
+}
+
 export const config = {
-    matcher: ["/", "/home", "/home/(.*)", "/entries", "/entries/(.*)"],
+    matcher: [
+        "/",
+        "/login",
+        "/register",
+        "/home/:path*",
+        "/entries/:path*",
+        "/collection/:path*",
+    ],
 };

@@ -32,6 +32,7 @@ const LoginForm = ({ appVersion }: LoginFormProps) => {
         try {
             const res = await signIn("credentials", {
                 redirect: false,
+                callbackUrl: "/home",
                 email: inputEmail,
                 password: inputPass,
             });
@@ -43,7 +44,8 @@ const LoginForm = ({ appVersion }: LoginFormProps) => {
             }
 
             dispatch(cleanAuthInputs());
-            return router.push(`/home`);
+            router.replace(res.url ?? "/home");
+            router.refresh();
         } catch (error) {
             console.error("Error no capturado", error);
             // showError("Correo o contraseña incorrectos");
