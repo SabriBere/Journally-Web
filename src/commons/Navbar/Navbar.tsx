@@ -9,7 +9,7 @@ import Tabs from "../Tabs/Tabs";
 import { usePathname } from "next/navigation";
 
 const Navbar = () => {
-    const { data: session, status } = useSession();
+    const { status } = useSession();
     const pathSegment = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -17,7 +17,10 @@ const Navbar = () => {
         setIsMenuOpen(false);
     }, [pathSegment]);
 
-    const showTabs = status === "authenticated" && pathSegment === `/home`;
+    const isAuthPage = pathSegment === "/login" || pathSegment === "/register";
+    const showAuthenticatedActions =
+        status === "authenticated" && !isAuthPage;
+    const showTabs = showAuthenticatedActions && pathSegment === `/home`;
 
     return (
         <div className={styles.navbarShell}>
@@ -37,10 +40,10 @@ const Navbar = () => {
                 )}
 
                 <div className={styles.desktopActions}>
-                    {status === "authenticated" && <ButtonLogOut />}
+                    {showAuthenticatedActions && <ButtonLogOut />}
                 </div>
 
-                {status === "authenticated" && (
+                {showAuthenticatedActions && (
                     <button
                         type="button"
                         className={styles.menuButton}
@@ -55,7 +58,7 @@ const Navbar = () => {
                 )}
             </div>
 
-            {status === "authenticated" && isMenuOpen && (
+            {showAuthenticatedActions && isMenuOpen && (
                 <div className={styles.mobileMenu}>
                     {showTabs && (
                         <Tabs stacked onSelect={() => setIsMenuOpen(false)} />
