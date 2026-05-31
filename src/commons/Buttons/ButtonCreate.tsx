@@ -42,32 +42,35 @@ const ButtonCreate = () => {
 
     const collections = collectionsCall.data?.collectionList?.length;
     const posts = postsCall.data?.userPost?.length;
+    const showCollectionButton =
+        tabs === "collections" &&
+        !collectionsCall.isLoading &&
+        Boolean(collections);
+    const showPostButton =
+        tabs === "post" && !postsCall.isLoading && Boolean(posts);
 
     return (
         <>
-            {tabs === "collections"
-                ? collections !== 0 && (
-                      <TooltipWrapper content="Crear colección">
-                          <button
-                              className={styles.containerButton}
-                              onClick={() =>
-                                  dispatch(setOpenModalCollection(true))
-                              }
-                          >
-                              <Plus color="white" width="24" height="24" />
-                          </button>
-                      </TooltipWrapper>
-                  )
-                : (posts !== 0) && (
-                      <TooltipWrapper content={"Crear entrada"}>
-                          <button
-                              className={styles.containerButton}
-                              onClick={() => dispatch(setOpenModalPost(true))}
-                          >
-                              <Plus color="white" width="24" height="24" />
-                          </button>
-                      </TooltipWrapper>
-                  )}
+            {showCollectionButton && (
+                <TooltipWrapper content="Crear colección">
+                    <button
+                        className={styles.containerButton}
+                        onClick={() => dispatch(setOpenModalCollection(true))}
+                    >
+                        <Plus color="white" width="24" height="24" />
+                    </button>
+                </TooltipWrapper>
+            )}
+            {showPostButton && (
+                <TooltipWrapper content={"Crear entrada"}>
+                    <button
+                        className={styles.containerButton}
+                        onClick={() => dispatch(setOpenModalPost(true))}
+                    >
+                        <Plus color="white" width="24" height="24" />
+                    </button>
+                </TooltipWrapper>
+            )}
             {openModalCollection && tabs === "collections" && (
                 <ModalCreateCollection />
             )}
