@@ -9,6 +9,11 @@
     border-radius: 8px;
     padding: 6px 10px;
     font-size: 20px;
-    letter-spacing: .5;
+    letter-spacing: 0.5;
     cursor: pointer;
+}
+
+.stacked {
+    width: 100%;
+    align-items: center;
 }
