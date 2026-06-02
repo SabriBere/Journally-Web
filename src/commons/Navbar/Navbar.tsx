@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Brand from "@/styles/icons/Brand";
 import ButtonLogOut from "../Buttons/ButtonLogOut";
-import styles from "./navbar.module.scss";
 import Tabs from "../Tabs/Tabs";
-import { usePathname } from "next/navigation";
 import HamburgerButton from "./HamburgerButton";
+import styles from "./navbar.module.scss";
 
 const Navbar = () => {
     const { status } = useSession();
