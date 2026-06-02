@@ -1,19 +1,14 @@
 # TODO
 
-## GitHub Actions
+## Must Have
 
-- Evaluate adding a workflow to delete source branches after they are merged into `develop`.
-- The workflow should only delete branches from the same repository.
-- It must never delete `develop` or `master`.
-- Suggested condition:
+- Agregar testing para los flujos principales de la app.
+- Agregar seccion o componentes relacionados con la informacion del usuario, incluyendo el nombre.
 
-```yaml
-github.event.pull_request.merged == true &&
-github.event.pull_request.base.ref == 'develop' &&
-github.event.pull_request.head.repo.full_name == github.repository &&
-github.event.pull_request.head.ref != 'develop' &&
-github.event.pull_request.head.ref != 'master'
-```
+## Should Have
 
-- GitHub Actions must have `contents: write` permission for branch deletion.
-- Check repository setting: `Settings` -> `Actions` -> `General` -> `Workflow permissions`.
+- Agregar la posibilidad de cambiar idioma usando i18next.
+
+## Nice To Have
+
+- Agregar posibilidad de tema oscuro.
