@@ -1,9 +1,3 @@
-/* 0. Font variables */
-:root {
-    --font-caveat: "Caveat", cursive;
-    --font-inter: "Inter", sans-serif;
-}
-
 /* 1. Box-sizing reset */
 *,
 *::before,
@@ -38,7 +32,7 @@ body {
     min-height: 100vh;
     text-rendering: optimizeSpeed;
     line-height: 1.5;
-    font-family: var(--font-inter); // fuente por defecto
+    font-family: var(--font-inter), sans-serif; // fuente por defecto
     background-color: #f3e5ca; // background paperBeige
     color: #111;
 }
