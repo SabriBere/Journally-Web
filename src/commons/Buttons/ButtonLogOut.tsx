@@ -29,12 +29,16 @@ const ButtonLogOut = ({
     };
 
     return (
-        <div className={buttonClassName} >
+        <button
+            type="button"
+            className={buttonClassName}
+            aria-label="Cerrar sesión"
+            title="Cerrar sesión"
+            onClick={logOut}
+        >
             <LogOut width="24" height="24" color="white" />
-            <button type="button" onClick={logOut}>
-                Cerrar sesión
-            </button>
-        </div>
+            <span className={styles.label}>Cerrar sesión</span>
+        </button>
     );
 };
 
