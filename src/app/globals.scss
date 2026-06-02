@@ -84,9 +84,10 @@ select {
 
 /* 9. Optional: Cursor defaults */
 button {
-    cursor: pointer;
-    border: none;
-    background: none;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    cursor: inherit;
 }
 
 /* 10. Optional: Remove tap highlight on mobile */
