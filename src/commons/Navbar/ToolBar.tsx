@@ -29,7 +29,7 @@ type PostBody = { title: string; description: PostDescription };
 const ToolBar = () => {
     const { t } = useTranslation();
     const { data: session } = useSession();
-    const userId = session?.user?.id
+    const userId = session?.user?.id;
     const { id } = useParams<{ id: string }>();
     const postId = Number(id);
     const dispatch = useDispatch();
@@ -80,7 +80,7 @@ const ToolBar = () => {
             },
         });
 
-    const canSave = editText && isDirty && !isPendingEdit;
+    const canSave = editText && isDirty && !isPendingEdit && Boolean(userId);
 
     const handlerEditPost = async (shouldCloseEditor = false) => {
         if (!canSave) {
@@ -98,7 +98,7 @@ const ToolBar = () => {
         };
 
         try {
-            await updatePostMutation({ body, postId, userId });
+            await updatePostMutation({ body, postId, userId: userId as string });
 
             if (shouldCloseEditor) {
                 dispatch(setEditText(false));
