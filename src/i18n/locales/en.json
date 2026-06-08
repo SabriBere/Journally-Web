@@ -1,6 +1,60 @@
 {
     "home": {
-        "title": "Home"
+        "title": "Home",
+        "search": {
+            "collection": "Search collection",
+            "post": "Search entry"
+        },
+        "actions": {
+            "createCollection": "Create collection",
+            "createPost": "Create entry",
+            "edit": "Edit",
+            "delete": "Delete"
+        },
+        "empty": {
+            "collections": "Create a new collection",
+            "posts": "Create a new entry",
+            "noResults": "No results found",
+            "error": "Ooop... Something went wrong"
+        },
+        "modals": {
+            "createCollection": {
+                "title": "Create a collection"
+            },
+            "createPost": {
+                "title": "Create an entry"
+            },
+            "delete": {
+                "collection": "Do you want to delete this collection?",
+                "post": "Do you want to delete this entry?"
+            },
+            "fields": {
+                "name": "Name",
+                "description": "Description",
+                "postName": "Entry name"
+            },
+            "placeholders": {
+                "name": "Enter a name",
+                "description": "Enter a description",
+                "newName": "Enter a new name"
+            },
+            "actions": {
+                "create": "Create",
+                "createCollection": "Create collection",
+                "createPost": "Create entry",
+                "cancel": "Cancel",
+                "save": "Save"
+            }
+        },
+        "toast": {
+            "created": "Created successfully",
+            "saved": "Saved successfully",
+            "deleted": "Deleted successfully",
+            "createCollectionError": "Error creating collection",
+            "createPostError": "Error creating entry",
+            "deleteError": "Error deleting",
+            "editNameError": "Error editing name"
+        }
     },
     "language": {
         "switchLabel": "Language",

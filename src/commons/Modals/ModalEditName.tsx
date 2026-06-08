@@ -4,6 +4,7 @@ import { showError, showSuccess } from "../Toast/toastHelpers";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { updateCollection } from "@/services/collection.service";
 import { updatePost } from "@/services/post.service";
 import TooltipWrapper from "../Tooltip/Tooltip";
@@ -22,6 +23,7 @@ interface ModalProps {
 
 //Reutilizar para titulo de colecciones/posteos
 const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
+    const { t } = useTranslation();
     const QueryClient = useQueryClient();
     const [newName, setNewName] = useState<string>("");
     // console.log(newName);
@@ -51,7 +53,7 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
             updateCollection(body),
         mutationKey: ["editNameCollection"],
         onSuccess: async () => {
-            showSuccess("Guardado correctamente 🎉");
+            showSuccess(t("home.toast.saved"));
             setClose(false);
             await QueryClient.refetchQueries({
                 queryKey: ["getAllCollections"],
@@ -59,7 +61,7 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
         },
         onError: (error: any) => {
             //llamar al toast con el mensaje de error
-            showError("Error al editar nombre");
+            showError(t("home.toast.editNameError"));
             setClose(false);
         },
     });
@@ -84,7 +86,7 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
             mutationKey: ["editNamePost"],
             onSuccess: async () => {
                 // toast.success("Post actualizado");
-                showSuccess("Guardado correctamente 🎉");
+                showSuccess(t("home.toast.saved"));
                 //ajustar para cuando sale bien
                 setClose(false);
                 await QueryClient.refetchQueries({
@@ -93,7 +95,7 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
             },
             onError: (error: any) => {
                 //llamar al toast con el mensaje de error
-                showError("Error al editar nombre");
+                showError(t("home.toast.editNameError"));
                 setClose(false);
             },
         });
@@ -102,7 +104,7 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
         e.preventDefault();
         e.stopPropagation();
 
-        if (!newName.trim()) return console.log("Ingrese un nombre"); //mostrar toast
+        if (!newName.trim()) return console.log(t("home.modals.placeholders.name")); //mostrar toast
         try {
             //según el tab ejeutar una mutación u otra
             tabs === "collections"
@@ -127,26 +129,26 @@ const ModalEditName = ({ id, isOpen, setClose, color }: ModalProps) => {
             </span>
             <input
                 className={styles.inputName}
-                placeholder="Ingrese nuevo nombre"
+                placeholder={t("home.modals.placeholders.newName")}
                 type="text"
                 onChange={handlerInputName}
                 value={newName}
                 disabled={isPendingEditCollection || isPendingEditPost}
             />
-            <TooltipWrapper content={"Guardar"}>
+            <TooltipWrapper content={t("home.modals.actions.save")}>
                 <button
                     type="submit"
-                    title="Guardar"
+                    title={t("home.modals.actions.save")}
                     className={styles.buttonEdit}
                     disabled={isPendingEditCollection || isPendingEditPost}
                 >
                     <Check color={"#11796f"} width="20" height="20" />
                 </button>
             </TooltipWrapper>
-            <TooltipWrapper content={"Cancelar"}>
+            <TooltipWrapper content={t("home.modals.actions.cancel")}>
                 <button
                     type="button"
-                    title="Cancelar"
+                    title={t("home.modals.actions.cancel")}
                     className={styles.buttonEdit}
                     onClick={() => {
                         setClose(false);
