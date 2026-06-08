@@ -2,6 +2,7 @@
 import React from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { getPostById } from "@/services/post.service";
 import { collectionById } from "@/services/collection.service";
 import styles from "./breadcrumbs.module.scss";
@@ -13,6 +14,7 @@ const toNumber = (id: string | string[] | undefined) => {
 };
 
 const Breadcrumbs = () => {
+    const { t } = useTranslation();
     const router = useRouter();
     const pathname = usePathname();
     const { id } = useParams<{ id: string }>();
@@ -39,12 +41,12 @@ const Breadcrumbs = () => {
 
     const breadcrumbsList = [
         {
-            nameOfLastPage: "Entradas",
-            nameOfCurrentPage: `Detalle de entrada > ${postById?.title ?? ""}`,
+            nameOfLastPage: t("entries.breadcrumb.entries"),
+            nameOfCurrentPage: `${t("entries.breadcrumb.entryDetail")} > ${postById?.title ?? ""}`,
             condition: (path: string) => path === `/entries/${id}`,
         },
         {
-            nameOfLastPage: "Colecciones",
+            nameOfLastPage: t("navbar.collections"),
             nameOfCurrentPage: `${collectionData?.collection_name ?? ""} > ${collectionData?.title ?? ""}`,
             condition: (path: string) => path === `/collection/${id}`,
         },

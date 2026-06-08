@@ -13,6 +13,7 @@ import {
 import { showSuccess, showError } from "../Toast/toastHelpers";
 import { updatePost } from "@/services/post.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import type { PostDescription } from "@/types/editor";
 import {
     emptyEditorContent,
@@ -26,7 +27,8 @@ import styles from "./toolbar.module.scss";
 type PostBody = { title: string; description: PostDescription };
 
 const ToolBar = () => {
-    const { data: session }:any = useSession();
+    const { t } = useTranslation();
+    const { data: session } = useSession();
     const userId = session?.user?.id
     const { id } = useParams<{ id: string }>();
     const postId = Number(id);
@@ -61,7 +63,7 @@ const ToolBar = () => {
             }) => updatePost(body, postId, userId),
             mutationKey: ["editPost", postId, userId],
             onSuccess: async () => {
-                showSuccess("Guardado correctamente 🎉");
+                showSuccess(t("entries.toast.saved"));
                 await QueryClient.refetchQueries({
                     queryKey: ["onePost", postId],
                 });
@@ -71,10 +73,10 @@ const ToolBar = () => {
             },
             onError: () => {
                 if (!isDirty) {
-                    showError("No hay cambios para guardar");
+                    showError(t("entries.toast.noChanges"));
                     return;
                 }
-                showError("Error al editar");
+                showError(t("entries.toast.editError"));
             },
         });
 
@@ -117,7 +119,7 @@ const ToolBar = () => {
 
     return (
         <div className={styles.containerToolBar}>
-            <TooltipWrapper content={editText ? "Cerrar edición" : "Editar"}>
+            <TooltipWrapper content={editText ? t("entries.toolbar.closeEdit") : t("entries.toolbar.edit")}>
                 <button
                     className={styles.buttonEdit}
                     onClick={() => dispatch(setEditText(!editText))}
