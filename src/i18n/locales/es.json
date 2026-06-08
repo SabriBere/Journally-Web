@@ -76,6 +76,55 @@
             "login": "Iniciar sesión"
         }
     },
+    "entries": {
+        "breadcrumb": {
+            "entries": "Entradas",
+            "entryDetail": "Detalle de entrada"
+        },
+        "editor": {
+            "titlePlaceholder": "Escribir título...",
+            "bodyPlaceholder": "Escribir..."
+        },
+        "toolbar": {
+            "ariaLabel": "Herramientas del editor",
+            "edit": "Editar",
+            "closeEdit": "Cerrar edición",
+            "bold": "Negrita",
+            "italic": "Itálica",
+            "strike": "Tachado",
+            "bulletList": "Lista con viñetas",
+            "orderedList": "Lista numerada",
+            "addListItem": "Agregar item de lista",
+            "quote": "Cita",
+            "codeBlock": "Bloque de código",
+            "horizontalRule": "Línea horizontal",
+            "undo": "Deshacer",
+            "redo": "Rehacer",
+            "copy": "Copiar",
+            "delete": "Eliminar",
+            "confirm": "Confirmar",
+            "confirmDelete": "Confirmar eliminación",
+            "save": "Guardar",
+            "saved": "Guardado",
+            "saveError": "No se pudo guardar",
+            "savingChanges": "Guardando cambios",
+            "autosave": "Autoguardado",
+            "autosaveEnabled": "Autoguardado activado",
+            "blockType": "Tipo de bloque",
+            "paragraph": "Párrafo",
+            "fontSize": "Tamaño de letra"
+        },
+        "toast": {
+            "saved": "Guardado correctamente",
+            "deleted": "Eliminado correctamente",
+            "noChanges": "No hay cambios para guardar",
+            "editError": "Error al editar",
+            "deleteError": "Error al eliminar entrada",
+            "noTextToCopy": "No hay texto para copiar",
+            "copied": "Texto copiado al portapapeles",
+            "copyError": "No se pudo copiar el texto"
+        }
+    },
     "navbar": {
         "collections": "Colecciones",
         "entries": "Entradas",
