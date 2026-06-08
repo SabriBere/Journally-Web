@@ -9,12 +9,14 @@ import InfiniteScroll from "@/commons/InfinteScroll/InfiniteScroll";
 import NotEntries from "@/commons/EmptyStates/NotEntries";
 import NotResults from "@/commons/EmptyStates/NotResults";
 import Error from "@/commons/EmptyStates/Error";
+import { useTranslation } from "react-i18next";
 import SpaceExploration from "@/commons/Ilustrations/SpaceExploration";
 import MyUniverse from "@/commons/Ilustrations/MyUniverse";
 import ServerDown from "@/commons/Ilustrations/ServerDown";
 import styles from "./listCollection.module.scss";
 
 const ListCollections = () => {
+    const { t } = useTranslation();
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
     const searchTextCollection = useSelector(
         (state: RootState) => state.home.searchTextCollection
@@ -65,13 +67,13 @@ const ListCollections = () => {
                       data?.pages[0]?.collectionList?.length === 0 &&
                       searchTextCollection === "" ? (
                         <div className={styles.containerEmpty}>
-                            <NotEntries title="Crear una nueva colección" />
+                            <NotEntries title={t("home.empty.collections")} />
                         </div>
                     ) : isSuccess &&
                       searchTextCollection !== "" &&
                       data?.pages[0]?.collectionList?.length === 0 ? (
                         <div className={styles.containerEmpty}>
-                            <NotResults title="No se encontraron resultados" />
+                            <NotResults title={t("home.empty.noResults")} />
                         </div>
                     ) : null}
 

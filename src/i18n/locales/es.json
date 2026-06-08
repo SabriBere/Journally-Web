@@ -1,0 +1,171 @@
+{
+    "home": {
+        "title": "Inicio",
+        "search": {
+            "collection": "Buscar colección",
+            "post": "Buscar entrada"
+        },
+        "actions": {
+            "createCollection": "Crear colección",
+            "createPost": "Crear entrada",
+            "edit": "Editar",
+            "delete": "Eliminar"
+        },
+        "empty": {
+            "collections": "Crear una nueva colección",
+            "posts": "Crear una nueva entrada",
+            "noResults": "No se encontraron resultados",
+            "error": "Ooop... Surgió un problema"
+        },
+        "modals": {
+            "createCollection": {
+                "title": "Crear una colección"
+            },
+            "createPost": {
+                "title": "Crear una entrada"
+            },
+            "delete": {
+                "collection": "¿Desea eliminar esta colección?",
+                "post": "¿Desea eliminar esta entrada?"
+            },
+            "fields": {
+                "name": "Nombre",
+                "description": "Descripción",
+                "postName": "Nombre de entrada"
+            },
+            "placeholders": {
+                "name": "Ingrese un nombre",
+                "description": "Ingrese una descripción",
+                "newName": "Ingrese nuevo nombre"
+            },
+            "actions": {
+                "create": "Crear",
+                "createCollection": "Crear colección",
+                "createPost": "Crear entrada",
+                "cancel": "Cancelar",
+                "save": "Guardar"
+            }
+        },
+        "toast": {
+            "created": "Creado correctamente",
+            "saved": "Guardado correctamente",
+            "deleted": "Eliminado correctamente",
+            "createCollectionError": "Error al crear colección",
+            "createPostError": "Error al crear la entrada",
+            "deleteError": "Error al eliminar",
+            "editNameError": "Error al editar nombre"
+        }
+    },
+    "language": {
+        "switchLabel": "Idioma",
+        "changeTo": "Cambiar idioma a {{language}}",
+        "names": {
+            "es": "Español",
+            "en": "Inglés"
+        }
+    },
+    "notFound": {
+        "kicker": "404 / Página no encontrada",
+        "title": {
+            "lineOne": "Esta página se perdió",
+            "lineTwo": "entre tus notas."
+        },
+        "description": "El enlace que abriste no existe, fue movido o todavía no fue escrito. Volvamos a tu espacio de journaling.",
+        "actions": {
+            "home": "Volver al inicio",
+            "login": "Iniciar sesión"
+        }
+    },
+    "entries": {
+        "breadcrumb": {
+            "entries": "Entradas",
+            "entryDetail": "Detalle de entrada"
+        },
+        "editor": {
+            "titlePlaceholder": "Escribir título...",
+            "bodyPlaceholder": "Escribir..."
+        },
+        "toolbar": {
+            "ariaLabel": "Herramientas del editor",
+            "edit": "Editar",
+            "closeEdit": "Cerrar edición",
+            "bold": "Negrita",
+            "italic": "Itálica",
+            "strike": "Tachado",
+            "bulletList": "Lista con viñetas",
+            "orderedList": "Lista numerada",
+            "addListItem": "Agregar item de lista",
+            "quote": "Cita",
+            "codeBlock": "Bloque de código",
+            "horizontalRule": "Línea horizontal",
+            "undo": "Deshacer",
+            "redo": "Rehacer",
+            "copy": "Copiar",
+            "delete": "Eliminar",
+            "confirm": "Confirmar",
+            "confirmDelete": "Confirmar eliminación",
+            "save": "Guardar",
+            "saved": "Guardado",
+            "saveError": "No se pudo guardar",
+            "savingChanges": "Guardando cambios",
+            "autosave": "Autoguardado",
+            "autosaveEnabled": "Autoguardado activado",
+            "blockType": "Tipo de bloque",
+            "paragraph": "Párrafo",
+            "fontSize": "Tamaño de letra"
+        },
+        "toast": {
+            "saved": "Guardado correctamente",
+            "deleted": "Eliminado correctamente",
+            "noChanges": "No hay cambios para guardar",
+            "editError": "Error al editar",
+            "deleteError": "Error al eliminar entrada",
+            "noTextToCopy": "No hay texto para copiar",
+            "copied": "Texto copiado al portapapeles",
+            "copyError": "No se pudo copiar el texto"
+        }
+    },
+    "collection": {
+        "placeholder": "Colecciones"
+    },
+    "auth": {
+        "fields": {
+            "name": "Nombre",
+            "email": "Email",
+            "password": "Contraseña"
+        },
+        "placeholders": {
+            "alias": "Ingresar alias",
+            "email": "usuario@email.com",
+            "password": "Contraseña"
+        },
+        "password": {
+            "show": "Mostrar",
+            "hide": "Ocultar"
+        },
+        "login": {
+            "title": "Iniciar sesión",
+            "submit": "Iniciar sesión",
+            "noAccount": "¿No tenés cuenta?",
+            "registerLink": "Registrate"
+        },
+        "register": {
+            "title": "Crear cuenta",
+            "submit": "Registrarme",
+            "hasAccount": "¿Ya tenés cuenta?",
+            "loginLink": "Iniciá sesión"
+        },
+        "toast": {
+            "invalidCredentials": "Credenciales inválidas",
+            "accountCreated": "Cuenta creada. Ya podés iniciar sesión.",
+            "createAccountError": "No se pudo crear la cuenta"
+        }
+    },
+    "navbar": {
+        "collections": "Colecciones",
+        "entries": "Entradas",
+        "logout": "Cerrar sesión",
+        "openMenu": "Abrir menú",
+        "closeMenu": "Cerrar menú"
+    }
+}

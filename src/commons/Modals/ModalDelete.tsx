@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { showError, showSuccess } from "../Toast/toastHelpers";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { deleteCollection } from "@/services/collection.service";
 import { deletePost } from "@/services/post.service";
 import Check from "@/styles/icons/Check";
@@ -19,13 +20,14 @@ interface ModalProps {
 }
 
 const ModalDelete = ({ id, isOpen, setClose, color }: ModalProps) => {
+    const { t } = useTranslation();
     // console.log(id);
     const QueryClient = useQueryClient();
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
     const textModal =
         tabs === "collections"
-            ? "¿Desea eliminar esta colección?"
-            : "¿Desea eliminar este post?";
+            ? t("home.modals.delete.collection")
+            : t("home.modals.delete.post");
 
     const {
         mutateAsync: deleteCollectionMutation,
@@ -35,14 +37,14 @@ const ModalDelete = ({ id, isOpen, setClose, color }: ModalProps) => {
             deleteCollection(collectionId),
         mutationKey: ["deleteCollection"],
         onSuccess: async () => {
-            showSuccess("Eliminado correctamente 🎉");
+            showSuccess(t("home.toast.deleted"));
             setClose(false);
             await QueryClient.refetchQueries({
                 queryKey: ["getAllCollections"],
             });
         },
         onError: async () => {
-            showError(`Error al eliminar collección`);
+            showError(t("home.toast.deleteError"));
             setClose(false);
         },
     });
@@ -52,14 +54,14 @@ const ModalDelete = ({ id, isOpen, setClose, color }: ModalProps) => {
             mutationFn: (postId: number | string) => deletePost(postId),
             mutationKey: ["deletePost"],
             onSuccess: async () => {
-                showSuccess("Eliminado correctamente 🎉");
+                showSuccess(t("home.toast.deleted"));
                 setClose(false);
                 await QueryClient.refetchQueries({
                     queryKey: ["getAllPost"],
                 });
             },
             onError: async () => {
-                showError(`Error al eliminar collección`);
+                showError(t("home.toast.deleteError"));
                 setClose(false);
             },
         });
@@ -87,12 +89,12 @@ const ModalDelete = ({ id, isOpen, setClose, color }: ModalProps) => {
             <div className={styles.miniModal} aria-hidden="true">
                 <p>{textModal}</p>
             </div>
-            <TooltipWrapper content={"Eliminar"}>
+            <TooltipWrapper content={t("home.actions.delete")}>
                 <button type="button" onClick={handlerDelete} disabled={isPendingPost || isPendingCollection}>
                     <Check color={"#11796f"} width="20" height="20" />
                 </button>
             </TooltipWrapper>
-            <TooltipWrapper content={"Cancelar"}>
+            <TooltipWrapper content={t("home.modals.actions.cancel")}>
                 <button type="button" onClick={() => setClose(false)} disabled={isPendingPost || isPendingCollection}>
                     <Close color={"#0d1e2b"} width="20" height="20" />
                 </button>

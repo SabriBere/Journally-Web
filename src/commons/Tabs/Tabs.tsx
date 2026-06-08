@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { RootState } from "@/store/store";
 import { setTabs } from "@/store/tabsSlice";
 import styles from "./tabs.module.scss";
@@ -12,6 +13,7 @@ interface TabsProps {
 }
 
 const Tabs = ({ className = "", stacked = false, onSelect }: TabsProps) => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
     const containerClassName = [
@@ -33,13 +35,13 @@ const Tabs = ({ className = "", stacked = false, onSelect }: TabsProps) => {
                 className={`${styles.tab} ${tabs === "collections" ? styles.selectedTab : styles.inactiveTab}`}
                 onClick={() => handleTabChange("collections")}
             >
-                Colecciones
+                {t("navbar.collections")}
             </button>
             <button
                 className={`${styles.tab} ${tabs === "post" ? styles.selectedTab : styles.inactiveTab}`}
                 onClick={() => handleTabChange("post")}
             >
-                Entradas
+                {t("navbar.entries")}
             </button>
         </div>
     );
