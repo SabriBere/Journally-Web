@@ -64,6 +64,18 @@
             "en": "Inglés"
         }
     },
+    "notFound": {
+        "kicker": "404 / Página no encontrada",
+        "title": {
+            "lineOne": "Esta página se perdió",
+            "lineTwo": "entre tus notas."
+        },
+        "description": "El enlace que abriste no existe, fue movido o todavía no fue escrito. Volvamos a tu espacio de journaling.",
+        "actions": {
+            "home": "Volver al inicio",
+            "login": "Iniciar sesión"
+        }
+    },
     "navbar": {
         "collections": "Colecciones",
         "entries": "Entradas",
