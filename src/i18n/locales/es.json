@@ -1,4 +1,15 @@
 {
+    "home": {
+        "title": "Inicio"
+    },
+    "language": {
+        "switchLabel": "Idioma",
+        "changeTo": "Cambiar idioma a {{language}}",
+        "names": {
+            "es": "Español",
+            "en": "Inglés"
+        }
+    },
     "navbar": {
         "collections": "Colecciones",
         "entries": "Entradas",

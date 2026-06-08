@@ -1,15 +1,15 @@
 import React from "react";
-import TitleSection from "@/commons/Title/TitleSection";
 import ListCollections from "./components/ListCollections";
 import ListPost from "./components/ListPost";
 import InputSearch from "@/commons/Inputs/InputSearch";
 import ButtonCreate from "@/commons/Buttons/ButtonCreate";
+import HomeTitle from "./components/HomeTitle";
 import styles from "./home.module.scss";
 
 const Home = () => {
     return (
         <div className={styles.containerHome}>
-            <TitleSection title="Inicio" />
+            <HomeTitle />
             <div className={styles.controls}>
                 <InputSearch />
                 <ButtonCreate />

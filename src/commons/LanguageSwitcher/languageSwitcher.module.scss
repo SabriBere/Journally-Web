@@ -1,0 +1,53 @@
+@use "../../styles/colors" as colors;
+
+.languageButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    min-width: 64px;
+    min-height: 44px;
+    padding: 6px 10px;
+    // border: 1px solid rgba(13, 30, 43, 0.16);
+    border-radius: 10px;
+    // background: colors.$white;
+    color: #ffffff;
+    font-family: var(--font-inter);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(13, 30, 43, 0.18);
+    white-space: nowrap;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+
+    &:hover {
+        border-color: rgba(13, 30, 43, 0.28);
+        box-shadow: 0 8px 18px rgba(13, 30, 43, 0.16);
+        transform: translateY(-1px);
+    }
+
+    &:focus-visible {
+        outline: 2px solid colors.$orangeYellow;
+        outline-offset: 2px;
+    }
+}
+
+.languageCode {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 30px;
+    border-radius: 8px;
+    background: #f4eee6;
+    color: #6f4f38;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.languageLabel {
+    line-height: 1;
+}
