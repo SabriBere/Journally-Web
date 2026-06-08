@@ -1,0 +1,171 @@
+{
+    "home": {
+        "title": "Home",
+        "search": {
+            "collection": "Search collection",
+            "post": "Search entry"
+        },
+        "actions": {
+            "createCollection": "Create collection",
+            "createPost": "Create entry",
+            "edit": "Edit",
+            "delete": "Delete"
+        },
+        "empty": {
+            "collections": "Create a new collection",
+            "posts": "Create a new entry",
+            "noResults": "No results found",
+            "error": "Ooop... Something went wrong"
+        },
+        "modals": {
+            "createCollection": {
+                "title": "Create a collection"
+            },
+            "createPost": {
+                "title": "Create an entry"
+            },
+            "delete": {
+                "collection": "Do you want to delete this collection?",
+                "post": "Do you want to delete this entry?"
+            },
+            "fields": {
+                "name": "Name",
+                "description": "Description",
+                "postName": "Entry name"
+            },
+            "placeholders": {
+                "name": "Enter a name",
+                "description": "Enter a description",
+                "newName": "Enter a new name"
+            },
+            "actions": {
+                "create": "Create",
+                "createCollection": "Create collection",
+                "createPost": "Create entry",
+                "cancel": "Cancel",
+                "save": "Save"
+            }
+        },
+        "toast": {
+            "created": "Created successfully",
+            "saved": "Saved successfully",
+            "deleted": "Deleted successfully",
+            "createCollectionError": "Error creating collection",
+            "createPostError": "Error creating entry",
+            "deleteError": "Error deleting",
+            "editNameError": "Error editing name"
+        }
+    },
+    "language": {
+        "switchLabel": "Language",
+        "changeTo": "Change language to {{language}}",
+        "names": {
+            "es": "Spanish",
+            "en": "English"
+        }
+    },
+    "notFound": {
+        "kicker": "404 / Page not found",
+        "title": {
+            "lineOne": "This page got lost",
+            "lineTwo": "between your notes."
+        },
+        "description": "The link you opened does not exist, was moved, or has not been written yet. Let's get back to your journaling space.",
+        "actions": {
+            "home": "Back to home",
+            "login": "Sign in"
+        }
+    },
+    "entries": {
+        "breadcrumb": {
+            "entries": "Entries",
+            "entryDetail": "Entry detail"
+        },
+        "editor": {
+            "titlePlaceholder": "Write a title...",
+            "bodyPlaceholder": "Write..."
+        },
+        "toolbar": {
+            "ariaLabel": "Editor tools",
+            "edit": "Edit",
+            "closeEdit": "Close editing",
+            "bold": "Bold",
+            "italic": "Italic",
+            "strike": "Strikethrough",
+            "bulletList": "Bullet list",
+            "orderedList": "Numbered list",
+            "addListItem": "Add list item",
+            "quote": "Quote",
+            "codeBlock": "Code block",
+            "horizontalRule": "Horizontal rule",
+            "undo": "Undo",
+            "redo": "Redo",
+            "copy": "Copy",
+            "delete": "Delete",
+            "confirm": "Confirm",
+            "confirmDelete": "Confirm deletion",
+            "save": "Save",
+            "saved": "Saved",
+            "saveError": "Could not save",
+            "savingChanges": "Saving changes",
+            "autosave": "Autosave",
+            "autosaveEnabled": "Autosave enabled",
+            "blockType": "Block type",
+            "paragraph": "Paragraph",
+            "fontSize": "Font size"
+        },
+        "toast": {
+            "saved": "Saved successfully",
+            "deleted": "Deleted successfully",
+            "noChanges": "There are no changes to save",
+            "editError": "Error editing",
+            "deleteError": "Error deleting entry",
+            "noTextToCopy": "There is no text to copy",
+            "copied": "Text copied to clipboard",
+            "copyError": "Could not copy text"
+        }
+    },
+    "collection": {
+        "placeholder": "Collections"
+    },
+    "auth": {
+        "fields": {
+            "name": "Name",
+            "email": "Email",
+            "password": "Password"
+        },
+        "placeholders": {
+            "alias": "Enter an alias",
+            "email": "user@email.com",
+            "password": "Password"
+        },
+        "password": {
+            "show": "Show",
+            "hide": "Hide"
+        },
+        "login": {
+            "title": "Sign in",
+            "submit": "Sign in",
+            "noAccount": "Don't have an account?",
+            "registerLink": "Register"
+        },
+        "register": {
+            "title": "Create account",
+            "submit": "Register",
+            "hasAccount": "Already have an account?",
+            "loginLink": "Sign in"
+        },
+        "toast": {
+            "invalidCredentials": "Invalid credentials",
+            "accountCreated": "Account created. You can now sign in.",
+            "createAccountError": "Could not create the account"
+        }
+    },
+    "navbar": {
+        "collections": "Collections",
+        "entries": "Entries",
+        "logout": "Log out",
+        "openMenu": "Open menu",
+        "closeMenu": "Close menu"
+    }
+}

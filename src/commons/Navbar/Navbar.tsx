@@ -10,6 +10,7 @@ import HamburgerButton from "./HamburgerButton";
 import styles from "./navbar.module.scss";
 import User from "@/styles/icons/User";
 import TooltipWrapper from "../Tooltip/Tooltip";
+import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
 
 const Navbar = () => {
     const { data: session, status } = useSession();
@@ -61,6 +62,9 @@ const Navbar = () => {
                                     </div>
                                 </TooltipWrapper>
                             )}
+                            <LanguageSwitcher
+                                className={styles.navbarLanguageSwitcher}
+                            />
                             <ButtonLogOut />
                         </div>
                     )}
@@ -88,6 +92,9 @@ const Navbar = () => {
                     {showTabs && (
                         <Tabs stacked onSelect={() => setIsMenuOpen(false)} />
                     )}
+                    <LanguageSwitcher
+                        className={styles.mobileLanguageSwitcher}
+                    />
                     <ButtonLogOut
                         stacked
                         className={styles.mobileLogout}
