@@ -64,6 +64,18 @@
             "en": "English"
         }
     },
+    "notFound": {
+        "kicker": "404 / Page not found",
+        "title": {
+            "lineOne": "This page got lost",
+            "lineTwo": "between your notes."
+        },
+        "description": "The link you opened does not exist, was moved, or has not been written yet. Let's get back to your journaling space.",
+        "actions": {
+            "home": "Back to home",
+            "login": "Sign in"
+        }
+    },
     "navbar": {
         "collections": "Collections",
         "entries": "Entries",
