@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ModalEditName from "../Modals/ModalEditName";
 import ModalDelete from "../Modals/ModalDelete";
 import TooltipWrapper from "@/commons/Tooltip/Tooltip";
+import { useTranslation } from "react-i18next";
 import Trash from "@/styles/icons/Trash";
 import Edit from "@/styles/icons/Edit";
 import styles from "./card.module.scss";
@@ -17,6 +18,7 @@ interface CardData {
 const colors = ["#e74828", "#d4844e", "#f4a124", "#6f4324"];
 
 const Card = ({ data, index = 0 }: CardData) => {
+    const { t } = useTranslation();
     const router = useRouter();
     const [openModal, setOpenModal] = useState<"none" | "edit" | "delete">(
         "none"
@@ -65,7 +67,7 @@ const Card = ({ data, index = 0 }: CardData) => {
             >
                 <div className={styles.topCard}>
                     <h3>{data?.title}</h3>
-                    <TooltipWrapper content={"Editar"}>
+                    <TooltipWrapper content={t("home.actions.edit")}>
                         <button type="button" onClick={handleOpenEdit}>
                             <i>
                                 <Edit width="20" height="20" color="white" />
@@ -73,7 +75,7 @@ const Card = ({ data, index = 0 }: CardData) => {
                         </button>
                     </TooltipWrapper>
                 </div>
-                <TooltipWrapper content={"Eliminar"}>
+                <TooltipWrapper content={t("home.actions.delete")}>
                     <button type="button" onClick={handlerOpenDelete}>
                         <i className={styles.bottomCard}>
                             <Trash width="20" height="20" color="white" />

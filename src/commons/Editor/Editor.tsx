@@ -4,6 +4,7 @@ import { RootState } from "@/store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { getPostById } from "@/services/post.service";
 import { converDate } from "@/utils/formatDate";
 import {
@@ -20,6 +21,7 @@ import { serializeDescription } from "@/utils/editorContent";
 import styles from "./editor.module.scss";
 
 const Editor = () => {
+    const { i18n, t } = useTranslation();
     const { id } = useParams();
     const convertId = Number(id);
     const dispatch = useDispatch();
@@ -30,6 +32,7 @@ const Editor = () => {
         typeof newText === "string" ? newText : serializeDescription(newText);
     const [focusTitleInput, setFocusTitleInput] = useState(false);
     const editorRef = useRef<HTMLDivElement | null>(null);
+    const dateLocale = i18n.resolvedLanguage === "en" ? "en-US" : "es-ES";
 
     const handlerChangeText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         dispatch(setNewText(e.target.value));
@@ -118,7 +121,7 @@ const Editor = () => {
                                         dispatch(setSavePost(true));
                                     }
                                 }}
-                                placeholder="Escribir título..."
+                                placeholder={t("entries.editor.titlePlaceholder")}
                                 autoFocus={focusTitleInput}
                             />
                         ) : (
@@ -130,7 +133,7 @@ const Editor = () => {
                                 <h1>{entry?.title}</h1>
                             </button>
                         )}
-                        <p>{`${converDate(entry?.created_at)}`}</p>
+                        <p>{`${converDate(entry?.created_at, dateLocale)}`}</p>
                     </div>
 
                     {/* Ver la posibilidad de usar markdown */}
@@ -141,7 +144,7 @@ const Editor = () => {
                     ) : (
                         <textarea
                             className={styles.editorInput}
-                            placeholder="Escribir..."
+                            placeholder={t("entries.editor.bodyPlaceholder")}
                             value={textValue}
                             onChange={handlerChangeText}
                             cols={30}
