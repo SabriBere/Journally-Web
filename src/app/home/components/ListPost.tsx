@@ -12,9 +12,11 @@ import SpaceExploration from "@/commons/Ilustrations/SpaceExploration";
 import NotEntries from "@/commons/EmptyStates/NotEntries";
 import NotResults from "@/commons/EmptyStates/NotResults";
 import Error from "@/commons/EmptyStates/Error";
+import { useTranslation } from "react-i18next";
 import styles from "./listPost.module.scss";
 
 const ListPost = () => {
+    const { t } = useTranslation();
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
 
     const searchTextPost = useSelector(
@@ -61,13 +63,13 @@ const ListPost = () => {
                       data?.pages[0]?.userPost?.length === 0 &&
                       searchTextPost === "" ? (
                         <div className={styles.containerEmpty}>
-                            <NotEntries title="Crear una nueva entrada" />
+                            <NotEntries title={t("home.empty.posts")} />
                         </div>
                     ) : isSuccess &&
                       data?.pages[0]?.userPost?.length === 0 &&
                       searchTextPost !== "" ? (
                         <div className={styles.containerEmpty}>
-                            <NotResults title="No se encontraron resultados" />
+                            <NotResults title={t("home.empty.noResults")} />
                         </div>
                     ) : null}
 

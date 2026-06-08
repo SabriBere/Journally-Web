@@ -73,7 +73,14 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 24px;
+    gap: 10px;
+}
+
+.navbarLanguageSwitcher {
+    min-width: 64px;
+    min-height: 44px;
+    padding: 6px 10px;
+    font-size: 15px;
 }
 
 .userSummary {
@@ -140,4 +147,10 @@
 .mobileLogout {
     width: 100%;
     justify-content: center;
+}
+
+.mobileLanguageSwitcher {
+    width: 100%;
+    min-width: 124px;
+    justify-content: flex-start;
 }

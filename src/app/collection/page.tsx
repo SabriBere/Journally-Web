@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import CollectionPlaceholder from "./CollectionPlaceholder";
 
-const page = () => {
-  return (
-    <div>page</div>
-  )
-}
+const Page = () => {
+    return <CollectionPlaceholder />;
+};
 
-export default page
+export default Page;

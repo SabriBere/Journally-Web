@@ -6,6 +6,7 @@ import { TextSelection } from "@tiptap/pm/state";
 import { useParams, useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { RootState } from "@/store/store";
 import {
     setAutoSaveEnabled,
@@ -140,20 +141,6 @@ const setCurrentTextBlockAtPosition = (
         })
         .run();
 
-const autosaveStatusLabel: Record<AutosaveStatus, string> = {
-    idle: "",
-    saving: "",
-    saved: "Guardado",
-    error: "No se pudo guardar",
-};
-
-const autosaveStatusClass: Record<AutosaveStatus, string> = {
-    idle: "",
-    saving: styles.autosaveStatusSaving,
-    saved: styles.autosaveStatusSaved,
-    error: styles.autosaveStatusError,
-};
-
 const EditorToolbar = ({
     editor,
     autosaveStatus,
@@ -161,6 +148,7 @@ const EditorToolbar = ({
     editor: TiptapEditor | null;
     autosaveStatus: AutosaveStatus;
 }) => {
+    const { t } = useTranslation();
     const { id } = useParams<{ id: string }>();
     const router = useRouter();
     const dispatch = useDispatch();
@@ -181,14 +169,14 @@ const EditorToolbar = ({
         mutationFn: ({ postId }: { postId: number }) => deletePost(postId),
         mutationKey: ["deletePost", postId],
         onSuccess: async () => {
-            showSuccess("Eliminado correctamente 🎉");
+            showSuccess(t("entries.toast.deleted"));
             await queryClient.refetchQueries({
                 queryKey: ["getAllPost"],
             });
             router.push("/home");
         },
         onError: () => {
-            showError("Error al eliminar post");
+            showError(t("entries.toast.deleteError"));
         },
     });
 
@@ -269,15 +257,15 @@ const EditorToolbar = ({
         const textToCopy = [newTitle, editor.getText()].filter(Boolean).join("\n\n");
 
         if (!textToCopy.trim()) {
-            showError("No hay texto para copiar");
+            showError(t("entries.toast.noTextToCopy"));
             return;
         }
 
         try {
             await navigator.clipboard.writeText(textToCopy);
-            showSuccess("Texto copiado al portapapeles");
+            showSuccess(t("entries.toast.copied"));
         } catch {
-            showError("No se pudo copiar el texto");
+            showError(t("entries.toast.copyError"));
         }
     };
 
@@ -293,37 +281,37 @@ const EditorToolbar = ({
     const formatButtons: ToolbarButton[] = [
         {
             label: <Bold width="24" height="24" color={iconColor} />,
-            title: "Negrita",
+            title: t("entries.toolbar.bold"),
             isActive: () => editor.isActive("bold"),
             onClick: () => editor.chain().focus().toggleBold().run(),
         },
         {
             label: <Italic width="24" height="24" color={iconColor} />,
-            title: "Itálica",
+            title: t("entries.toolbar.italic"),
             isActive: () => editor.isActive("italic"),
             onClick: () => editor.chain().focus().toggleItalic().run(),
         },
         {
             label: <Strikethrough width="24" height="24" color={iconColor} />,
-            title: "Tachado",
+            title: t("entries.toolbar.strike"),
             isActive: () => editor.isActive("strike"),
             onClick: () => editor.chain().focus().toggleStrike().run(),
         },
         {
             label: <List width="24" height="24" color={iconColor} />,
-            title: "Lista con viñetas",
+            title: t("entries.toolbar.bulletList"),
             isActive: () => editor.isActive("bulletList"),
             onClick: () => editor.chain().focus().toggleBulletList().run(),
         },
         {
             label: <OrderedList width="24" height="24" color={iconColor} />,
-            title: "Lista numerada",
+            title: t("entries.toolbar.orderedList"),
             isActive: () => editor.isActive("orderedList"),
             onClick: () => editor.chain().focus().toggleOrderedList().run(),
         },
         {
             label: <ListItem width="24" height="24" color={iconColor} />,
-            title: "Agregar item de lista",
+            title: t("entries.toolbar.addListItem"),
             onClick: () => {
                 if (
                     !editor.isActive("bulletList") &&
@@ -338,29 +326,29 @@ const EditorToolbar = ({
         },
         {
             label: <Quote width="24" height="24" color={iconColor} />,
-            title: "Cita",
+            title: t("entries.toolbar.quote"),
             isActive: () => editor.isActive("blockquote"),
             onClick: () => editor.chain().focus().toggleBlockquote().run(),
         },
         {
             label: <Code width="24" height="24" color={iconColor} />,
-            title: "Bloque de código",
+            title: t("entries.toolbar.codeBlock"),
             isActive: () => editor.isActive("codeBlock"),
             onClick: () => editor.chain().focus().toggleCodeBlock().run(),
         },
         {
             label: <HorizontalRule width="24" height="24" color={iconColor} />,
-            title: "Línea horizontal",
+            title: t("entries.toolbar.horizontalRule"),
             onClick: () => editor.chain().focus().setHorizontalRule().run(),
         },
         {
             label: <Undo width="24" height="24" color={iconColor} />,
-            title: "Deshacer",
+            title: t("entries.toolbar.undo"),
             onClick: () => editor.chain().focus().undo().run(),
         },
         {
             label: <Redo width="24" height="24" color={iconColor} />,
-            title: "Rehacer",
+            title: t("entries.toolbar.redo"),
             onClick: () => editor.chain().focus().redo().run(),
         },
     ];
@@ -368,13 +356,13 @@ const EditorToolbar = ({
     const utilityButtons: ToolbarButton[] = [
         {
             label: <Copy width="24" height="24" color={iconColor} />,
-            title: "Copiar",
+            title: t("entries.toolbar.copy"),
             variant: "warning",
             onClick: handleCopyPost,
         },
         {
             label: <Delete width="24" height="24" color="#ffffff" />,
-            title: confirmDelete ? "Confirmar eliminación" : "Eliminar",
+            title: confirmDelete ? t("entries.toolbar.confirmDelete") : t("entries.toolbar.delete"),
             variant: "danger",
             isPendingDanger: confirmDelete,
             onClick: handleDeletePost,
@@ -390,10 +378,10 @@ const EditorToolbar = ({
                 ),
             title:
                 autoSaveEnabled && showAutosaveSaving
-                    ? "Guardando cambios"
+                    ? t("entries.toolbar.savingChanges")
                     : autoSaveEnabled
-                      ? "Autoguardado activado"
-                      : "Guardar",
+                      ? t("entries.toolbar.autosaveEnabled")
+                      : t("entries.toolbar.save"),
             isPrimary: true,
             disabled: autoSaveEnabled,
             onClick: () => {
@@ -423,7 +411,9 @@ const EditorToolbar = ({
         >
             {button.label}
             {button.isPendingDanger && (
-                <span className={styles.confirmDeleteLabel}>Confirmar</span>
+                <span className={styles.confirmDeleteLabel}>
+                    {t("entries.toolbar.confirm")}
+                </span>
             )}
         </button>
     );
@@ -457,15 +447,15 @@ const EditorToolbar = ({
     };
 
     return (
-        <div className={styles.editorToolbar} aria-label="Herramientas del editor">
+        <div className={styles.editorToolbar} aria-label={t("entries.toolbar.ariaLabel")}>
             <div className={styles.toolbarBlockGroup}>
                 <select
                     className={`${styles.blockSelect} ${styles.textBlockSelect}`}
                     value={currentBlock}
                     onChange={handleBlockChange}
-                    aria-label="Tipo de bloque"
+                    aria-label={t("entries.toolbar.blockType")}
                 >
-                    <option value="p">Párrafo</option>
+                    <option value="p">{t("entries.toolbar.paragraph")}</option>
                     {headingLevels.map((level) => (
                         <option key={level} value={`h${level}`}>
                             H{level}
@@ -477,8 +467,8 @@ const EditorToolbar = ({
                     className={`${styles.blockSelect} ${styles.fontSizeSelect}`}
                     value={currentFontSize}
                     onChange={handleFontSizeChange}
-                    aria-label="Tamaño de letra"
-                    title="Tamaño de letra"
+                    aria-label={t("entries.toolbar.fontSize")}
+                    title={t("entries.toolbar.fontSize")}
                 >
                     {fontSizeOptions.map((fontSize) => (
                         <option key={fontSize} value={fontSize}>
@@ -503,22 +493,9 @@ const EditorToolbar = ({
                     checked={autoSaveEnabled}
                     label=""
                     name="autosave"
-                    title="Autoguardado"
+                    title={t("entries.toolbar.autosave")}
                     onChange={(checked) => dispatch(setAutoSaveEnabled(checked))}
                 />
-
-                {/* {autoSaveEnabled &&
-                    autosaveStatus !== "idle" &&
-                    autosaveStatus !== "saving" && (
-                        <span
-                            className={`${styles.autosaveStatus} ${
-                                autosaveStatusClass[autosaveStatus]
-                            }`}
-                            aria-live="polite"
-                        >
-                            {autosaveStatusLabel[autosaveStatus]}
-                        </span>
-                    )} */}
 
                 {utilityButtons
                     .filter((button) => button.variant !== "danger")

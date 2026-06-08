@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { useTranslation } from "react-i18next";
 import { showError } from "@/commons/Toast/toastHelpers";
 import { cleanAuthInputs } from "@/store/userSlice";
 import Link from "next/link";
@@ -18,6 +19,7 @@ type LoginFormProps = {
 };
 
 const LoginForm = ({ appVersion }: LoginFormProps) => {
+    const { t } = useTranslation();
     const router = useRouter();
     const dispatch = useDispatch();
     const inputEmail = useSelector((state: RootState) => state.user.email);
@@ -39,7 +41,7 @@ const LoginForm = ({ appVersion }: LoginFormProps) => {
 
             //agregar un spinner o pantalla de carga
             if (!res?.ok) {
-                showError("Credenciales invalidas");
+                showError(t("auth.toast.invalidCredentials"));
                 return null;
             }
 
@@ -61,7 +63,7 @@ const LoginForm = ({ appVersion }: LoginFormProps) => {
                     <Voyager width="100%" height="100%" />
                 </div>
                 <div className={styles.formContent}>
-                    <h1>Iniciar sesión</h1>
+                    <h1>{t("auth.login.title")}</h1>
                     <InputEmail />
                     <InputPassword />
                     <button
@@ -69,11 +71,11 @@ const LoginForm = ({ appVersion }: LoginFormProps) => {
                         className={styles.buttonSubmit}
                         type="submit"
                     >
-                        {loading ? <Spinner /> : "Iniciar sesión"}
+                        {loading ? <Spinner /> : t("auth.login.submit")}
                     </button>
                     <p className={styles.authSwitch}>
-                        ¿No tenés cuenta?{" "}
-                        <Link href="/register">Registrate</Link>
+                        {t("auth.login.noAccount")}{" "}
+                        <Link href="/register">{t("auth.login.registerLink")}</Link>
                     </p>
                     <p className={styles.appVersion}>v{appVersion}</p>
                 </div>

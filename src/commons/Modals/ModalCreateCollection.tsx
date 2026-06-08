@@ -4,6 +4,7 @@ import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { setOpenModalCollection } from "@/store/homeSlice";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { showError, showSuccess } from "../Toast/toastHelpers";
 import { createCollection } from "@/services/collection.service";
 import SpinnerDots from "../Spinner/SipnnerDots";
@@ -11,6 +12,7 @@ import Close from "@/styles/icons/Close";
 import styles from "./modalCreate.module.scss";
 
 const ModalCreateCollection = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const QueryClient = useQueryClient();
     const [nameCollection, setNameCollection] = useState<string>("");
@@ -24,7 +26,7 @@ const ModalCreateCollection = () => {
             createCollection(body),
         mutationKey: ["createCollection"],
         onSuccess: async () => {
-            showSuccess("Creado correctamente");
+            showSuccess(t("home.toast.created"));
             setNameCollection("");
             dispatch(setOpenModalCollection(false));
             await QueryClient.refetchQueries({
@@ -32,7 +34,7 @@ const ModalCreateCollection = () => {
             });
         },
         onError: (error: any) => {
-            showError("Error al crear colección");
+            showError(t("home.toast.createCollectionError"));
             dispatch(setOpenModalCollection(false));
         },
     });
@@ -58,7 +60,7 @@ const ModalCreateCollection = () => {
                         onSubmit={handlerCreate}
                     >
                         <div className={styles.containerTop}>
-                            <h2>Crear una colección</h2>
+                            <h2>{t("home.modals.createCollection.title")}</h2>
                             <button
                                 type="button"
                                 onClick={() =>
@@ -69,11 +71,11 @@ const ModalCreateCollection = () => {
                             </button>
                         </div>
                         <div className={styles.containerInput}>
-                            <label>Nombre</label>
+                            <label>{t("home.modals.fields.name")}</label>
                             <input
                                 type="text"
-                                title="Crear"
-                                placeholder="Ingrese un nombre"
+                                title={t("home.modals.actions.create")}
+                                placeholder={t("home.modals.placeholders.name")}
                                 className={styles.inputs}
                                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                                     setNameCollection(e.target.value)
@@ -84,19 +86,19 @@ const ModalCreateCollection = () => {
                         <div className={styles.containerButtons}>
                             <button
                                 type="button"
-                                title="Cancelar"
+                                title={t("home.modals.actions.cancel")}
                                 onClick={() =>
                                     dispatch(setOpenModalCollection(false))
                                 }
                             >
-                                Cancelar
+                                {t("home.modals.actions.cancel")}
                             </button>
                             <button
                                 type="submit"
                                 className={styles.btnCreate}
                                 disabled={isPending || isDisabled}
                             >
-                                {!isPending ? "Crear colección" : (<SpinnerDots color="#FFFFFF" size={6} />)}
+                                {!isPending ? t("home.modals.actions.createCollection") : (<SpinnerDots color="#FFFFFF" size={6} />)}
                             </button>
                         </div>
                     </form>

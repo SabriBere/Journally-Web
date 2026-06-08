@@ -5,6 +5,7 @@ import { RootState } from "@/store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { getPostById } from "@/services/post.service";
 import { converDate } from "@/utils/formatDate";
 import {
@@ -36,6 +37,7 @@ type AutosaveSocketMessage = {
 type AutosaveStatus = "idle" | "saving" | "saved" | "error";
 
 const Tiptap = () => {
+  const { i18n, t } = useTranslation();
   const { id } = useParams();
   const convertId = Number(id);
   const dispatch = useDispatch();
@@ -55,6 +57,7 @@ const Tiptap = () => {
     useState<AutosaveStatus>("idle");
   const editorRef = useRef<HTMLDivElement | null>(null);
   const pendingAutosaveRequestIdRef = useRef<string | null>(null);
+  const dateLocale = i18n.resolvedLanguage === "en" ? "en-US" : "es-ES";
 
   const editor = useEditor({
     extensions: editorExtensions,
@@ -243,7 +246,7 @@ const Tiptap = () => {
                           dispatch(setSavePost(true));
                         }
                       }}
-                      placeholder="Escribir título..."
+                      placeholder={t("entries.editor.titlePlaceholder")}
                       autoFocus={focusTitleInput}
                     />
                   ) : (
@@ -255,7 +258,7 @@ const Tiptap = () => {
                       <h1>{entry?.title}</h1>
                     </button>
                   )}
-                  <p>{`${converDate(entry?.created_at)}`}</p>
+                  <p>{`${converDate(entry?.created_at, dateLocale)}`}</p>
                 </div>
 
                 <ToolBar />
