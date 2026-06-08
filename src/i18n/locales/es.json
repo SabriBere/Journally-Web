@@ -1,6 +1,60 @@
 {
     "home": {
-        "title": "Inicio"
+        "title": "Inicio",
+        "search": {
+            "collection": "Buscar colección",
+            "post": "Buscar entrada"
+        },
+        "actions": {
+            "createCollection": "Crear colección",
+            "createPost": "Crear entrada",
+            "edit": "Editar",
+            "delete": "Eliminar"
+        },
+        "empty": {
+            "collections": "Crear una nueva colección",
+            "posts": "Crear una nueva entrada",
+            "noResults": "No se encontraron resultados",
+            "error": "Ooop... Surgió un problema"
+        },
+        "modals": {
+            "createCollection": {
+                "title": "Crear una colección"
+            },
+            "createPost": {
+                "title": "Crear una entrada"
+            },
+            "delete": {
+                "collection": "¿Desea eliminar esta colección?",
+                "post": "¿Desea eliminar esta entrada?"
+            },
+            "fields": {
+                "name": "Nombre",
+                "description": "Descripción",
+                "postName": "Nombre de entrada"
+            },
+            "placeholders": {
+                "name": "Ingrese un nombre",
+                "description": "Ingrese una descripción",
+                "newName": "Ingrese nuevo nombre"
+            },
+            "actions": {
+                "create": "Crear",
+                "createCollection": "Crear colección",
+                "createPost": "Crear entrada",
+                "cancel": "Cancelar",
+                "save": "Guardar"
+            }
+        },
+        "toast": {
+            "created": "Creado correctamente",
+            "saved": "Guardado correctamente",
+            "deleted": "Eliminado correctamente",
+            "createCollectionError": "Error al crear colección",
+            "createPostError": "Error al crear la entrada",
+            "deleteError": "Error al eliminar",
+            "editNameError": "Error al editar nombre"
+        }
     },
     "language": {
         "switchLabel": "Idioma",

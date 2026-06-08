@@ -6,6 +6,7 @@ import { setOpenModalCollection, setOpenModalPost } from "@/store/homeSlice";
 import { useQuery } from "@tanstack/react-query";
 import { getAllPost } from "@/services/post.service";
 import { allCollection } from "@/services/collection.service";
+import { useTranslation } from "react-i18next";
 import ModalCreateCollection from "../Modals/ModalCreateCollection";
 import ModalCreatePost from "../Modals/ModalCreatePost";
 import TooltipWrapper from "../Tooltip/Tooltip";
@@ -13,6 +14,7 @@ import Plus from "@/styles/icons/Plus";
 import styles from "./buttonCreate.module.scss";
 
 const ButtonCreate = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
     const openModalCollection = useSelector(
@@ -52,7 +54,7 @@ const ButtonCreate = () => {
     return (
         <>
             {showCollectionButton && (
-                <TooltipWrapper content="Crear colección">
+                <TooltipWrapper content={t("home.actions.createCollection")}>
                     <button
                         className={styles.containerButton}
                         onClick={() => dispatch(setOpenModalCollection(true))}
@@ -62,7 +64,7 @@ const ButtonCreate = () => {
                 </TooltipWrapper>
             )}
             {showPostButton && (
-                <TooltipWrapper content={"Crear entrada"}>
+                <TooltipWrapper content={t("home.actions.createPost")}>
                     <button
                         className={styles.containerButton}
                         onClick={() => dispatch(setOpenModalPost(true))}
