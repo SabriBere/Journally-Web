@@ -125,6 +125,39 @@
             "copyError": "Could not copy text"
         }
     },
+    "auth": {
+        "fields": {
+            "name": "Name",
+            "email": "Email",
+            "password": "Password"
+        },
+        "placeholders": {
+            "alias": "Enter an alias",
+            "email": "user@email.com",
+            "password": "Password"
+        },
+        "password": {
+            "show": "Show",
+            "hide": "Hide"
+        },
+        "login": {
+            "title": "Sign in",
+            "submit": "Sign in",
+            "noAccount": "Don't have an account?",
+            "registerLink": "Register"
+        },
+        "register": {
+            "title": "Create account",
+            "submit": "Register",
+            "hasAccount": "Already have an account?",
+            "loginLink": "Sign in"
+        },
+        "toast": {
+            "invalidCredentials": "Invalid credentials",
+            "accountCreated": "Account created. You can now sign in.",
+            "createAccountError": "Could not create the account"
+        }
+    },
     "navbar": {
         "collections": "Collections",
         "entries": "Entries",

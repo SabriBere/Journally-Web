@@ -125,6 +125,39 @@
             "copyError": "No se pudo copiar el texto"
         }
     },
+    "auth": {
+        "fields": {
+            "name": "Nombre",
+            "email": "Email",
+            "password": "Contraseña"
+        },
+        "placeholders": {
+            "alias": "Ingresar alias",
+            "email": "usuario@email.com",
+            "password": "Contraseña"
+        },
+        "password": {
+            "show": "Mostrar",
+            "hide": "Ocultar"
+        },
+        "login": {
+            "title": "Iniciar sesión",
+            "submit": "Iniciar sesión",
+            "noAccount": "¿No tenés cuenta?",
+            "registerLink": "Registrate"
+        },
+        "register": {
+            "title": "Crear cuenta",
+            "submit": "Registrarme",
+            "hasAccount": "¿Ya tenés cuenta?",
+            "loginLink": "Iniciá sesión"
+        },
+        "toast": {
+            "invalidCredentials": "Credenciales inválidas",
+            "accountCreated": "Cuenta creada. Ya podés iniciar sesión.",
+            "createAccountError": "No se pudo crear la cuenta"
+        }
+    },
     "navbar": {
         "collections": "Colecciones",
         "entries": "Entradas",
