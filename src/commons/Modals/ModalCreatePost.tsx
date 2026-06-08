@@ -4,6 +4,7 @@ import { createPost } from "@/services/post.service";
 import { useDispatch } from "react-redux";
 import { setOpenModalPost } from "@/store/homeSlice";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { showError, showSuccess } from "../Toast/toastHelpers";
 import SpinnerDots from "../Spinner/SipnnerDots";
 import Close from "@/styles/icons/Close";
@@ -12,6 +13,7 @@ import { createDocumentFromText } from "@/utils/editorContent";
 import styles from "./modalCreate.module.scss";
 
 const ModalCreatePost = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const QueryClient = useQueryClient();
     const [namePost, setNamePost] = useState<string>("");
@@ -24,7 +26,7 @@ const ModalCreatePost = () => {
             createPost(body),
         mutationKey: ["createPost"],
         onSuccess: async () => {
-            showSuccess("Creado correctamente");
+            showSuccess(t("home.toast.created"));
             setNamePost("");
             dispatch(setOpenModalPost(false));
             await QueryClient.refetchQueries({
@@ -32,7 +34,7 @@ const ModalCreatePost = () => {
             });
         },
         onError: (error: any) => {
-            showError("Error al crear el post");
+            showError(t("home.toast.createPostError"));
             dispatch(setOpenModalPost(false));
         },
     });
@@ -55,7 +57,7 @@ const ModalCreatePost = () => {
                 onSubmit={handlerCreatePost}
             >
                 <div className={styles.containerTop}>
-                    <h2>Crear un post</h2>
+                    <h2>{t("home.modals.createPost.title")}</h2>
                     <button
                         type="button"
                         onClick={() => dispatch(setOpenModalPost(false))}
@@ -64,22 +66,22 @@ const ModalCreatePost = () => {
                     </button>
                 </div>
                 <div className={styles.containerInput}>
-                    <label>Nombre</label>
+                    <label>{t("home.modals.fields.name")}</label>
                     <input
                         type="text"
-                        title="nombre post"
-                        placeholder="Ingrese un nombre"
+                        title={t("home.modals.fields.postName")}
+                        placeholder={t("home.modals.placeholders.name")}
                         className={styles.inputs}
                         onChange={(e: ChangeEvent<HTMLInputElement>) =>
                             setNamePost(e.target.value)
                         }
                         value={namePost}
                     />
-                    <label>Descripción</label>
+                    <label>{t("home.modals.fields.description")}</label>
                     <input
                         type="text"
-                        title="nombre post"
-                        placeholder="Ingrese una descripción"
+                        title={t("home.modals.fields.postName")}
+                        placeholder={t("home.modals.placeholders.description")}
                         className={styles.inputs}
                         onChange={(e: ChangeEvent<HTMLInputElement>) =>
                             setDescription(e.target.value)
@@ -90,17 +92,17 @@ const ModalCreatePost = () => {
                 <div className={styles.containerButtons}>
                     <button
                         type="button"
-                        title="Cancelar"
+                        title={t("home.modals.actions.cancel")}
                         onClick={() => dispatch(setOpenModalPost(false))}
                     >
-                        Cancelar
+                        {t("home.modals.actions.cancel")}
                     </button>
                     <button
                         type="submit"
                         className={styles.btnCreate}
                         disabled={isPending || isDisabled}
                     >
-                        {!isPending ? "Crear post" : (<SpinnerDots color="#FFFFFF" size={6} />)}
+                        {!isPending ? t("home.modals.actions.createPost") : (<SpinnerDots color="#FFFFFF" size={6} />)}
                     </button>
                 </div>
             </form>

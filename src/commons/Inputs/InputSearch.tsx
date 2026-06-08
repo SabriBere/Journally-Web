@@ -3,11 +3,13 @@ import React, { ChangeEvent } from "react";
 import { RootState } from "@/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchTextCollection, setSearchTextPost } from "@/store/homeSlice";
+import { useTranslation } from "react-i18next";
 import Close from "@/styles/icons/Close";
 import Search from "@/styles/icons/Search";
 import styles from "./inputSearch.module.scss";
 
 const InputSearch = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     //el nombre del label y placeholder cambien según el tab seleccionado
     const tabs = useSelector((state: RootState) => state.tabs.tabs);
@@ -22,8 +24,8 @@ const InputSearch = () => {
 
     const isCollections = tabs === "collections";
     const placeholder = isCollections
-        ? "Buscar colección"
-        : "Buscar posteo";
+        ? t("home.search.collection")
+        : t("home.search.post");
     const value = isCollections ? searchTextCollection : searchTextPost;
 
     const handlerInputSearch = (e: ChangeEvent<HTMLInputElement>) => {
