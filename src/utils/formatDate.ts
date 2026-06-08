@@ -1,6 +1,6 @@
-export const converDate = (date: string | undefined) => {
+export const converDate = (date: string | undefined, locale = "es-ES") => {
         const recibeDate = date;
-        const splitDate: any = recibeDate?.split("T");
+        const splitDate = recibeDate?.split("T");
 
         const options: Intl.DateTimeFormatOptions = {
             day: "numeric",
@@ -9,8 +9,8 @@ export const converDate = (date: string | undefined) => {
             timeZone: "UTC",
         };
 
-        const formattedDate = new Intl.DateTimeFormat("es-ES", options).format(
-            new Date(splitDate[0])
+        const formattedDate = new Intl.DateTimeFormat(locale, options).format(
+            new Date(splitDate?.[0] ?? "")
         );
         return formattedDate;
     };

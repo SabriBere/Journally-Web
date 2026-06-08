@@ -1,4 +1,5 @@
 "use client";
+import { useTranslation } from "react-i18next";
 import styles from "./hamburgerButton.module.scss";
 
 interface HamburgerButtonProps {
@@ -12,6 +13,7 @@ const HamburgerButton = ({
     onClick,
     className = "",
 }: HamburgerButtonProps) => {
+    const { t } = useTranslation();
     const buttonClassName = [styles.menuButton, className]
         .filter(Boolean)
         .join(" ");
@@ -20,7 +22,9 @@ const HamburgerButton = ({
         <button
             type="button"
             className={buttonClassName}
-            aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-label={
+                isOpen ? t("navbar.closeMenu") : t("navbar.openMenu")
+            }
             aria-expanded={isOpen}
             onClick={onClick}
         >
