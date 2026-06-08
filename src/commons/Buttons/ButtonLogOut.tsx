@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { signOut } from "next-auth/react";
+import { useTranslation } from "react-i18next";
 import styles from "./buttonLogOut.module.scss";
 import LogOut from "@/styles/icons/LogOut";
 
@@ -15,6 +16,8 @@ const ButtonLogOut = ({
     stacked = false,
     onSelect,
 }: ButtonLogOutProps) => {
+    const { t } = useTranslation();
+    const label = t("navbar.logout");
     const buttonClassName = [
         styles.buttonLogOut,
         stacked ? styles.stacked : "",
@@ -32,12 +35,12 @@ const ButtonLogOut = ({
         <button
             type="button"
             className={buttonClassName}
-            aria-label="Cerrar sesión"
-            title="Cerrar sesión"
+            aria-label={label}
+            title={label}
             onClick={logOut}
         >
             <LogOut width="24" height="24" color="white" />
-            <span className={styles.label}>Cerrar sesión</span>
+            <span className={styles.label}>{label}</span>
         </button>
     );
 };
