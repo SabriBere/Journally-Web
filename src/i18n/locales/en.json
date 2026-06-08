@@ -76,6 +76,55 @@
             "login": "Sign in"
         }
     },
+    "entries": {
+        "breadcrumb": {
+            "entries": "Entries",
+            "entryDetail": "Entry detail"
+        },
+        "editor": {
+            "titlePlaceholder": "Write a title...",
+            "bodyPlaceholder": "Write..."
+        },
+        "toolbar": {
+            "ariaLabel": "Editor tools",
+            "edit": "Edit",
+            "closeEdit": "Close editing",
+            "bold": "Bold",
+            "italic": "Italic",
+            "strike": "Strikethrough",
+            "bulletList": "Bullet list",
+            "orderedList": "Numbered list",
+            "addListItem": "Add list item",
+            "quote": "Quote",
+            "codeBlock": "Code block",
+            "horizontalRule": "Horizontal rule",
+            "undo": "Undo",
+            "redo": "Redo",
+            "copy": "Copy",
+            "delete": "Delete",
+            "confirm": "Confirm",
+            "confirmDelete": "Confirm deletion",
+            "save": "Save",
+            "saved": "Saved",
+            "saveError": "Could not save",
+            "savingChanges": "Saving changes",
+            "autosave": "Autosave",
+            "autosaveEnabled": "Autosave enabled",
+            "blockType": "Block type",
+            "paragraph": "Paragraph",
+            "fontSize": "Font size"
+        },
+        "toast": {
+            "saved": "Saved successfully",
+            "deleted": "Deleted successfully",
+            "noChanges": "There are no changes to save",
+            "editError": "Error editing",
+            "deleteError": "Error deleting entry",
+            "noTextToCopy": "There is no text to copy",
+            "copied": "Text copied to clipboard",
+            "copyError": "Could not copy text"
+        }
+    },
     "navbar": {
         "collections": "Collections",
         "entries": "Entries",
