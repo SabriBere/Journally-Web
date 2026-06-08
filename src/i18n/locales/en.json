@@ -1,4 +1,15 @@
 {
+    "home": {
+        "title": "Home"
+    },
+    "language": {
+        "switchLabel": "Language",
+        "changeTo": "Change language to {{language}}",
+        "names": {
+            "es": "Spanish",
+            "en": "English"
+        }
+    },
     "navbar": {
         "collections": "Collections",
         "entries": "Entries",
