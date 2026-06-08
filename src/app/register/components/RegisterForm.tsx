@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { useTranslation } from "react-i18next";
 import { userRegister } from "@/app/api/actions";
 import { showError, showSuccess } from "@/commons/Toast/toastHelpers";
 import { cleanAuthInputs } from "@/store/userSlice";
@@ -17,6 +18,7 @@ import InputPassword from "@/commons/Inputs/InputPassword";
 
 
 const RegisterForm = () => {
+    const { t } = useTranslation();
     const router = useRouter();
     const dispatch = useDispatch();
     const [userName, setUserName] = useState("");
@@ -43,7 +45,7 @@ const RegisterForm = () => {
             });
 
             if (!res?.ok) {
-                showSuccess("Cuenta creada. Ya podés iniciar sesión.");
+                showSuccess(t("auth.toast.accountCreated"));
                 dispatch(cleanAuthInputs());
                 router.push("/login");
                 return;
@@ -51,7 +53,7 @@ const RegisterForm = () => {
 
             router.push("/home");
         } catch {
-            showError("No se pudo crear la cuenta");
+            showError(t("auth.toast.createAccountError"));
         } finally {
             setLoading(false);
         }
@@ -64,13 +66,13 @@ const RegisterForm = () => {
                     <Voyager width="100%" height="100%" />
                 </div>
                 <div className={styles.formContent}>
-                    <h1>Crear cuenta</h1>
+                    <h1>{t("auth.register.title")}</h1>
                     <label>
-                        Nombre
+                        {t("auth.fields.name")}
                         <input
                             className={styles.inputName}
                             type="text"
-                            placeholder="Ingresar alias"
+                            placeholder={t("auth.placeholders.alias")}
                             value={userName}
                             onChange={(event) => setUserName(event.target.value)}
                             autoFocus
@@ -101,10 +103,11 @@ const RegisterForm = () => {
                         className={styles.buttonSubmit}
                         type="submit"
                     >
-                        {loading ? <Spinner /> : "Registrarme"}
+                        {loading ? <Spinner /> : t("auth.register.submit")}
                     </button>
                     <p className={styles.authSwitch}>
-                        ¿Ya tenés cuenta? <Link href="/login">Iniciá sesión</Link>
+                        {t("auth.register.hasAccount")}{" "}
+                        <Link href="/login">{t("auth.register.loginLink")}</Link>
                     </p>
                 </div>
             </form>
