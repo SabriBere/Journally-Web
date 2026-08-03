@@ -5,6 +5,11 @@
   "author": "Sabrina Demetrio",
   "description": "",
   "license": "MIT",
+  "packageManager": "pnpm@11.20.0",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=11 <12"
+  },
   "scripts": {
     "dev": "dotenvx run --env-file=.env.dev -- next dev --turbopack",
     "production": "dotenvx run --env-file=.env.prod -- next build",
