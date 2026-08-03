@@ -5,6 +5,11 @@
   "author": "Sabrina Demetrio",
   "description": "",
   "license": "MIT",
+  "packageManager": "pnpm@11.20.0",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=11 <12"
+  },
   "scripts": {
     "dev": "dotenvx run --env-file=.env.dev -- next dev --turbopack",
     "production": "dotenvx run --env-file=.env.prod -- next build",
@@ -21,6 +26,7 @@
     "@reduxjs/toolkit": "^2.8.2",
     "@tanstack/react-query": "^5.80.7",
     "@tippyjs/react": "^4.2.6",
+    "@tiptap/core": "^3.29.2",
     "@tiptap/extension-text-style": "^3.22.4",
     "@tiptap/pm": "^3.22.4",
     "@tiptap/react": "^3.22.4",
@@ -65,5 +71,9 @@
     "prettier": "^3.5.3",
     "sass": "^1.89.0",
     "typescript": "^5"
+  },
+  "overrides": {
+    "postcss": "8.5.18",
+    "sharp": "0.35.3"
   }
 }
