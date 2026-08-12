@@ -75,7 +75,7 @@ cd <your-repository>
 1. Install dependencies
 
 ```bash
-npm install
+pnpm install
 ```
 
 2. Create a `.env.dev` file from `.env.example`.
@@ -89,7 +89,7 @@ cp .env.example .env.dev
 4. Run the server
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 ---
@@ -265,9 +265,9 @@ It also includes rules for imports, React hooks, TanStack Query, Testing Library
 The project uses Jest for automated testing.
 
 ```bash
-npm test
-npm run test:ci
-npm run test:coverage
+pnpm test
+pnpm test:ci
+pnpm test:coverage
 ```
 
 ## 📸 Screenshots
