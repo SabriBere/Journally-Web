@@ -7,17 +7,23 @@ import { SocketProvider } from "@/contexts/SocketContext";
 import { store } from "../store/store";
 import I18nProvider from "@/i18n/I18nProvider";
 import Toast from "@/commons/Toast/Toast";
+import SessionGuard from "./SessionGuard";
 
 interface Props {
-    children: React.ReactNode,
-    session: any
+    children: React.ReactNode;
+    session: any;
 }
 
 const Providers = ({ children, session }: Props) => {
     const queryClient = new QueryClient();
     return (
         <I18nProvider>
-            <SessionProvider session={session}>
+            <SessionProvider
+                session={session}
+                refetchInterval={5 * 60}
+                refetchOnWindowFocus
+            >
+                <SessionGuard />
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <SocketProvider>
@@ -29,7 +35,6 @@ const Providers = ({ children, session }: Props) => {
                 </QueryClientProvider>
             </SessionProvider>
         </I18nProvider>
-
     );
 };
 

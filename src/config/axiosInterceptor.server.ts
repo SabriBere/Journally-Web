@@ -1,9 +1,11 @@
-import { getSession } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 import axios, { AxiosInstance } from "axios";
 
 const axiosInstance: AxiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
+
+let logoutInProgress = false;
 
 // Interceptor que agrega el token automáticamente
 axiosInstance.interceptors.request.use(
@@ -23,6 +25,22 @@ axiosInstance.interceptors.request.use(
         return config;
     },
     (error) => {
+        return Promise.reject(error);
+    }
+);
+
+axiosInstance.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        if (
+            error?.response?.status === 401 &&
+            typeof window !== "undefined" &&
+            !logoutInProgress
+        ) {
+            logoutInProgress = true;
+            await signOut({ callbackUrl: "/login", redirect: true });
+        }
+
         return Promise.reject(error);
     }
 );

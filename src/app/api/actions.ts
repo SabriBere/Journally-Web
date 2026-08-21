@@ -1,5 +1,6 @@
 "use server";
 import axios from "axios";
+import jwt from "jsonwebtoken";
 
 const axiosPublic = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -23,14 +24,20 @@ export async function userLoging({
 
         // Si tu API devuelve los tokens en headers
         const accessToken = response.headers["x-access-token"];
-        // const refreshToken = response.headers["x-refresh-token"];
+        const refreshToken = response.headers["x-refresh-token"];
+        const decodedAccessToken = jwt.decode(
+            accessToken
+        ) as jwt.JwtPayload | null;
 
         return {
             id: userData.userId,
             name: userData.userName,
             email: userData.user,
             accessToken,
-            // refreshToken,
+            refreshToken,
+            accessTokenExpires: decodedAccessToken?.exp
+                ? decodedAccessToken.exp * 1000
+                : Date.now(),
         };
     }
 
@@ -56,40 +63,28 @@ export async function userRegister({
     return response.status === 200 ? response.data?.data : null;
 }
 
-// export async function refreshAccessToken(token: any) {
-//     console.log(token?.refreshToken)
-//     try {
-//         const response = await axios.post(
-//             `${process.env.NEXT_PUBLIC_API_URL}/users/refresh`,
-//             {},
-//             {
-//                 headers: {
-//                     "x-refresh-token": token,
-//                 },
-//             }
-//         );
+export async function refreshAccessToken(refreshToken: string) {
+    const response = await axiosPublic.post(
+        "/users/refresh",
+        {},
+        {
+            headers: {
+                "x-refresh-token": refreshToken,
+            },
+        }
+    );
 
-//         const accessToken = response.headers["x-access-token"];
-//         const refreshToken = response.headers["x-refresh-token"];
-//         console.log(accessToken, refreshToken, 'nuevos')
+    const accessToken = response.headers["x-access-token"];
+    const rotatedRefreshToken = response.headers["x-refresh-token"];
+    const decodedAccessToken = jwt.decode(accessToken) as jwt.JwtPayload | null;
 
-//         // Decodificamos exp del nuevo token
-//         const decoded: any = jwt.decode(accessToken);
-//         console.log(decoded, 'expiración token')
+    if (!accessToken || !rotatedRefreshToken || !decodedAccessToken?.exp) {
+        throw new Error("La API no devolvio tokens de sesion validos");
+    }
 
-//         return {
-//             ...token,
-//             accessToken: accessToken,
-//             accessTokenExpires: decoded?.exp
-//                 ? decoded.exp * 1000
-//                 : Date.now() + 15 * 60 * 1000,
-//         };
-//     } catch (error) {
-//         console.error("Error al refrescar token", error);
-
-//         // return {
-//         //     ...token,
-//         //     error: "RefreshAccessTokenError",
-//         // };
-//     }
-// }
+    return {
+        accessToken,
+        refreshToken: rotatedRefreshToken,
+        accessTokenExpires: decodedAccessToken.exp * 1000,
+    };
+}
