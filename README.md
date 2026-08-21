@@ -8,10 +8,12 @@ Designed with a soft, illustrated, and minimalist aesthetic intended to feel lik
 
 - [Introduction](#introduction)
     - [Features](#features)
+- [Requirements](#requirements)
 - [Clone the repository](#clone-the-repository)
 - [Installation](#installation)
 - [Project stack](#project-stack)
 - [Environments and integration](#environments-and-integration)
+    - [Backend connection](#backend-connection)
     - [Environment variables](#environment-variables)
     - [Available scripts](#available-scripts)
 - [Branch modeling](#branch-modeling)
@@ -63,21 +65,29 @@ The application uses a style that is:
 
 ---
 
+## Requirements
+
+- Node.js 22 or newer
+- pnpm 11.x (the repository pins pnpm 11.20.0)
+- A running [Journally API](https://github.com/SabriBere/Journally-API) instance
+
+---
+
 ## 📦 Clone the repository
 
 ```bash
-git clone https://github.com/<your-user>/<your-repository>.git
-cd <your-repository>
+git clone https://github.com/SabriBere/Journally-Web.git
+cd Journally-Web
 ```
 
 ---
 
 ## 🛠 Installation
 
-1. Install dependencies
+1. Install dependencies.
 
 ```bash
-pnpm install
+pnpm install --frozen-lockfile
 ```
 
 2. Create a `.env.dev` file from `.env.example`.
@@ -86,13 +96,17 @@ pnpm install
 cp .env.example .env.dev
 ```
 
-3. Fill in the required variables for your local environment.
+3. Start Journally API by following its
+   [README](https://github.com/SabriBere/Journally-API#readme). The default
+   values in `.env.example` expect it at `http://localhost:8080`.
 
-4. Run the server
+4. Start the frontend.
 
 ```bash
 pnpm dev
 ```
+
+5. Open [http://localhost:3000](http://localhost:3000).
 
 ---
 
@@ -106,10 +120,28 @@ pnpm dev
 - Sass / SCSS Modules
 - NextAuth
 - Axios
+- WebSocket
+- TipTap
+- Jest and Testing Library
 
 ---
 
 ## 🔧 Environments and integration
+
+### Backend connection
+
+The frontend depends on
+[Journally API](https://github.com/SabriBere/Journally-API) for authentication,
+collections, entries, and real-time updates.
+
+For the default local setup:
+
+- REST API: `http://localhost:8080/api`
+- WebSocket: `ws://localhost:8080/entries`
+- Frontend: `http://localhost:3000`
+
+Start the API before testing login, registration, or journal features. User
+registration is performed through the frontend and sent to the API.
 
 ### Environment variables
 
@@ -121,31 +153,27 @@ The repository includes `.env.example` as a safe template for documenting the re
 
 Expected variables:
 
-| Variable | Purpose |
-| --- | --- |
-| `APP_ENV` | Logical application environment, for example `development` or `production`. |
-| `NEXT_PUBLIC_APP_URL` | Public frontend URL. |
-| `NEXT_PUBLIC_API_URL` | Public URL of the API consumed by the frontend. |
-| `NEXTAUTH_URL` | Base URL used by NextAuth. |
-| `NEXTAUTH_SECRET` | Secret used by NextAuth. It must be defined with a secure value outside the repository. |
-| `NEXT_PUBLIC_APP_VERSION` | Public application version. |
+| Variable                 | Purpose                                                                                 |
+| ------------------------ | --------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_API_URL`    | Public URL of the API consumed by the frontend.                                         |
+| `NEXT_PUBLIC_SOCKET_URL` | WebSocket endpoint used for real-time entry updates.                                    |
+| `NEXTAUTH_URL`           | Base URL used by NextAuth.                                                              |
+| `NEXTAUTH_SECRET`        | Secret used by NextAuth. It must be defined with a secure value outside the repository. |
 
 > Variables prefixed with `NEXT_PUBLIC_` may be exposed to the browser. They must not contain secrets.
 
 ### Available scripts
 
-```json
-"scripts": {
-  "dev": "dotenvx run --env-file=.env.dev -- next dev --turbopack",
-  "production": "dotenvx run --env-file=.env.prod -- next build",
-  "build": "next build",
-  "test": "jest",
-  "test:watch": "jest --watch",
-  "test:coverage": "jest --coverage",
-  "test:ci": "jest --runInBand --watchman=false",
-  "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\""
-}
-```
+| Command              | Purpose                                                     |
+| -------------------- | ----------------------------------------------------------- |
+| `pnpm dev`           | Start the development server with `.env.dev` and Turbopack. |
+| `pnpm production`    | Build locally with variables loaded from `.env.prod`.       |
+| `pnpm build`         | Create the standard production build used by CI and Vercel. |
+| `pnpm test`          | Run the Jest test suite.                                    |
+| `pnpm test:watch`    | Run Jest in watch mode.                                     |
+| `pnpm test:coverage` | Run Jest and generate a coverage report.                    |
+| `pnpm test:ci`       | Run the tests serially without Watchman.                    |
+| `pnpm lint`          | Run ESLint against JavaScript and TypeScript source files.  |
 
 ---
 
@@ -167,11 +195,13 @@ The frontend can be deployed to a platform such as Vercel by connecting the repo
 
 - The deployment provider must read environment variables from its project configuration, not from versioned `.env` files.
 - Sensitive values, such as `NEXTAUTH_SECRET`, must be configured directly in the deployment provider.
-- The production build uses the standard command:
+- CI and Vercel use the standard production build command:
 
 ```bash
-next build
+pnpm build
 ```
+
+For a local build that explicitly loads `.env.prod`, run `pnpm production`.
 
 To keep the repository ready for publication:
 
@@ -237,7 +267,7 @@ src/
 
 ### Prettier
 
-Suggested `.prettierrc` file:
+The repository includes this `.prettierrc` configuration:
 
 ```json
 {
