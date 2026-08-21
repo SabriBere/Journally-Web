@@ -43,6 +43,8 @@ Designed with a soft, illustrated, and minimalist aesthetic intended to feel lik
 
 ✔️ Intuitive UI with tooltips, modals, and visual feedback
 
+✔️ Automatic access-token renewal and logout when the session expires
+
 ### Design
 
 The application uses a style that is:

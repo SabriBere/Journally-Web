@@ -1,5 +1,5 @@
 import { NextAuthOptions } from "next-auth";
-import { userLoging } from "../actions";
+import { refreshAccessToken, userLoging } from "../actions";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
@@ -43,23 +43,50 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         async jwt({ token, user }: any) {
-
             if (user) {
-                // console.log(user?.accessToken, "seteo en jwt");
                 return {
                     ...token,
                     userId: user?.id,
                     userName: user?.name,
                     userEmail: user?.email,
                     accessToken: user?.accessToken,
-                    // refreshToken: user?.refreshToken,
+                    refreshToken: user?.refreshToken,
+                    accessTokenExpires: user?.accessTokenExpires,
                 };
             }
 
-            return token;
+            const accessTokenIsValid =
+                token?.accessTokenExpires &&
+                Date.now() < token.accessTokenExpires - 30_000;
+
+            if (accessTokenIsValid) {
+                return token;
+            }
+
+            if (!token?.refreshToken) {
+                return { ...token, error: "RefreshAccessTokenError" };
+            }
+
+            try {
+                const refreshedTokens = await refreshAccessToken(
+                    token.refreshToken
+                );
+
+                return {
+                    ...token,
+                    ...refreshedTokens,
+                    error: undefined,
+                };
+            } catch {
+                return {
+                    ...token,
+                    accessToken: undefined,
+                    refreshToken: undefined,
+                    error: "RefreshAccessTokenError",
+                };
+            }
         },
         async session({ session, token }: any) {
-            // console.log(token?.accessToken, "seteo en sesion");
             return {
                 ...session,
                 user: {
@@ -67,8 +94,8 @@ export const authOptions: NextAuthOptions = {
                     name: token?.userName,
                     email: token?.userEmail,
                     accessToken: token?.accessToken,
-                    // refreshToken: token?.refreshToken,
                 },
+                error: token?.error,
             };
         },
     },
