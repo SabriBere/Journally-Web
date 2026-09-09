@@ -1,5 +1,5 @@
 import { NextAuthOptions } from "next-auth";
-import { refreshAccessToken, userLoging } from "../actions";
+import { refreshAccessToken, revokeRefreshToken, userLoging } from "../actions";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
@@ -97,6 +97,17 @@ export const authOptions: NextAuthOptions = {
                 },
                 error: token?.error,
             };
+        },
+    },
+    events: {
+        async signOut({ token }) {
+            try {
+                await revokeRefreshToken(
+                    token?.refreshToken as string | undefined
+                );
+            } catch {
+                // El logout local debe completarse aunque la sesión remota ya haya expirado.
+            }
         },
     },
     pages: {
