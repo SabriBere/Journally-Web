@@ -8,6 +8,14 @@ const axiosPublic = axios.create({
     // sin interceptores
 });
 
+type RefreshedTokens = {
+    accessToken: string;
+    refreshToken: string;
+    accessTokenExpires: number;
+};
+
+const pendingRefreshes = new Map<string, Promise<RefreshedTokens>>();
+
 //aca setea los headers
 export async function userLoging({
     email,
@@ -64,27 +72,52 @@ export async function userRegister({
 }
 
 export async function refreshAccessToken(refreshToken: string) {
-    const response = await axiosPublic.post(
-        "/users/refresh",
-        {},
-        {
-            headers: {
-                "x-refresh-token": refreshToken,
-            },
+    const existingRefresh = pendingRefreshes.get(refreshToken);
+    if (existingRefresh) return existingRefresh;
+
+    const refreshRequest = (async (): Promise<RefreshedTokens> => {
+        const response = await axiosPublic.post(
+            "/users/refresh",
+            {},
+            {
+                headers: {
+                    "x-refresh-token": refreshToken,
+                },
+            }
+        );
+
+        const accessToken = response.headers["x-access-token"];
+        const rotatedRefreshToken = response.headers["x-refresh-token"];
+        const decodedAccessToken = jwt.decode(
+            accessToken
+        ) as jwt.JwtPayload | null;
+
+        if (!accessToken || !rotatedRefreshToken || !decodedAccessToken?.exp) {
+            throw new Error("La API no devolvio tokens de sesion validos");
         }
-    );
 
-    const accessToken = response.headers["x-access-token"];
-    const rotatedRefreshToken = response.headers["x-refresh-token"];
-    const decodedAccessToken = jwt.decode(accessToken) as jwt.JwtPayload | null;
+        return {
+            accessToken,
+            refreshToken: rotatedRefreshToken,
+            accessTokenExpires: decodedAccessToken.exp * 1000,
+        };
+    })();
 
-    if (!accessToken || !rotatedRefreshToken || !decodedAccessToken?.exp) {
-        throw new Error("La API no devolvio tokens de sesion validos");
+    pendingRefreshes.set(refreshToken, refreshRequest);
+
+    try {
+        return await refreshRequest;
+    } finally {
+        pendingRefreshes.delete(refreshToken);
     }
+}
 
-    return {
-        accessToken,
-        refreshToken: rotatedRefreshToken,
-        accessTokenExpires: decodedAccessToken.exp * 1000,
-    };
+export async function revokeRefreshToken(refreshToken?: string) {
+    if (!refreshToken) return;
+
+    await axiosPublic.post(
+        "/users/logout",
+        {},
+        { headers: { "x-refresh-token": refreshToken } }
+    );
 }
