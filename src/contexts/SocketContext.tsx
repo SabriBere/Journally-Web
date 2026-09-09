@@ -31,12 +31,6 @@ type SessionWithSocketToken = {
 
 const SocketContext = createContext<SocketContextValue | null>(null);
 
-const buildSocketUrl = (baseUrl: string, token: string) => {
-    const url = new URL(baseUrl);
-    url.searchParams.set("token", token);
-    return url.toString();
-};
-
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     const { data: session, status: sessionStatus } = useSession();
     const accessToken = (session as SessionWithSocketToken | null)?.user
@@ -64,7 +58,10 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         const connect = () => {
             setStatus("connecting");
 
-            const nextSocket = new WebSocket(buildSocketUrl(socketUrl, accessToken));
+            const nextSocket = new WebSocket(socketUrl, [
+                "access-token",
+                accessToken,
+            ]);
             socketRef.current = nextSocket;
             setSocket(nextSocket);
 
@@ -132,16 +129,19 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
         };
     }, [sessionStatus, accessToken]);
 
-    const sendMessage = useCallback((message: Parameters<WebSocket["send"]>[0]) => {
-        const currentSocket = socketRef.current;
+    const sendMessage = useCallback(
+        (message: Parameters<WebSocket["send"]>[0]) => {
+            const currentSocket = socketRef.current;
 
-        if (!currentSocket || currentSocket.readyState !== WebSocket.OPEN) {
-            return false;
-        }
+            if (!currentSocket || currentSocket.readyState !== WebSocket.OPEN) {
+                return false;
+            }
 
-        currentSocket.send(message);
-        return true;
-    }, []);
+            currentSocket.send(message);
+            return true;
+        },
+        []
+    );
 
     const sendJson = useCallback(
         (message: unknown) => {
@@ -162,7 +162,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     );
 
     return (
-        <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
+        <SocketContext.Provider value={value}>
+            {children}
+        </SocketContext.Provider>
     );
 };
 
