@@ -1,21 +1,17 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import { defineConfig } from "eslint/config";
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
 import eslintPluginImport from "eslint-plugin-import";
 import eslintPluginReactHooks from "eslint-plugin-react-hooks";
 import eslintPluginTestingLibrary from "eslint-plugin-testing-library";
 import eslintPluginQuery from "@tanstack/eslint-plugin-query";
 import eslintPluginJest from "eslint-plugin-jest";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-    ...compat.extends("next/core-web-vitals", "next/typescript", "prettier"),
+const eslintConfig = defineConfig([
+    ...nextCoreWebVitals,
+    ...nextTypescript,
+    eslintConfigPrettier,
 
     // Reglas generales del proyecto
     {
@@ -37,6 +33,7 @@ const eslintConfig = [
             "no-duplicate-imports": "warn",
             "array-callback-return": "off",
             "react-hooks/exhaustive-deps": "off",
+            "react-hooks/set-state-in-effect": "off",
             "@tanstack/query/exhaustive-deps": "warn", //parametros de querys bien definidos
             "@typescript-eslint/no-unused-vars": "warn",      // 👈 sumá esto como warn u off
             "@typescript-eslint/no-explicit-any": "warn",     // 👈 sumá esto como warn u off
@@ -69,6 +66,6 @@ const eslintConfig = [
             // "jest/require-top-level-describe": "warn" //que tenga un describe dela to nivel que envuelva al test
         },
     },
-];
+]);
 
 export default eslintConfig;
