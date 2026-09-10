@@ -3,7 +3,7 @@ import { getToken } from "next-auth/jwt";
 
 const authRoutes = ["/login", "/register"];
 
-export default async function middleware(req: NextRequest) {
+export default async function proxy(req: NextRequest) {
     const { pathname } = req.nextUrl;
     const authToken = await getToken({
         req,
