@@ -20,12 +20,12 @@ export async function createPost(body: {
 export async function getAllPost({
     page,
     searchText,
-    orderFiled,
+    orderField,
     orderDirection,
 }: {
     page: string | number;
     searchText?: string | undefined;
-    orderFiled?: string | undefined;
+    orderField?: string | undefined;
     orderDirection?: string | undefined;
 }) {
     try {
@@ -39,8 +39,8 @@ export async function getAllPost({
             params.append("searchText", searchText);
         }
 
-        if (orderFiled !== undefined) {
-            params.append("orderFild", orderFiled);
+        if (orderField !== undefined) {
+            params.append("orderField", orderField);
         }
 
         if (orderDirection !== undefined) {
