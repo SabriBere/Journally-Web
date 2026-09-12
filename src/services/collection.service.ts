@@ -99,7 +99,7 @@ export async function deleteCollection(id: number | string | undefined) {
         }
 
         const res = await axiosInstance.delete(
-            `/collections/deteleCollection?${params.toString()}`
+            `/collections/deleteCollection?${params.toString()}`
         );
         return res.data.data;
     } catch (error: any) {
