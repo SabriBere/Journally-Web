@@ -12,6 +12,7 @@ export async function createPost(body: {
         return res.data.data;
     } catch (error: any) {
         console.error(`Error - Code: ${error.code}, Message: ${error.message}`);
+        throw error;
     }
 }
 

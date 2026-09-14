@@ -29,7 +29,7 @@ export const authOptions: NextAuthOptions = {
 
                     return null;
                 } catch (error: any) {
-                    const status = error?.response.status;
+                    const status = error?.response?.status;
                     const code = error?.code;
                     const message = error?.message;
 
